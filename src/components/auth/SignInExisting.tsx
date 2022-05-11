@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, TextField, Typography } from "@mui/material";
 import { auth, database } from "../../config/firebase";
 import Center from "../utils/Center";
-// import { ref, set, get, child, push, update } from "firebase/database";
+// import { ref, get, child, push, update } from "firebase/database";
 
 const SignInExisting = () => {
   const navigate = useNavigate();
@@ -24,11 +24,6 @@ const SignInExisting = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // const user = userCredential.user;
-
-        // set(ref(database, 'users/' + user.uid), {
-        //   email: user.email,
-        // });
-        //overwrites existing data on the table
 
         // const dbRef = ref(database)
         // get(child(dbRef, `users/${user.uid}`)).then((snapshot) => {

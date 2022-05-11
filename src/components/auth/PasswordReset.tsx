@@ -22,7 +22,6 @@ const PasswordReset = () => {
       })
       .catch((error) => {
         setErrorMessage(error.code + ": " + error.message);
-        //TODO post request showing with API key
         console.log("email not sent");
       });
     setEmail("");
@@ -30,13 +29,7 @@ const PasswordReset = () => {
 
   return (
     <Center height={"auto"}>
-      <TextField
-        label="email"
-        onChange={handleChange}
-        value={email}
-        focused
-        sx={{ padding: "15px" }}
-      />
+      <TextField label="email" onChange={handleChange} value={email} />
       <Button
         size="large"
         variant="contained"
