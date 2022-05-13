@@ -23,9 +23,7 @@ const SignInExisting = () => {
   const signInExistingUser = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // const user = userCredential.user;
-
-        // const dbRef = ref(database)
+       // const dbRef = ref(database)
         // get(child(dbRef, `users/${user.uid}`)).then((snapshot) => {
         //   if (snapshot.exists()) {
         //     console.log(snapshot.val());
@@ -36,16 +34,6 @@ const SignInExisting = () => {
         //   console.error(error);
         // });
         //get data from table
-
-        // update(ref(database, "users/" + user.uid), { email: user.email })
-        //   .then(() => {
-        //     console.log('data sent');
-        //   })
-        //   .catch((error) => {
-        //     console.log("error");
-        //   });
-        //update data on the table
-
         navigate("/");
       })
       .catch((error) => {

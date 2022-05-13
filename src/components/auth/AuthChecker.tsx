@@ -8,6 +8,7 @@ const AuthChecker = ({ children }: { children: JSX.Element }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    //listen for changes to auth state
     const unsubscribeAuthChange = onAuthStateChanged(auth, () => {
       if (auth.currentUser) {
         setLoading(false);
@@ -17,6 +18,7 @@ const AuthChecker = ({ children }: { children: JSX.Element }) => {
       }
     });
 
+    //cleanup listeners
     return () => {
       unsubscribeAuthChange();
     };
