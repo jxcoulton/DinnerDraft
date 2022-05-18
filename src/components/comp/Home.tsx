@@ -1,13 +1,13 @@
 import Logout from "../auth/Logout";
 import Center from "../utils/Center";
-import Cards from "./Cards";
+import Planner from "./Planner";
 
 const Home = () => {
   return (
     <>
       <Center height={"auto"}>
         <Logout />
-        <Cards />
+        <Planner />
       </Center>
     </>
   );

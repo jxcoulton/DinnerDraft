@@ -2,9 +2,8 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField, Typography } from "@mui/material";
-import { auth, database } from "../../config/firebase";
+import { auth } from "../../config/firebase";
 import Center from "../utils/Center";
-// import { ref, get, child, push, update } from "firebase/database";
 
 const SignInExisting = () => {
   const navigate = useNavigate();
@@ -23,17 +22,6 @@ const SignInExisting = () => {
   const signInExistingUser = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-       // const dbRef = ref(database)
-        // get(child(dbRef, `users/${user.uid}`)).then((snapshot) => {
-        //   if (snapshot.exists()) {
-        //     console.log(snapshot.val());
-        //   } else {
-        //     console.log("No data available");
-        //   }
-        // }).catch((error) => {
-        //   console.error(error);
-        // });
-        //get data from table
         navigate("/");
       })
       .catch((error) => {
