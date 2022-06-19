@@ -1,12 +1,12 @@
-import Logout from "../auth/Logout";
 import Center from "../utils/Center";
 import Planner from "./Planner";
+import Banner from "./Banner";
 
 const Home = () => {
   return (
     <>
       <Center height={"auto"}>
-        <Logout />
+        <Banner />
         <Planner />
       </Center>
     </>

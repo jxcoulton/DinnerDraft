@@ -1,8 +1,10 @@
-import { Card, Button } from "@mui/material";
+import { Card, Typography, IconButton } from "@mui/material";
 import { set, ref } from "firebase/database";
 import { database } from "../../config/firebase";
 import { format } from "date-fns";
 import React from "react";
+import DeleteIcon from '@mui/icons-material/Delete';
+import uuid from "react-uuid";
 
 type Props = {
   item: string;
@@ -31,10 +33,10 @@ const MealItems = ({
     e.preventDefault();
     const eTarget = e.target as HTMLInputElement;
 
-    const name = (element: string) => element === eTarget.name;
+    const value = (element: string) => element === eTarget.value;
     const newMeal = databaseData[item];
-    const nameIndex = databaseData[item].findIndex(name);
-    newMeal.splice(nameIndex, 1);
+    const valueIndex = databaseData[item].findIndex(value);
+    newMeal.splice(valueIndex, 1);
 
     set(
       ref(
@@ -48,18 +50,33 @@ const MealItems = ({
     setTrigger(!trigger);
   };
 
-  const databaseItems =
-    !!databaseData[item] &&
-    databaseData[item].map((item, i) => (
-      <Card key={i}>
-        {item}
-        <Button name={item} onClick={handleDelete}>
-          X
-        </Button>
-      </Card>
-    ));
-
-  return <>{databaseItems}</>;
+  return (
+    <div
+      style={{
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      {databaseData[item]?.map((item) => (
+        <Card
+          key={uuid()}
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+            borderRadius: "0px",
+          }}
+        >
+          <Typography variant="h6" paddingX={"10%"} paddingY={"2%"}>{item}</Typography>
+          <IconButton value={item} onClick={handleDelete}>
+            <DeleteIcon/>
+          </IconButton>
+        </Card>
+      ))}
+    </div>
+  );
 };
 
 export default MealItems;

@@ -3,6 +3,7 @@ import { auth } from "../../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import MainState from "../interface/MainState";
 import DatePicker from "./DatePicker";
+import { Card } from "@mui/material";
 
 const defaultMainState = {
   uid: null,
@@ -32,9 +33,15 @@ const Planner: React.FC = () => {
   }, [activeUser.uid]);
 
   return (
-    <div>
+    <Card
+      sx={{
+        minHeight: "80vh",
+        marginBottom: "10vh",
+        backgroundColor: "lightgrey",
+      }}
+    >
       <DatePicker activeUser={activeUser} />
-    </div>
+    </Card>
   );
 };
 

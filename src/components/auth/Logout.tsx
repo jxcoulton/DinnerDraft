@@ -1,6 +1,8 @@
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../config/firebase";
+import { IconButton } from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const Logout = () => {
   const navigate = useNavigate();
@@ -15,7 +17,13 @@ const Logout = () => {
       });
   };
 
-  return <button onClick={logout}>Logout</button>;
+  return (
+    <IconButton
+      onClick={logout}
+    >
+      <LogoutIcon/>
+    </IconButton>
+  );
 };
 
 export default Logout;

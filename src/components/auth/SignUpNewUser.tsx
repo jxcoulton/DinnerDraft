@@ -37,6 +37,7 @@ const SignUpNewUser = () => {
         name="email"
         value={email}
         onChange={handleChangeEmail}
+        sx={{margin: "15px"}}
       />
       <TextField
         label="password"
@@ -44,6 +45,7 @@ const SignUpNewUser = () => {
         type="password"
         value={password}
         onChange={handleChangePassword}
+        sx={{marginBottom: "15px"}}
       />
       <Button
         size="large"

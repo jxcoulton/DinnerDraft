@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, TextField, Typography, Card } from "@mui/material";
+import { Typography, Card, InputBase, IconButton } from "@mui/material";
 import Center from "../utils/Center";
 import OpenState from "../interface/OpenState";
 import MealState from "../interface/MealState";
@@ -8,6 +8,11 @@ import { ref, get, child, update } from "firebase/database";
 import { database } from "../../config/firebase";
 import { format } from "date-fns";
 import MealItems from "./MealItems";
+import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import uuid from "react-uuid";
+import axios from 'axios';
 
 type Props = {
   startDate: Date;
@@ -65,7 +70,7 @@ const MealType = ({ startDate, activeUser }: Props) => {
           console.error(error);
         });
     };
-
+    setOpen(defaultOpenState);
     getData();
   }, [activeUser.uid, dbRef, startDate, trigger]);
 
@@ -128,40 +133,94 @@ const MealType = ({ startDate, activeUser }: Props) => {
     setOpen(defaultOpenState);
   };
 
-  let dailyCard = meals.map((item, index) => (
-    <div key={index}>
-      <Typography variant="h5">{item}</Typography>
-      {!open[item as keyof typeof value] && (
-        <Button name={item} onClick={handleOpen}>
-          Add
-        </Button>
-      )}
-      {!!open[item as keyof typeof value] && (
-        <Card>
-          <form name={item} onSubmit={handleSetMeal}>
-            <TextField
-              autoFocus
-              name={item}
-              value={value[item as keyof typeof value]}
-              onChange={handleChangeValue}
-            />
-            <Button onClick={handleClose}>X</Button>
-            <Button type="submit" size="large" variant="contained">
-              add
-            </Button>
-          </form>
-        </Card>
-      )}
-      <MealItems item={item} databaseData={databaseData} activeUser={activeUser} startDate={startDate} setTrigger={setTrigger} trigger={trigger}/>
-    </div>
-  ));
+  const url = 'https://www.premierleague.com/stats/top/players/goals?se=-1&cl=-1&iso=-1&po=-1?se=-1'; // URL we're scraping
+  
+const AxiosInstance = axios.create(); // Create a new Axios Instance
 
-  //meal items displayed in each card
+// Send an async HTTP Get request to the url
+AxiosInstance.get(url)
+  .then( // Once we have data returned ...
+    response => {
+      const html = response.data; // Get the HTML from the HTTP request
+      console.log(html);
+    }
+  )
+  .catch(console.error); // Error handling
+
   return (
     <Center height={"auto"}>
-      <h1>{format(startDate, "eeee")}</h1>
-      <h2>{format(startDate, "PPP")}</h2>
-      {dailyCard}
+      {meals.map((item) => (
+        <div key={uuid()} style={{ width: "100%" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+              borderBottom: "solid 1px darkgrey",
+            }}
+          >
+            <Typography variant="h5" paddingX={"5%"} paddingY={"3%"}>
+              {item}
+            </Typography>
+            {!open[item as keyof typeof value] && (
+              <IconButton name={item} onClick={handleOpen}>
+                <AddCircleIcon sx={{ pointerEvents: "none" }} />
+              </IconButton>
+            )}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+            }}
+          >
+            {open[item as keyof typeof value] && (
+              <Card
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  width: "100%",
+                  borderRadius: "0px",
+                  backgroundColor: "#e9e6e6",
+                  border: "solid 1px dark grey",
+                }}
+              >
+                <form
+                  name={item}
+                  onSubmit={handleSetMeal}
+                  style={{ width: "100%", padding: "2% 0", paddingLeft: "10%" }}
+                >
+                  <InputBase
+                    autoFocus
+                    name={item}
+                    value={value[item as keyof typeof value]}
+                    onChange={handleChangeValue}
+                    placeholder={`Add ${item}`}
+                    sx={{ width: "80%" }}
+                  />
+                  <IconButton type="submit" color="primary">
+                    <AddIcon />
+                  </IconButton>
+                </form>
+                <IconButton onClick={handleClose}>
+                  <CloseIcon />
+                </IconButton>
+              </Card>
+            )}
+          </div>
+          <div style={{ width: "100%" }}>
+            <MealItems
+              item={item}
+              databaseData={databaseData}
+              activeUser={activeUser}
+              startDate={startDate}
+              setTrigger={setTrigger}
+              trigger={trigger}
+            />
+          </div>
+        </div>
+      ))}
     </Center>
   );
 };

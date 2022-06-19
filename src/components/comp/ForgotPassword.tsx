@@ -21,6 +21,7 @@ const ForgotPassword = () => {
         boxShadow={2}
         margin={3}
         padding={2}
+        sx={{backgroundColor: "white" }}
       >
         <PasswordReset />
         <Button size="large" variant="contained" onClick={returnToLogin}>
