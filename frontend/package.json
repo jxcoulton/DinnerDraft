@@ -12,7 +12,6 @@
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.0",
-    "@types/node": "^16.11.33",
     "@types/react": "^17.0.44",
     "@types/react-dom": "^17.0.16",
     "axios": "^0.27.2",
@@ -24,7 +23,6 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "^5.0.0",
     "react-uuid": "^1.0.2",
-    "typescript": "^4.6.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -36,8 +34,7 @@
     "build-and-serve": "npm run build && npm run serve",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "pull": "git pull && npm i && npm start",
-    "test:tsc": "tsc -p tsconfig.json -w"
+    "pull": "git pull && npm i && npm start"
   },
   "eslintConfig": {
     "extends": "react-app"

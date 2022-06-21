@@ -2,6 +2,7 @@ import { useState } from "react";
 import { subDays, addDays, format, eachDayOfInterval } from "date-fns";
 import MealType from "./MealType";
 import { Tabs, Tab } from "@mui/material";
+import uuid from "react-uuid";
 
 type Props = {
   activeUser: {
@@ -22,7 +23,6 @@ const DatePicker = ({ activeUser }: Props) => {
 
   const handleChangeDay = (day: Date, e: any) => {
     setStartDate(day);
-    console.log(e);
   };
 
   let dateList = eachDayOfInterval({
@@ -49,6 +49,7 @@ const DatePicker = ({ activeUser }: Props) => {
           {dateList.map((day) => {
             return (
               <Tab
+                key={uuid()}
                 label={`${format(day, "eee, LLL d")}`}
                 onClick={(e) => handleChangeDay(day, e)}
                 sx={{ width: "33%" }}

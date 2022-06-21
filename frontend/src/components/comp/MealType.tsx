@@ -12,7 +12,7 @@ import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import uuid from "react-uuid";
-import axios from 'axios';
+import axios from "axios";
 
 type Props = {
   startDate: Date;
@@ -79,15 +79,43 @@ const MealType = ({ startDate, activeUser }: Props) => {
     setValue({ ...value, [e.target.name]: e.target.value });
   };
 
-  const handleSetMeal = (e: React.FormEvent) => {
+  const handleSetMeal = async (e: React.FormEvent) => {
     e.preventDefault();
     const eTarget = e.target as HTMLInputElement;
     let name = eTarget.name as string;
 
-    if (
-      !!value[name as keyof InputValueState] &&
-      value[name as keyof InputValueState] !== ""
-    ) {
+    if (value[name as keyof InputValueState]?.includes("http")) {
+      await axios
+        .post("http://localhost:8000/", {
+          url: value[name as keyof InputValueState],
+        })
+        .then((res) => {
+          console.log(res.data.recipe);
+          setDateMeal({
+            ...dateMeal,
+            [eTarget.name]: !dateMeal[eTarget.name]
+              ? [res.data.recipe.title]
+              : [...dateMeal[eTarget.name], res.data.recipe.title],
+          });
+          setDateMeal((state) => {
+            update(
+              ref(
+                database,
+                `users/${activeUser.uid}/meals/${format(startDate, "PPP")}`
+              ),
+              {
+                ...state,
+              }
+            )
+              .then(() => {})
+              .catch((error) => {
+                console.log(error);
+              });
+            return state;
+          });
+        })
+        .catch((err) => console.log(err));
+    } else if (value[name as keyof InputValueState]) {
       setDateMeal({
         ...dateMeal,
         [eTarget.name]: !dateMeal[eTarget.name]
@@ -109,15 +137,17 @@ const MealType = ({ startDate, activeUser }: Props) => {
         )
           .then(() => {})
           .catch((error) => {
-            console.log("error");
+            console.log(error);
           });
         return state;
       });
     }
+
     setValue(defaultValue);
     setTrigger(!trigger);
     setOpen(defaultOpenState);
   };
+
 
   const handleOpen = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -132,20 +162,6 @@ const MealType = ({ startDate, activeUser }: Props) => {
     e.preventDefault();
     setOpen(defaultOpenState);
   };
-
-  const url = 'https://www.premierleague.com/stats/top/players/goals?se=-1&cl=-1&iso=-1&po=-1?se=-1'; // URL we're scraping
-  
-const AxiosInstance = axios.create(); // Create a new Axios Instance
-
-// Send an async HTTP Get request to the url
-AxiosInstance.get(url)
-  .then( // Once we have data returned ...
-    response => {
-      const html = response.data; // Get the HTML from the HTTP request
-      console.log(html);
-    }
-  )
-  .catch(console.error); // Error handling
 
   return (
     <Center height={"auto"}>

@@ -3,7 +3,7 @@ import { set, ref } from "firebase/database";
 import { database } from "../../config/firebase";
 import { format } from "date-fns";
 import React from "react";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import uuid from "react-uuid";
 
 type Props = {
@@ -69,10 +69,12 @@ const MealItems = ({
             borderRadius: "0px",
           }}
         >
-          <Typography variant="h6" paddingX={"10%"} paddingY={"2%"}>{item}</Typography>
-          <IconButton value={item} onClick={handleDelete}>
-            <DeleteIcon/>
-          </IconButton>
+          <Typography variant="h6" paddingX={"10%"} paddingY={"2%"}>
+            {item}
+          </Typography>
+          <button value={item} onClick={handleDelete}>
+            X
+          </button>
         </Card>
       ))}
     </div>
