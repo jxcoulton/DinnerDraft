@@ -6,11 +6,14 @@ var cheerio = require("cheerio");
 var cors = require("cors");
 var app = express();
 app.use(cors());
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "dinner-draft.vercel.app/");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+// app.use(function (req: any, res: any, next: any) {
+//   res.header("Access-Control-Allow-Origin", "dinner-draft.vercel.app/");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   next();
+// });
 app.use(express.json());
 app.post("/", function (req, res) {
     axios(req.body.url)
