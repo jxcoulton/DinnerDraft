@@ -2,9 +2,9 @@
   "name": "nodejs-scraper",
   "version": "1.0.0",
   "private": true,
+  "main": "index.js",
   "scripts": {
-    "build": "npx tsc",
-    "start": "node index.js"
+    "start": "npx tsc && node index.js"
   },
   "keywords": [],
   "author": "",

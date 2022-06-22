@@ -1,4 +1,4 @@
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 const axios = require("axios");
 const express = require("express");
@@ -8,7 +8,6 @@ const cors = require("cors");
 const app = express();
 app.use(cors());
 app.use(express.json());
-
 
 app.post("/", function (req: any, res: any) {
   axios(req.body.url)
