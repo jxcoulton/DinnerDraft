@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "npx tsc && node index.js"
+    "build": "npx tsc",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
