@@ -8,7 +8,7 @@ const cors = require("cors");
 const app = express();
 
 const corsOptions = {
-  origin: ["http://localhost:3000", "https://dinner-draft.vercel.app/"],
+  origin: ["http://localhost:3000", "https://dinner-draft-n70odjoys-jxcoulton.vercel.app/"],
   credentials: true,
   methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
 };
