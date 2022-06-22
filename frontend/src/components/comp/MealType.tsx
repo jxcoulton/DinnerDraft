@@ -48,7 +48,7 @@ const MealType = ({ startDate, activeUser }: Props) => {
   const [dateMeal, setDateMeal] = useState<MealState>(defaultMeal);
   const [databaseData, setDatabaseData] = useState<MealState>(defaultMeal);
   const [trigger, setTrigger] = useState(false);
-  const url = "http://localhost:8000/" || "https://dinner-draft-backend.vercel.app/"
+  const url = "https://dinner-draft-backend.vercel.app/";
 
   useEffect(() => {
     const getData = async () => {
@@ -85,7 +85,6 @@ const MealType = ({ startDate, activeUser }: Props) => {
     const eTarget = e.target as HTMLInputElement;
     let name = eTarget.name as string;
 
-
     if (value[name as keyof InputValueState]?.includes("http")) {
       await axios
         .post(url, {
@@ -108,16 +107,16 @@ const MealType = ({ startDate, activeUser }: Props) => {
         //   });
         // })
         .catch((err) => console.log(err));
-    // } else if (value[name as keyof InputValueState]) {
-    //   setDateMeal({
-    //     ...dateMeal,
-    //     [eTarget.name]: !dateMeal[eTarget.name]
-    //       ? [value[name as keyof InputValueState] as string]
-    //       : [
-    //           ...dateMeal[eTarget.name],
-    //           value[name as keyof InputValueState] as string,
-    //         ],
-    //   });
+      // } else if (value[name as keyof InputValueState]) {
+      //   setDateMeal({
+      //     ...dateMeal,
+      //     [eTarget.name]: !dateMeal[eTarget.name]
+      //       ? [value[name as keyof InputValueState] as string]
+      //       : [
+      //           ...dateMeal[eTarget.name],
+      //           value[name as keyof InputValueState] as string,
+      //         ],
+      //   });
     }
     setDateMeal((state) => {
       update(
