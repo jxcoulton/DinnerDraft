@@ -49,7 +49,7 @@ const MealType = ({ startDate, activeUser }: Props) => {
   const [databaseData, setDatabaseData] = useState<MealState>(defaultMeal);
   const [trigger, setTrigger] = useState(false);
   const backend = "https://dinner-draft-backend.vercel.app/";
-  const localhost = "http://localhost:8080/"
+  const localhost = "http://localhost:8080/";
 
   useEffect(() => {
     const getData = async () => {
