@@ -87,7 +87,7 @@ const MealType = ({ startDate, activeUser }: Props) => {
 
     if (value[name as keyof InputValueState]?.includes("http")) {
       await axios
-        .post("http://localhost:8000/", {
+        .post("http://localhost:8000/" || "https://dinner-draft-backend.vercel.app/", {
           url: value[name as keyof InputValueState],
         })
         .then((res) => {
