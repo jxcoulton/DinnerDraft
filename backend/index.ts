@@ -9,7 +9,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// const url = "https://tasteofhome.com/recipes/sour-cream-chocolate-cookies/";
 
 app.post("/", function (req: any, res: any) {
   axios(req.body.url)

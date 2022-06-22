@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon index.ts"
+    "start": "npx tsc && node index.js"
   },
   "keywords": [],
   "author": "",
