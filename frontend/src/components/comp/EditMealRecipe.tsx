@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import uuid from "react-uuid";
 
 const style = {
   position: "absolute",
@@ -48,19 +49,19 @@ const EditMealRecipe = ({ recipe }: Props) => {
           <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
             Ingredients
           </Typography>
-          {recipe.ingredients?.map((item: any) => (
-            <ul>
-              <li>{item}</li>
-            </ul>
-          ))}
+          <ul>
+            {recipe.ingredients?.map((item: any) => (
+              <li key={uuid()}>{item}</li>
+            ))}
+          </ul>
           <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
             Directions
           </Typography>
-          {recipe.directions?.map((item: any) => (
-            <ul>
-              <li>{item}</li>
-            </ul>
-          ))}
+          <ul>
+            {recipe.directions?.map((item: any) => (
+              <li key={uuid()}>{item}</li>
+            ))}
+          </ul>
         </Box>
       </Modal>
     </div>

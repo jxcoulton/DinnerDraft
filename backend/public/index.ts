@@ -1,4 +1,4 @@
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8080;
 
 const axios = require("axios");
 const express = require("express");
@@ -7,13 +7,26 @@ const cors = require("cors");
 
 const app = express();
 
-const corsOptions = {
-  headers: {
-    "Access-Control-Allow-Origin": "https://dinner-draft.vercel.app/",
-  },
-};
+// const corsOptions = {
+//   headers: {
+//     "Access-Control-Allow-Origin": '*',
+//     "Access-Control-Allow-Headers: 'content-type',
+//   },
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+
+app.use(cors());
+
+app.use(function (req: any, res: any, next: any) {
+  res.header("Access-Control-Allow-Origin", "https://dinner-draft.vercel.app/"); // update to match the domain you will make the request from
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+
 app.use(express.json());
 
 app.post("/", function (req: any, res: any) {

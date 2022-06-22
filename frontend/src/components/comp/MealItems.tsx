@@ -37,8 +37,6 @@ const MealItems = ({
   const handleDelete = (e: React.MouseEvent) => {
     e.preventDefault();
     const eTarget = e.target as HTMLInputElement;
-    console.log(eTarget.value);
-    console.log(databaseData[item]);
 
     const value = eTarget.value;
     const newMeal = databaseData[item];

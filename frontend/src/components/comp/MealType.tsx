@@ -48,7 +48,7 @@ const MealType = ({ startDate, activeUser }: Props) => {
   const [dateMeal, setDateMeal] = useState<MealState>(defaultMeal);
   const [databaseData, setDatabaseData] = useState<MealState>(defaultMeal);
   const [trigger, setTrigger] = useState(false);
-  const url = "https://dinner-draft-backend.vercel.app/";
+  const backend = "https://dinner-draft-backend.vercel.app/";
 
   useEffect(() => {
     const getData = async () => {
@@ -87,11 +87,10 @@ const MealType = ({ startDate, activeUser }: Props) => {
 
     if (value[name as keyof InputValueState]?.includes("http")) {
       await axios
-        .post(url, {
+        .post("http://localhost:8080/", {
           url: value[name as keyof InputValueState],
         })
         .then((res) => {
-          console.log(res.data.recipe);
           setDateMeal({
             ...dateMeal,
             [eTarget.name]: [res.data.recipe],
