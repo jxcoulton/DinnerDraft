@@ -1,3 +1,7 @@
 export default interface MealState {
-  [key: string]: string[];
+  [key: string]: [{
+    
+      [key: string] : string[] | string
+    
+  }]
 }

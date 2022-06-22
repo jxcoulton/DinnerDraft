@@ -5,11 +5,16 @@ import { format } from "date-fns";
 import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import uuid from "react-uuid";
+import EditMealRecipe from "./EditMealRecipe";
 
 type Props = {
   item: string;
   databaseData: {
-    [key: string]: string[];
+    [key: string]: [
+      {
+        [key: string]: string[] | string;
+      }
+    ];
   };
   startDate: Date;
   activeUser: {
@@ -32,10 +37,13 @@ const MealItems = ({
   const handleDelete = (e: React.MouseEvent) => {
     e.preventDefault();
     const eTarget = e.target as HTMLInputElement;
+    console.log(eTarget.value);
+    console.log(databaseData[item]);
 
-    const value = (element: string) => element === eTarget.value;
+    const value = eTarget.value;
     const newMeal = databaseData[item];
-    const valueIndex = databaseData[item].findIndex(value);
+
+    const valueIndex = databaseData[item].findIndex((s) => s.title === value);
     newMeal.splice(valueIndex, 1);
 
     set(
@@ -59,7 +67,7 @@ const MealItems = ({
         alignItems: "center",
       }}
     >
-      {databaseData[item]?.map((item) => (
+      {databaseData[item]?.map((each) => (
         <Card
           key={uuid()}
           sx={{
@@ -70,9 +78,10 @@ const MealItems = ({
           }}
         >
           <Typography variant="h6" paddingX={"10%"} paddingY={"2%"}>
-            {item}
+            {each.title}
           </Typography>
-          <button value={item} onClick={handleDelete}>
+          <EditMealRecipe recipe={each} />
+          <button value={each.title} onClick={handleDelete}>
             X
           </button>
         </Card>

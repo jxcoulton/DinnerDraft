@@ -3,14 +3,13 @@ const PORT = 8000;
 const axios = require("axios");
 const express = require("express");
 const cheerio = require("cheerio");
-const cors = require('cors');
+const cors = require("cors");
 
 const app = express();
-app.use(cors())
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
 
 // const url = "https://tasteofhome.com/recipes/sour-cream-chocolate-cookies/";
-
 
 app.post("/", function (req: any, res: any) {
   axios(req.body.url)
@@ -21,36 +20,37 @@ app.post("/", function (req: any, res: any) {
       let directions: string[] = [];
       let title: string = "";
 
-      $("ul, ol")
-        .find('[class*="ingredient"] li')
-        .each(function (this: any) {
-          const text = $(this).text();
-          ingredients.push(text.trim());
-        });
-
       $("h1").each(function (this: any) {
-        const text = $(this).text();
+        const text = $(this).html().trim();
         title = text;
       });
 
-      $("ul, ol")
-        .filter(function (this: any) {
-          return (
-            $('[class*="direction"]', this).length ||
-            $('[class*="instruction"]', this).length
-          );
-        })
+      $("div")
+        .find($('[class*="ingredient"] li'))
         .each(function (this: any) {
-          $(this.children).each(function (this: any) {
-            directions.push($(this).text().trim());
-          });
+          const text = $(this).text().trim();
+          ingredients.push(text);
         });
+
+      $("div")
+        .find(
+          $(
+            '[class*="direction"] li, [class*="instruction"] li, [class*="step"] li'
+          )
+        )
+        .each(function (this: any) {
+          const text = $(this).text().trim();
+          directions.push(text);
+        });
+
       res.json({
         recipe: {
           title,
           ingredients,
-          directions
-        }})
+          directions,
+          url: req.body.url,
+        },
+      });
     })
     .catch((err: any) => console.log(err));
 });

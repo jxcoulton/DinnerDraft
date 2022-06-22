@@ -30,7 +30,7 @@ const defaultOpenState = {
   snack: false,
 };
 
-const defaultMeal = {};
+const defaultMeal: MealState = {};
 
 const defaultValue = {
   breakfast: "",
@@ -84,6 +84,7 @@ const MealType = ({ startDate, activeUser }: Props) => {
     const eTarget = e.target as HTMLInputElement;
     let name = eTarget.name as string;
 
+
     if (value[name as keyof InputValueState]?.includes("http")) {
       await axios
         .post("http://localhost:8000/", {
@@ -93,61 +94,52 @@ const MealType = ({ startDate, activeUser }: Props) => {
           console.log(res.data.recipe);
           setDateMeal({
             ...dateMeal,
-            [eTarget.name]: !dateMeal[eTarget.name]
-              ? [res.data.recipe.title]
-              : [...dateMeal[eTarget.name], res.data.recipe.title],
-          });
-          setDateMeal((state) => {
-            update(
-              ref(
-                database,
-                `users/${activeUser.uid}/meals/${format(startDate, "PPP")}`
-              ),
-              {
-                ...state,
-              }
-            )
-              .then(() => {})
-              .catch((error) => {
-                console.log(error);
-              });
-            return state;
+            [eTarget.name]: [res.data.recipe],
           });
         })
+        // .then((res) => {
+        //   console.log(res.data.recipe);
+        //   setDateMeal({
+        //     ...dateMeal,
+        //     [eTarget.name]: !dateMeal[eTarget.name]
+        //       ? [res.data.recipe]
+        //       : [...dateMeal[eTarget.name], res.data.recipe],
+        //   });
+        // })
         .catch((err) => console.log(err));
-    } else if (value[name as keyof InputValueState]) {
-      setDateMeal({
-        ...dateMeal,
-        [eTarget.name]: !dateMeal[eTarget.name]
-          ? [value[name as keyof InputValueState] as string]
-          : [
-              ...dateMeal[eTarget.name],
-              value[name as keyof InputValueState] as string,
-            ],
-      });
-      setDateMeal((state) => {
-        update(
-          ref(
-            database,
-            `users/${activeUser.uid}/meals/${format(startDate, "PPP")}`
-          ),
-          {
-            ...state,
-          }
-        )
-          .then(() => {})
-          .catch((error) => {
-            console.log(error);
-          });
-        return state;
-      });
+    // } else if (value[name as keyof InputValueState]) {
+    //   setDateMeal({
+    //     ...dateMeal,
+    //     [eTarget.name]: !dateMeal[eTarget.name]
+    //       ? [value[name as keyof InputValueState] as string]
+    //       : [
+    //           ...dateMeal[eTarget.name],
+    //           value[name as keyof InputValueState] as string,
+    //         ],
+    //   });
     }
+    setDateMeal((state) => {
+      update(
+        ref(
+          database,
+          `users/${activeUser.uid}/meals/${format(startDate, "PPP")}`
+        ),
+        {
+          ...state,
+        }
+      )
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+      return state;
+    });
 
     setValue(defaultValue);
     setTrigger(!trigger);
     setOpen(defaultOpenState);
   };
-
+  // console.log(dateMeal);
 
   const handleOpen = (e: React.MouseEvent) => {
     e.preventDefault();
