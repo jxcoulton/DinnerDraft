@@ -4,7 +4,7 @@
   "private": true,
   "main": "public/index.js",
   "scripts": {
-    "start": "npx tsc && node public/index.js",
+    "start": "npx tsc && node index.js",
     "build": "tsc --build"
   },
   "keywords": [],
