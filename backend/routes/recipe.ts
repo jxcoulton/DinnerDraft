@@ -3,7 +3,7 @@ const express = require("express");
 const cheerio = require("cheerio");
 const router = express.Router();
 
-router.get("/", (req: any, res: any) => {
+router.post("/", (req: any, res: any) => {
   // axios(req.body.url)
   axios("https://www.tasteofhome.com/recipes/sour-cream-chocolate-cookies/")
     .then((response: any) => {
