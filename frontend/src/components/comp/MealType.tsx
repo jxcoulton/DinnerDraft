@@ -49,7 +49,7 @@ const MealType = ({ startDate, activeUser }: Props) => {
   const [databaseData, setDatabaseData] = useState<MealState>(defaultMeal);
   const [trigger, setTrigger] = useState(false);
   const backend = "https://dinner-draft-be.herokuapp.com/";
-  const localhost = "http://localhost:8080/";
+  const localhost = "http://localhost:8080/recipe";
 
   useEffect(() => {
     const getData = async () => {
@@ -88,7 +88,7 @@ const MealType = ({ startDate, activeUser }: Props) => {
 
     if (value[name as keyof InputValueState]?.includes("http")) {
       await axios
-        .post(backend, {
+        .post(localhost, {
           url: value[name as keyof InputValueState],
         })
         .then((res) => {
