@@ -204,7 +204,7 @@ const MealType = ({ startDate, activeUser }: Props) => {
                     name={item}
                     value={value[item as keyof typeof value]}
                     onChange={handleChangeValue}
-                    placeholder={`Add ${item}`}
+                    placeholder={`Add custom ${item} item or recipe URL`}
                     sx={{ width: "80%" }}
                   />
                   <IconButton type="submit" color="primary">

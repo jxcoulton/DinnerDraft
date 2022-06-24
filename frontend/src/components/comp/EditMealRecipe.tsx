@@ -45,7 +45,9 @@ const EditMealRecipe = ({ recipe }: Props) => {
           <Typography id="keep-mounted-modal-title" variant="h6" component="h2">
             {recipe.title}
           </Typography>
-          {recipe.url}
+          <a href={recipe.url} target="_blank" rel="noreferrer">
+            Website
+          </a>
           <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
             Ingredients
           </Typography>
