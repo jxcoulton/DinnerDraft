@@ -1,16 +1,15 @@
 import { useState } from "react";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import { IconButton, Box, Modal, Button, Typography } from "@mui/material";
 import uuid from "react-uuid";
+import CloseIcon from "@mui/icons-material/Close";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: "60vw",
+  // minWidth: 400,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -42,11 +41,20 @@ const EditMealRecipe = ({ recipe }: Props) => {
         aria-describedby="keep-mounted-modal-description"
       >
         <Box sx={style}>
-          <Typography id="keep-mounted-modal-title" variant="h6" component="h2">
-            {recipe.title}
-          </Typography>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography
+              id="keep-mounted-modal-title"
+              variant="h6"
+              component="h2"
+            >
+              {recipe.title}
+            </Typography>
+            <IconButton onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
           <a href={recipe.url} target="_blank" rel="noreferrer">
-            Website
+            {new URL(recipe.url).hostname.replace("www.", "")}
           </a>
           <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
             Ingredients
