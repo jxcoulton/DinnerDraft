@@ -84,7 +84,7 @@ const MealType = ({ startDate, activeUser }: Props) => {
   const handleSetMeal = async (e: React.FormEvent) => {
     e.preventDefault();
     const eTarget = e.target as HTMLInputElement;
-    let name = eTarget.name as string;
+    let name = eTarget.name;
 
     if (value[name as keyof InputValueState]?.includes("http")) {
       await axios
@@ -92,31 +92,24 @@ const MealType = ({ startDate, activeUser }: Props) => {
           url: value[name as keyof InputValueState],
         })
         .then((res) => {
+          const data = res.data.recipe;
           setDateMeal({
             ...dateMeal,
-            [eTarget.name]: [res.data.recipe],
+            [name]: [
+              ...(dateMeal[name as keyof MealState] as Array<any>),
+              data,
+            ],
           });
         })
-        // .then((res) => {
-        //   console.log(res.data.recipe);
-        //   setDateMeal({
-        //     ...dateMeal,
-        //     [eTarget.name]: !dateMeal[eTarget.name]
-        //       ? [res.data.recipe]
-        //       : [...dateMeal[eTarget.name], res.data.recipe],
-        //   });
-        // })
-        .catch((err) => console.log(err));
-      // } else if (value[name as keyof InputValueState]) {
-      //   setDateMeal({
-      //     ...dateMeal,
-      //     [eTarget.name]: !dateMeal[eTarget.name]
-      //       ? [value[name as keyof InputValueState] as string]
-      //       : [
-      //           ...dateMeal[eTarget.name],
-      //           value[name as keyof InputValueState] as string,
-      //         ],
-      //   });
+        .catch((err) => console.log(err)); //set up toast
+    } else if (value[name as keyof InputValueState]) {
+      setDateMeal({
+        ...dateMeal,
+        [name]: [
+          ...dateMeal[name as keyof MealState] as Array<any>,
+          { title: value[name as keyof InputValueState]},
+        ],
+      });
     }
     setDateMeal((state) => {
       update(
@@ -139,7 +132,6 @@ const MealType = ({ startDate, activeUser }: Props) => {
     setTrigger(!trigger);
     setOpen(defaultOpenState);
   };
-  // console.log(dateMeal);
 
   const handleOpen = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -225,6 +217,7 @@ const MealType = ({ startDate, activeUser }: Props) => {
               startDate={startDate}
               setTrigger={setTrigger}
               trigger={trigger}
+              value={value}
             />
           </div>
         </div>

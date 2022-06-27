@@ -1,7 +1,26 @@
 export default interface MealState {
-  [key: string]: [{
-    
-      [key: string] : string[] | string
-    
-  }]
+  breakfast?: [
+    { [directions: string]: string[] }?,
+    { [instructions: string]: string[] }?,
+    { [title: string]: string }?,
+    { [url: string]: string }?
+  ];
+  lunch?: [
+    { [directions: string]: string[] }?,
+    { [instructions: string]: string[] }?,
+    { [title: string]: string }?,
+    { [url: string]: string }?
+  ];
+  dinner?: [
+    { [directions: string]: string[] }?,
+    { [instructions: string]: string[] }?,
+    { [title: string]: string }?,
+    { [url: string]: string }?
+  ];
+  snack?: [
+    { [directions: string]: string[] }?,
+    { [instructions: string]: string[] }?,
+    { [title: string]: string }?,
+    { [url: string]: string }?
+  ];
 }

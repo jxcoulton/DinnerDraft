@@ -120,6 +120,8 @@ router.post("/", function (req, res) {
             },
         });
     })
-        .catch(function (err) { return console.log(err); });
+        .catch(function (err) {
+        res.status(err.response.status).send(err);
+    });
 });
 module.exports = router;

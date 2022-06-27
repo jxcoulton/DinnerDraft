@@ -6,16 +6,12 @@ import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import uuid from "react-uuid";
 import EditMealRecipe from "./EditMealRecipe";
+import MealState from "../interface/MealState";
+import InputValueState from "../interface/InputValueState";
 
 type Props = {
   item: string;
-  databaseData: {
-    [key: string]: [
-      {
-        [key: string]: string[] | string;
-      }
-    ];
-  };
+  databaseData: MealState;
   startDate: Date;
   activeUser: {
     uid?: string | null;
@@ -24,6 +20,7 @@ type Props = {
   };
   setTrigger: React.Dispatch<React.SetStateAction<boolean>>;
   trigger: boolean;
+  value: InputValueState;
 };
 
 const MealItems = ({
@@ -33,16 +30,17 @@ const MealItems = ({
   activeUser,
   setTrigger,
   trigger,
+  value,
 }: Props) => {
   const handleDelete = (e: React.MouseEvent) => {
     e.preventDefault();
     const eTarget = e.target as HTMLInputElement;
 
-    const value = eTarget.value;
-    const newMeal = databaseData[item];
+    const targetValue = eTarget.value;
+    const newMeal = databaseData[item as keyof MealState];
+    const valueIndex = databaseData[item as keyof MealState]?.findIndex((s: any) => s.title === targetValue);
 
-    const valueIndex = databaseData[item].findIndex((s) => s.title === value);
-    newMeal.splice(valueIndex, 1);
+    valueIndex && newMeal?.splice(valueIndex, 1);
 
     set(
       ref(
@@ -65,7 +63,7 @@ const MealItems = ({
         alignItems: "center",
       }}
     >
-      {databaseData[item]?.map((each) => (
+      {databaseData[item as keyof MealState]?.map((each: any) => (
         <Card
           key={uuid()}
           sx={{

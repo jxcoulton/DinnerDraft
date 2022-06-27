@@ -53,9 +53,9 @@ const EditMealRecipe = ({ recipe }: Props) => {
               <CloseIcon />
             </IconButton>
           </Box>
-          <a href={recipe.url} target="_blank" rel="noreferrer">
+          {recipe.url && <a href={recipe.url} target="_blank" rel="noreferrer">
             {new URL(recipe.url).hostname.replace("www.", "")}
-          </a>
+          </a>}
           <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
             Ingredients
           </Typography>

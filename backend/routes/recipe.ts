@@ -138,7 +138,9 @@ router.post("/", (req: any, res: any) => {
         },
       });
     })
-    .catch((err: any) => console.log(err));
+    .catch((err: any) => {
+      res.status(err.response.status).send(err);
+    });
 });
 
 module.exports = router;
