@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { subDays, addDays, format, eachDayOfInterval } from "date-fns";
+import { format, eachDayOfInterval, startOfWeek, endOfWeek } from "date-fns";
 import MealType from "./MealType";
-import { Tabs, Tab } from "@mui/material";
+import { Tabs, Tab, Box, Typography } from "@mui/material";
 import uuid from "react-uuid";
 
 type Props = {
@@ -26,37 +26,48 @@ const DatePicker = ({ activeUser }: Props) => {
   };
 
   let dateList = eachDayOfInterval({
-    start: subDays(today, 7),
-    end: addDays(today, 6),
+    start: startOfWeek(today),
+    end: endOfWeek(today),
   });
 
   return (
-    <div style={{ width: "90vw", padding: "5vw 0" }}>
+    <div style={{ width: "90vw", padding: "5vh 0" }}>
       <div
         style={{
           display: "flex",
           justifyContent: "space-around",
-          width: "100%",
         }}
       >
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          variant="scrollable"
-          scrollButtons
-          allowScrollButtonsMobile
-        >
-          {dateList.map((day) => {
-            return (
-              <Tab
+        {dateList.map((day) => {
+          return (
+            <Box
+              style={{
+                backgroundColor: "lightblue",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                borderRadius: "50%/30%",
+                border: "solid grey 1px",
+                // minWidth: '2rem',
+                minHeight: "4rem",
+                marginBottom: '5vh'
+              }}
+              key={uuid()}
+            >
+              <Typography>{`${format(day, "eee")}`}</Typography>
+              <button
                 key={uuid()}
-                label={`${format(day, "eee, LLL d")}`}
                 onClick={(e) => handleChangeDay(day, e)}
-                sx={{ width: "33%" }}
-              />
-            );
-          })}
-        </Tabs>
+                style={{
+                  borderRadius: "100px",
+                  minWidth: "2.5rem",
+                  minHeight: "2.5rem",
+                }}
+              >{`${format(day, "d")}`}</button>
+            </Box>
+          );
+        })}
       </div>
       <MealType startDate={startDate} activeUser={activeUser} />
     </div>

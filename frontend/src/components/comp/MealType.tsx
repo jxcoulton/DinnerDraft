@@ -39,7 +39,7 @@ const defaultValue = {
   snack: "",
 };
 
-const meals = ["breakfast", "lunch", "dinner", "snack"];
+const meals = ["Breakfast", "Lunch", "Dinner", "Snack"];
 
 const MealType = ({ startDate, activeUser }: Props) => {
   const dbRef = ref(database);
@@ -95,20 +95,21 @@ const MealType = ({ startDate, activeUser }: Props) => {
           const data = res.data.recipe;
           setDateMeal({
             ...dateMeal,
-            [name]: [
-              ...(dateMeal[name as keyof MealState] as Array<any>),
-              data,
-            ],
+            [name]: !dateMeal[name as keyof MealState]
+              ? [data]
+              : [...(dateMeal[name as keyof MealState] as Array<any>), data],
           });
         })
         .catch((err) => console.log(err)); //set up toast
     } else if (value[name as keyof InputValueState]) {
       setDateMeal({
         ...dateMeal,
-        [name]: [
-          ...dateMeal[name as keyof MealState] as Array<any>,
-          { title: value[name as keyof InputValueState]},
-        ],
+        [name]: !dateMeal[name as keyof MealState]
+          ? [{ title: value[name as keyof InputValueState] }]
+          : [
+              ...(dateMeal[name as keyof MealState] as Array<any>),
+              { title: value[name as keyof InputValueState] },
+            ],
       });
     }
     setDateMeal((state) => {
@@ -149,6 +150,7 @@ const MealType = ({ startDate, activeUser }: Props) => {
 
   return (
     <Center height={"auto"}>
+      <Typography key={uuid()} variant='h3'>{`${format(startDate, "eee, LLL d")}`}</Typography>
       {meals.map((item) => (
         <div key={uuid()} style={{ width: "100%" }}>
           <div

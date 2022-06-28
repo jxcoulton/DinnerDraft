@@ -35,12 +35,15 @@ const MealItems = ({
   const handleDelete = (e: React.MouseEvent) => {
     e.preventDefault();
     const eTarget = e.target as HTMLInputElement;
-
-    const targetValue = eTarget.value;
     const newMeal = databaseData[item as keyof MealState];
-    const valueIndex = databaseData[item as keyof MealState]?.findIndex((s: any) => s.title === targetValue);
+    const valueIndex =
+      databaseData[item as keyof MealState]?.findIndex(
+        (s: any) => s.title === eTarget.value
+      ) || 0;
 
-    valueIndex && newMeal?.splice(valueIndex, 1);
+    if (valueIndex === 0 || valueIndex > 0) {
+      newMeal?.splice(valueIndex, 1);
+    }
 
     set(
       ref(
@@ -53,6 +56,7 @@ const MealItems = ({
     );
     setTrigger(!trigger);
   };
+
 
   return (
     <div
@@ -76,7 +80,7 @@ const MealItems = ({
           <Typography variant="h6" paddingX={"10%"} paddingY={"2%"}>
             {each.title}
           </Typography>
-          <EditMealRecipe recipe={each} />
+          <EditMealRecipe recipe={each} item={item} databaseData={databaseData} />
           <button value={each.title} onClick={handleDelete}>
             X
           </button>
