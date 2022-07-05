@@ -93,6 +93,12 @@ const MealType = ({ startDate, activeUser }: Props) => {
         })
         .then((res) => {
           const data = res.data.recipe;
+          data.ingredients = data.ingredients?.map((i: string) =>
+            i.replace(/\n/g, "").replace(/\s+/g, " ").trim()
+          );
+          data.directions = data.directions?.map((i: string) =>
+            i.replace(/\n/g, "").replace(/\s+/g, " ").trim()
+          );
           setDateMeal({
             ...dateMeal,
             [name]: !dateMeal[name as keyof MealState]
@@ -150,7 +156,10 @@ const MealType = ({ startDate, activeUser }: Props) => {
 
   return (
     <Center height={"auto"}>
-      <Typography key={uuid()} variant='h3'>{`${format(startDate, "eee, LLL d")}`}</Typography>
+      <Typography key={uuid()} variant="h3">{`${format(
+        startDate,
+        "eee, LLL d"
+      )}`}</Typography>
       {meals.map((item) => (
         <div key={uuid()} style={{ width: "100%" }}>
           <div

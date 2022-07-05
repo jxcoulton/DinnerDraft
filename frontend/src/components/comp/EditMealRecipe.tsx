@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   IconButton,
   Box,
@@ -10,6 +10,10 @@ import {
 import uuid from "react-uuid";
 import CloseIcon from "@mui/icons-material/Close";
 import MealState from "../interface/MealState";
+import { ReceiptRounded } from "@mui/icons-material";
+import { update, ref } from "firebase/database";
+import { database } from "../../config/firebase";
+import { format } from "date-fns";
 
 const style = {
   position: "absolute",
@@ -32,11 +36,37 @@ type Props = {
   };
   item: string;
   databaseData: MealState;
+  startDate: Date;
+  activeUser: {
+    uid?: string | null;
+    email?: string | null;
+    displayName?: string | null;
+  };
+  setTrigger: React.Dispatch<React.SetStateAction<boolean>>;
+  trigger: boolean;
 };
 
-const EditMealRecipe = ({ recipe, item, databaseData }: Props) => {
+const EditMealRecipe = ({
+  recipe,
+  item,
+  databaseData,
+  startDate,
+  activeUser,
+  trigger,
+  setTrigger,
+}: Props) => {
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [editedRecipe, setEditedRecipe] = useState({
+    title: recipe.title,
+    url: recipe.url || "",
+    ingredients: recipe.ingredients
+      ? recipe.ingredients.map((item: any) => `${item} \n`).join("")
+      : "",
+    directions: recipe.directions
+      ? recipe.directions.map((item: any) => `${item} \n`).join("")
+      : "",
+  });
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -46,38 +76,68 @@ const EditMealRecipe = ({ recipe, item, databaseData }: Props) => {
   const handleEditOpen = () => setEdit(true);
   const handleEditClose = () => setEdit(false);
 
-  const handleSaveEditedMeal = (e: React.FormEventHandler) => {
-    // e.preventDefault();
+  const handleChangeRecipe = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const eTarget = e.target as HTMLInputElement;
+    let key: string = eTarget.name;
 
-    // const eTarget = e.target as HTMLInputElement;
-    // console.log(eTarget);
-    // const newMeal = databaseData[item as keyof MealState];
-    // console.log(eTarget.parentElement);
+    setEditedRecipe({
+      ...editedRecipe,
+      url: recipe.url || "",
+      [key]: eTarget.value,
+    });
+  };
 
-    // const valueIndex =
-    //   databaseData[item as keyof MealState]?.findIndex(
-    //     (s: any) => s.title === eTarget.value
-    //   ) || 0;
-    // console.log(valueIndex);
+  //clean up functions throughout changing to functions and now fatty arrows
+  //add toast for errors in axios calls
 
-    //find item type (ie: lunch)
-    //find index
-    //input values of both into database call
+  const handleSaveEditedMeal = (e: React.SyntheticEvent) => {
+    e.preventDefault();
 
-    // update(
-    //   ref(
-    //     database,
-    //     `users/${activeUser.uid}/meals/${format(startDate, "PPP")}`
-    //   ),
-    //   {
-    //     ...state,
-    //   }
-    // )
-    //   .then(() => {})
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    const valueIndex =
+      databaseData[item as keyof MealState]?.findIndex(
+        (s: any) => s.title === recipe.title
+      ) || 0;
+
+    setEditedRecipe({
+      ...editedRecipe,
+      ingredients: [
+        ...editedRecipe.ingredients
+          .trim()
+          .split("\n")
+          .filter((i: string) => i),
+      ],
+      directions: [
+        ...editedRecipe.directions
+          .trim()
+          .split("\n")
+          .filter((i: string) => i),
+      ],
+    });
+
+    setEditedRecipe((state) => {
+      update(
+        ref(
+          database,
+          `users/${activeUser.uid}/meals/${format(
+            startDate,
+            "PPP"
+          )}/${item}/${valueIndex}`
+        ),
+        {
+          ...state,
+        }
+      )
+        .then(() => {
+          setTrigger(!trigger);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      return state;
+    });
+
     setEdit(false);
+    //get recipe from database to display
   };
 
   return (
@@ -135,16 +195,17 @@ const EditMealRecipe = ({ recipe, item, databaseData }: Props) => {
             </Box>
           )}
           {edit && (
-            <form >
-              {/* <form onSubmit={handleSaveEditedMeal}> */}
-              <Box sx={style}>
+            <Box sx={style}>
+              <form onSubmit={handleSaveEditedMeal}>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <TextField
                     id="outlined-multiline-static"
                     label="Edit Recipe Name"
                     multiline
-                    defaultValue={recipe.title}
+                    value={editedRecipe.title}
                     fullWidth
+                    name="title"
+                    onChange={handleChangeRecipe}
                   />
 
                   <IconButton onClick={handleClose}>
@@ -164,10 +225,10 @@ const EditMealRecipe = ({ recipe, item, databaseData }: Props) => {
                   id="outlined-multiline-static"
                   label="Edit Ingredients"
                   multiline
-                  defaultValue={recipe.ingredients
-                    ?.map((item: any) => `${item} \n`)
-                    .join("")}
+                  value={editedRecipe.ingredients}
                   fullWidth
+                  name="ingredients"
+                  onChange={handleChangeRecipe}
                 />
 
                 <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
@@ -178,16 +239,16 @@ const EditMealRecipe = ({ recipe, item, databaseData }: Props) => {
                     id="outlined-multiline-static"
                     label="Edit Directions"
                     multiline
-                    defaultValue={recipe.directions
-                      ?.map((item: any) => `${item} \n`)
-                      .join("")}
+                    value={editedRecipe.directions}
                     fullWidth
+                    name="directions"
+                    onChange={handleChangeRecipe}
                   />
                 )}
                 <button type="submit">save changes</button>
                 <button onClick={handleEditClose}>cancel changes</button>
-              </Box>
-            </form>
+              </form>
+            </Box>
           )}
         </>
       </Modal>

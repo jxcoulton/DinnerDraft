@@ -57,7 +57,6 @@ const MealItems = ({
     setTrigger(!trigger);
   };
 
-
   return (
     <div
       style={{
@@ -80,7 +79,15 @@ const MealItems = ({
           <Typography variant="h6" paddingX={"10%"} paddingY={"2%"}>
             {each.title}
           </Typography>
-          <EditMealRecipe recipe={each} item={item} databaseData={databaseData} />
+          <EditMealRecipe
+            startDate={startDate}
+            activeUser={activeUser}
+            recipe={each}
+            item={item}
+            databaseData={databaseData}
+            trigger={trigger}
+            setTrigger={setTrigger}
+          />
           <button value={each.title} onClick={handleDelete}>
             X
           </button>

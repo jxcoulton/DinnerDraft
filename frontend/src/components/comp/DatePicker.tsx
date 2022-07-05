@@ -49,7 +49,6 @@ const DatePicker = ({ activeUser }: Props) => {
                 justifyContent: "flex-end",
                 borderRadius: "50%/30%",
                 border: "solid grey 1px",
-                // minWidth: '2rem',
                 minHeight: "4rem",
                 marginBottom: '5vh'
               }}
