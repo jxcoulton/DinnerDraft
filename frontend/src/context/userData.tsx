@@ -4,7 +4,7 @@ import MealState from "../interface/MealState";
 import InputValueState from "../interface/InputValueState";
 import IContextState from "../interface/ContextState";
 import OpenState from "../interface/OpenState";
-import { auth } from "../../config/firebase";
+import { auth } from "../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
 const defaultState = {

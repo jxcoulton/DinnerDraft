@@ -1,5 +1,5 @@
 import React from "react";
-import DatePicker from "./DatePicker";
+import DateButtons from "./buttons/DateButtons";
 import { Card } from "@mui/material";
 
 const Planner: React.FC = () => {
@@ -11,7 +11,7 @@ const Planner: React.FC = () => {
         backgroundColor: "lightgrey",
       }}
     >
-      <DatePicker />
+      <DateButtons />
     </Card>
   );
 };

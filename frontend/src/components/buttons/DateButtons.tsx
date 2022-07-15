@@ -1,11 +1,11 @@
 import { useContext } from "react";
-import { UserDataContext } from "../context/userData";
-import MealType from "./MealType";
+import { UserDataContext } from "../../context/userData";
+import MealCategoryCard from "../cards/MealCategoryCard";
 import { format, eachDayOfInterval, startOfWeek, endOfWeek } from "date-fns";
-import { Box, Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import uuid from "react-uuid";
 
-const DatePicker: React.FC = () => {
+const DateButtons: React.FC = () => {
   const { startDate, setStartDate } = useContext(UserDataContext);
 
   function handleChangeDay(day: Date, e: any) {
@@ -48,9 +48,9 @@ const DatePicker: React.FC = () => {
           );
         })}
       </div>
-      <MealType />
+      <MealCategoryCard />
     </div>
   );
 };
 
-export default DatePicker;
+export default DateButtons;

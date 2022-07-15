@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
-import { UserDataContext } from "../context/userData";
-import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from "@mui/icons-material/Close";
+import { UserDataContext } from "../../context/userData";
+import MealState from "../../interface/MealState";
+import InputValueState from "../../interface/InputValueState";
+import axios from "axios";
 import { Card, InputBase, IconButton } from "@mui/material";
-import MealState from "../interface/MealState";
 import { ref, update } from "firebase/database";
 import { database } from "../../config/firebase";
-import InputValueState from "../interface/InputValueState";
 import { format } from "date-fns";
-import axios from "axios";
+import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
 
 type Props = {
   mealType: string;
@@ -34,7 +34,7 @@ function mapListToDisplay(listItem: string[]) {
   );
 }
 
-const AddNewMeal = ({ mealType }: Props) => {
+const CreateMealCard = ({ mealType }: Props) => {
   const {
     activeUser,
     startDate,
@@ -110,6 +110,8 @@ const AddNewMeal = ({ mealType }: Props) => {
     setTrigger(!trigger);
     setAddMealItemOpen(defaultOpenState);
   }
+  //move cancel button to parent replacing the +
+  //deactivate the add button if empty
 
   return (
     <Card
@@ -146,4 +148,4 @@ const AddNewMeal = ({ mealType }: Props) => {
   );
 };
 
-export default AddNewMeal;
+export default CreateMealCard;

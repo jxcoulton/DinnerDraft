@@ -1,14 +1,15 @@
+import { useContext } from "react";
+import { UserDataContext } from "../../context/userData";
 import { IconButton } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { useContext } from "react";
-import { UserDataContext } from "../context/userData";
 
 type Props = {
   mealType: string;
 };
 
-const AddNewItemButton = ({ mealType }: Props) => {
+const AddMealCardButton = ({ mealType }: Props) => {
   const { setAddMealItemOpen } = useContext(UserDataContext);
+
   function handleOpen(e: React.MouseEvent) {
     e.preventDefault();
     const eTarget = e.target as HTMLInputElement;
@@ -25,4 +26,4 @@ const AddNewItemButton = ({ mealType }: Props) => {
   );
 };
 
-export default AddNewItemButton;
+export default AddMealCardButton;

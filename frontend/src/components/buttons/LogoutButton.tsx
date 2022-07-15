@@ -4,7 +4,7 @@ import { auth } from "../../config/firebase";
 import { IconButton } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-const Logout = () => {
+const LogoutButton = () => {
   const navigate = useNavigate();
 
   const logout = () => {
@@ -18,12 +18,10 @@ const Logout = () => {
   };
 
   return (
-    <IconButton
-      onClick={logout}
-    >
-      <LogoutIcon/>
+    <IconButton onClick={logout}>
+      <LogoutIcon />
     </IconButton>
   );
 };
 
-export default Logout;
+export default LogoutButton;

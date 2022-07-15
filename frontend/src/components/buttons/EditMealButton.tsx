@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import ViewRecipeModal from "./ViewRecipeModal";
-import { UserDataContext } from "../context/userData";
+import RecipeModal from "../modal/RecipeModal";
+import { UserDataContext } from "../../context/userData";
 
 type Props = {
   recipe: {
@@ -11,7 +11,7 @@ type Props = {
   mealType: string;
 };
 
-const EditMealRecipe = ({ recipe, mealType }: Props) => {
+const EditMealButton = ({ recipe, mealType }: Props) => {
   const { setModalOpen } = useContext(UserDataContext);
 
   function handleOpen() {
@@ -23,9 +23,9 @@ const EditMealRecipe = ({ recipe, mealType }: Props) => {
       <IconButton onClick={handleOpen}>
         <EditIcon />
       </IconButton>
-      <ViewRecipeModal recipe={recipe} mealType={mealType} />
+      <RecipeModal recipe={recipe} mealType={mealType} />
     </div>
   );
 };
 
-export default EditMealRecipe;
+export default EditMealButton;

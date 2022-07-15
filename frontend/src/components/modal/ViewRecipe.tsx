@@ -7,7 +7,7 @@ type Props = {
   };
 };
 
-const RecipeModal = ({ recipe}: Props) => {
+const ViewRecipe = ({ recipe }: Props) => {
   return (
     <>
       <Typography id="keep-mounted-modal-title" variant="h6" component="h2">
@@ -42,4 +42,4 @@ const RecipeModal = ({ recipe}: Props) => {
   );
 };
 
-export default RecipeModal;
+export default ViewRecipe;

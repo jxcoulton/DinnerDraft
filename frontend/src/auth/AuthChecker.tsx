@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../config/firebase";
+import { auth } from "../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
 const AuthChecker = ({ children }: { children: JSX.Element }) => {

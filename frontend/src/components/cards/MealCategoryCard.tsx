@@ -1,14 +1,14 @@
 import { useEffect, useContext } from "react";
-import { UserDataContext } from "../context/userData";
-import Center from "../utils/Center";
-import MealItems from "./MealItems";
+import { UserDataContext } from "../../context/userData";
+import Center from "../../utils/Center";
+import MealCard from "./MealCard";
 import { ref, get, child } from "firebase/database";
 import { database } from "../../config/firebase";
 import { format } from "date-fns";
 import { Typography } from "@mui/material";
 import uuid from "react-uuid";
-import AddNewItemButton from "./AddNewItemButton";
-import AddNewMeal from "./AddNewMeal";
+import AddMealCardButton from "../buttons/AddMealCardButton";
+import CreateMealCard from "./CreateMealCard";
 
 const defaultOpenState = {
   breakfast: false,
@@ -17,7 +17,7 @@ const defaultOpenState = {
   snack: false,
 };
 
-const MealType = () => {
+const MealCategoryCard = () => {
   const dbRef = ref(database);
 
   const {
@@ -64,6 +64,7 @@ const MealType = () => {
     setDateMeal,
   ]);
 
+  //move cancel add meal from open card to replace +
   return (
     <Center height={"auto"}>
       <Typography key={uuid()} variant="h3">{`${format(
@@ -84,7 +85,7 @@ const MealType = () => {
               {mealType}
             </Typography>
             {!addMealItemOpen[mealType as keyof typeof value] && (
-              <AddNewItemButton mealType={mealType} />
+              <AddMealCardButton mealType={mealType} />
             )}
           </div>
           <div
@@ -95,11 +96,11 @@ const MealType = () => {
             }}
           >
             {addMealItemOpen[mealType as keyof typeof value] && (
-              <AddNewMeal mealType={mealType} />
+              <CreateMealCard mealType={mealType} />
             )}
           </div>
           <div style={{ width: "100%" }}>
-            <MealItems mealType={mealType} />
+            <MealCard mealType={mealType} />
           </div>
         </div>
       ))}
@@ -107,4 +108,4 @@ const MealType = () => {
   );
 };
 
-export default MealType;
+export default MealCategoryCard;

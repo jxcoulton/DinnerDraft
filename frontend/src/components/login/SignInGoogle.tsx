@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { auth, Providers } from "../../config/firebase";
 import { Button, Typography } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
-import Center from "../utils/Center";
+import Center from "../../utils/Center";
 
 const SignInGoogle = () => {
   const navigate = useNavigate();

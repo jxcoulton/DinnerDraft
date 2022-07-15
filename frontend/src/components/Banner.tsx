@@ -1,5 +1,5 @@
 import React from "react";
-import Logout from "../auth/Logout";
+import LogoutButton from "./buttons/LogoutButton";
 import { Card, Typography } from "@mui/material";
 
 const Banner: React.FC = () => {
@@ -16,7 +16,7 @@ const Banner: React.FC = () => {
       }}
     >
       <Typography variant="h3">Dinner Draft</Typography>
-      <Logout />
+      <LogoutButton />
     </Card>
   );
 };

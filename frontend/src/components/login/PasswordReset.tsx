@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../config/firebase";
 import { Button, TextField, Typography } from "@mui/material";
-import Center from "../utils/Center";
+import Center from "../../utils/Center";
 
 const PasswordReset = () => {
   const navigate = useNavigate();

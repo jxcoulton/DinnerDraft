@@ -1,14 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import SignInGoogle from "../auth/SignInGoogle";
-import SignUpNewUser from "../auth/SignUpNewUser";
-import SignInExisting from "../auth/SignInExisting";
-import Center from "../utils/Center";
+import SignInGoogle from "../login/SignInGoogle";
+import SignUpNewUser from "../login/SignUpNewUser";
+import SignInExisting from "../login/SignInExisting";
+import Center from "../../utils/Center";
 import { Box, Tab, Tabs, Button } from "@mui/material";
 import TabContext from "@mui/lab/TabContext";
 import TabPanel from "@mui/lab/TabPanel";
 
-const Login = () => {
+const SignUpAndIn = () => {
   const navigate = useNavigate();
   const [value, setValue] = React.useState("1");
 
@@ -19,6 +19,8 @@ const Login = () => {
   function handleReset() {
     navigate("/reset");
   }
+
+  //add banner to login page
 
   return (
     <Center height={90}>
@@ -42,11 +44,9 @@ const Login = () => {
               />
             </Tabs>
           </Box>
-          {/* login */}
           <TabPanel value={"1"}>
             <SignInExisting />
           </TabPanel>
-          {/* register */}
           <TabPanel value={"2"}>
             <SignUpNewUser />
           </TabPanel>
@@ -60,4 +60,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUpAndIn;

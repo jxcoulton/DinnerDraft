@@ -3,7 +3,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField, Typography } from "@mui/material";
 import { auth } from "../../config/firebase";
-import Center from "../utils/Center";
+import Center from "../../utils/Center";
 
 const SignInExisting = () => {
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const SignInExisting = () => {
         name="email"
         value={email}
         onChange={handleChangeEmail}
-        sx={{margin: "15px"}}
+        sx={{ margin: "15px" }}
       />
       <TextField
         label="password"
@@ -45,7 +45,7 @@ const SignInExisting = () => {
         type="password"
         value={password}
         onChange={handleChangePassword}
-        sx={{marginBottom: "15px"}}
+        sx={{ marginBottom: "15px" }}
       />
       <Button
         size="large"

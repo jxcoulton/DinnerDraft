@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
-import MealState from "../interface/MealState";
-import { UserDataContext } from "../context/userData";
+import MealState from "../../interface/MealState";
+import { UserDataContext } from "../../context/userData";
 import { update, ref } from "firebase/database";
 import { database } from "../../config/firebase";
 import { format } from "date-fns";
@@ -13,7 +13,7 @@ type Props = {
   mealType: string;
 };
 
-const EditRecipeModal = ({ recipe, mealType }: Props) => {
+const EditRecipe = ({ recipe, mealType }: Props) => {
   const { databaseData, activeUser, startDate, trigger, setTrigger } =
     useContext(UserDataContext);
   const [editedRecipe, setEditedRecipe] = useState({
@@ -117,4 +117,4 @@ const EditRecipeModal = ({ recipe, mealType }: Props) => {
   );
 };
 
-export default EditRecipeModal;
+export default EditRecipe;

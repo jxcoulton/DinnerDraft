@@ -1,11 +1,11 @@
 import { useState, useContext } from "react";
 import { Modal } from "@mui/material";
-import RecipeModal from "./RecipeModal";
-import EditRecipeModal from "./EditRecipeModal";
+import ViewRecipe from "./ViewRecipe";
+import EditRecipe from "./EditRecipe";
 import { Box } from "@mui/system";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { UserDataContext } from "../context/userData";
+import { UserDataContext } from "../../context/userData";
 
 const style = {
   position: "absolute",
@@ -29,7 +29,7 @@ type Props = {
   mealType: string;
 };
 
-const ViewRecipeModal = ({ recipe, mealType }: Props) => {
+const RecipeModal = ({ recipe, mealType }: Props) => {
   const { modalOpen, setModalOpen } = useContext(UserDataContext);
   const [edit, setEdit] = useState(false);
 
@@ -37,6 +37,8 @@ const ViewRecipeModal = ({ recipe, mealType }: Props) => {
     setModalOpen(false);
     setEdit(false);
   }
+
+  //fix modal flash on change
 
   return (
     <Modal
@@ -52,12 +54,12 @@ const ViewRecipeModal = ({ recipe, mealType }: Props) => {
         </IconButton>
         {!edit ? (
           <>
-            <RecipeModal recipe={recipe} />
+            <ViewRecipe recipe={recipe} />
             <button onClick={() => setEdit(true)}>edit</button>
           </>
         ) : (
           <>
-            <EditRecipeModal recipe={recipe} mealType={mealType} />
+            <EditRecipe recipe={recipe} mealType={mealType} />
             <button onClick={() => setEdit(false)}>cancel changes</button>
           </>
         )}
@@ -66,4 +68,4 @@ const ViewRecipeModal = ({ recipe, mealType }: Props) => {
   );
 };
 
-export default ViewRecipeModal;
+export default RecipeModal;

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import MealState from "../interface/MealState";
-import { UserDataContext } from "../context/userData";
+import MealState from "../../interface/MealState";
+import { UserDataContext } from "../../context/userData";
 import { set, ref } from "firebase/database";
 import { database } from "../../config/firebase";
 import { format } from "date-fns";
@@ -12,7 +12,7 @@ type Props = {
   title: string;
 };
 
-const RemoveItemButton = ({ mealType, title }: Props) => {
+const DeleteMealButton = ({ mealType, title }: Props) => {
   const { activeUser, startDate, databaseData, trigger, setTrigger } =
     useContext(UserDataContext);
 
@@ -48,4 +48,4 @@ const RemoveItemButton = ({ mealType, title }: Props) => {
   );
 };
 
-export default RemoveItemButton;
+export default DeleteMealButton;
