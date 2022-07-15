@@ -12,13 +12,13 @@ const Login = () => {
   const navigate = useNavigate();
   const [value, setValue] = React.useState("1");
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  function handleChange(event: React.SyntheticEvent, newValue: string) {
     setValue(newValue);
-  };
+  }
 
-  const handleReset = () => {
+  function handleReset() {
     navigate("/reset");
-  };
+  }
 
   return (
     <Center height={90}>
@@ -30,9 +30,9 @@ const Login = () => {
           boxShadow={2}
           margin={3}
           paddingBottom={2}
-          sx={{backgroundColor: "white" }}
+          sx={{ backgroundColor: "white" }}
         >
-          <Box sx={{ borderBottom: 1, borderColor: "divider", width: "100%"}}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider", width: "100%" }}>
             <Tabs value={value} onChange={handleChange} variant="fullWidth">
               <Tab sx={{ px: { lg: 20, xs: 6 } }} label="Login" value={"1"} />
               <Tab

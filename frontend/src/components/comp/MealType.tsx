@@ -1,27 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Typography, Card, InputBase, IconButton } from "@mui/material";
+import { useEffect, useContext } from "react";
+import { UserDataContext } from "../context/userData";
 import Center from "../utils/Center";
-import OpenState from "../interface/OpenState";
-import MealState from "../interface/MealState";
-import InputValueState from "../interface/InputValueState";
-import { ref, get, child, update } from "firebase/database";
+import MealItems from "./MealItems";
+import { ref, get, child } from "firebase/database";
 import { database } from "../../config/firebase";
 import { format } from "date-fns";
-import MealItems from "./MealItems";
-import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from "@mui/icons-material/Close";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { Typography } from "@mui/material";
 import uuid from "react-uuid";
-import axios from "axios";
-
-type Props = {
-  startDate: Date;
-  activeUser: {
-    uid?: string | null;
-    email?: string | null;
-    displayName?: string | null;
-  };
-};
+import AddNewItemButton from "./AddNewItemButton";
+import AddNewMeal from "./AddNewMeal";
 
 const defaultOpenState = {
   breakfast: false,
@@ -30,26 +17,19 @@ const defaultOpenState = {
   snack: false,
 };
 
-const defaultMeal: MealState = {};
-
-const defaultValue = {
-  breakfast: "",
-  lunch: "",
-  dinner: "",
-  snack: "",
-};
-
-const meals = ["Breakfast", "Lunch", "Dinner", "Snack"];
-
-const MealType = ({ startDate, activeUser }: Props) => {
+const MealType = () => {
   const dbRef = ref(database);
-  const [open, setOpen] = useState<OpenState>(defaultOpenState);
-  const [value, setValue] = useState<InputValueState>(defaultValue);
-  const [dateMeal, setDateMeal] = useState<MealState>(defaultMeal);
-  const [databaseData, setDatabaseData] = useState<MealState>(defaultMeal);
-  const [trigger, setTrigger] = useState(false);
-  const backend = "https://dinner-draft-backend.vercel.app/recipe";
-  const localhost = "http://localhost:8080/recipe";
+
+  const {
+    activeUser,
+    startDate,
+    setDatabaseData,
+    value,
+    trigger,
+    addMealItemOpen,
+    setAddMealItemOpen,
+    setDateMeal,
+  } = useContext(UserDataContext);
 
   useEffect(() => {
     const getData = async () => {
@@ -64,95 +44,25 @@ const MealType = ({ startDate, activeUser }: Props) => {
             setDatabaseData(snapshot.val());
             setDateMeal(snapshot.val()); //sets the start of the meal to the existing meal
           } else {
-            setDatabaseData(defaultMeal);
-            setDateMeal(defaultMeal);
+            setDatabaseData({});
+            setDateMeal({});
           }
         })
         .catch((error) => {
           console.error(error);
         });
     };
-    setOpen(defaultOpenState);
+    setAddMealItemOpen(defaultOpenState);
     getData();
-  }, [activeUser.uid, dbRef, startDate, trigger]);
-
-  const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    setValue({ ...value, [e.target.name]: e.target.value });
-  };
-
-  const handleSetMeal = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const eTarget = e.target as HTMLInputElement;
-    let name = eTarget.name;
-
-    if (value[name as keyof InputValueState]?.includes("http")) {
-      await axios
-        .post(backend, {
-          url: value[name as keyof InputValueState],
-        })
-        .then((res) => {
-          const data = res.data.recipe;
-          data.ingredients = data.ingredients?.map((i: string) =>
-            i.replace(/\n/g, "").replace(/\s+/g, " ").trim()
-          );
-          data.directions = data.directions?.map((i: string) =>
-            i.replace(/\n/g, "").replace(/\s+/g, " ").trim()
-          );
-          setDateMeal({
-            ...dateMeal,
-            [name]: !dateMeal[name as keyof MealState]
-              ? [data]
-              : [...(dateMeal[name as keyof MealState] as Array<any>), data],
-          });
-        })
-        .catch((err) => console.log(err)); //set up toast
-    } else if (value[name as keyof InputValueState]) {
-      setDateMeal({
-        ...dateMeal,
-        [name]: !dateMeal[name as keyof MealState]
-          ? [{ title: value[name as keyof InputValueState] }]
-          : [
-              ...(dateMeal[name as keyof MealState] as Array<any>),
-              { title: value[name as keyof InputValueState] },
-            ],
-      });
-    }
-    setDateMeal((state) => {
-      update(
-        ref(
-          database,
-          `users/${activeUser.uid}/meals/${format(startDate, "PPP")}`
-        ),
-        {
-          ...state,
-        }
-      )
-        .then(() => {})
-        .catch((error) => {
-          console.log(error);
-        });
-      return state;
-    });
-
-    setValue(defaultValue);
-    setTrigger(!trigger);
-    setOpen(defaultOpenState);
-  };
-
-  const handleOpen = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const eTarget = e.target as HTMLInputElement;
-
-    setOpen({
-      [eTarget.name]: true,
-    });
-  };
-
-  const handleClose = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setOpen(defaultOpenState);
-  };
+  }, [
+    activeUser.uid,
+    dbRef,
+    startDate,
+    trigger,
+    setDatabaseData,
+    setAddMealItemOpen,
+    setDateMeal,
+  ]);
 
   return (
     <Center height={"auto"}>
@@ -160,7 +70,7 @@ const MealType = ({ startDate, activeUser }: Props) => {
         startDate,
         "eee, LLL d"
       )}`}</Typography>
-      {meals.map((item) => (
+      {["Breakfast", "Lunch", "Dinner", "Snack"].map((mealType) => (
         <div key={uuid()} style={{ width: "100%" }}>
           <div
             style={{
@@ -171,12 +81,10 @@ const MealType = ({ startDate, activeUser }: Props) => {
             }}
           >
             <Typography variant="h5" paddingX={"5%"} paddingY={"3%"}>
-              {item}
+              {mealType}
             </Typography>
-            {!open[item as keyof typeof value] && (
-              <IconButton name={item} onClick={handleOpen}>
-                <AddCircleIcon sx={{ pointerEvents: "none" }} />
-              </IconButton>
+            {!addMealItemOpen[mealType as keyof typeof value] && (
+              <AddNewItemButton mealType={mealType} />
             )}
           </div>
           <div
@@ -186,50 +94,12 @@ const MealType = ({ startDate, activeUser }: Props) => {
               width: "100%",
             }}
           >
-            {open[item as keyof typeof value] && (
-              <Card
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  width: "100%",
-                  borderRadius: "0px",
-                  backgroundColor: "#e9e6e6",
-                  border: "solid 1px dark grey",
-                }}
-              >
-                <form
-                  name={item}
-                  onSubmit={handleSetMeal}
-                  style={{ width: "100%", padding: "2% 0", paddingLeft: "10%" }}
-                >
-                  <InputBase
-                    autoFocus
-                    name={item}
-                    value={value[item as keyof typeof value]}
-                    onChange={handleChangeValue}
-                    placeholder={`Add custom ${item} item or recipe URL`}
-                    sx={{ width: "80%" }}
-                  />
-                  <IconButton type="submit" color="primary">
-                    <AddIcon />
-                  </IconButton>
-                </form>
-                <IconButton onClick={handleClose}>
-                  <CloseIcon />
-                </IconButton>
-              </Card>
+            {addMealItemOpen[mealType as keyof typeof value] && (
+              <AddNewMeal mealType={mealType} />
             )}
           </div>
           <div style={{ width: "100%" }}>
-            <MealItems
-              item={item}
-              databaseData={databaseData}
-              activeUser={activeUser}
-              startDate={startDate}
-              setTrigger={setTrigger}
-              trigger={trigger}
-              value={value}
-            />
+            <MealItems mealType={mealType} />
           </div>
         </div>
       ))}

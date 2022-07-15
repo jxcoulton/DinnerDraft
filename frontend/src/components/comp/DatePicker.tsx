@@ -1,34 +1,24 @@
-import { useState } from "react";
-import { format, eachDayOfInterval, startOfWeek, endOfWeek } from "date-fns";
+import { useContext } from "react";
+import { UserDataContext } from "../context/userData";
 import MealType from "./MealType";
-import { Tabs, Tab, Box, Typography } from "@mui/material";
+import { format, eachDayOfInterval, startOfWeek, endOfWeek } from "date-fns";
+import { Box, Button, Typography } from "@mui/material";
 import uuid from "react-uuid";
 
-type Props = {
-  activeUser: {
-    uid?: string | null;
-    email?: string | null;
-    displayName?: string | null;
-  };
-};
+const DatePicker: React.FC = () => {
+  const { startDate, setStartDate } = useContext(UserDataContext);
 
-const DatePicker = ({ activeUser }: Props) => {
-  const today = new Date();
-  const [startDate, setStartDate] = useState(today);
-  const [value, setValue] = useState(7);
-
-  const handleChange = (event: any, newValue: number) => {
-    setValue(newValue);
-  };
-
-  const handleChangeDay = (day: Date, e: any) => {
+  function handleChangeDay(day: Date, e: any) {
     setStartDate(day);
-  };
+  }
 
   let dateList = eachDayOfInterval({
-    start: startOfWeek(today),
-    end: endOfWeek(today),
+    start: startOfWeek(new Date()),
+    end: endOfWeek(new Date()),
   });
+
+  //edit aria-current for current selected date
+  //change some state names to make more sense
 
   return (
     <div style={{ width: "90vw", padding: "5vh 0" }}>
@@ -36,39 +26,29 @@ const DatePicker = ({ activeUser }: Props) => {
         style={{
           display: "flex",
           justifyContent: "space-around",
+          padding: "5%",
         }}
       >
         {dateList.map((day) => {
           return (
-            <Box
-              style={{
-                backgroundColor: "lightblue",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "flex-end",
-                borderRadius: "50%/30%",
-                border: "solid grey 1px",
-                minHeight: "4rem",
-                marginBottom: '5vh'
-              }}
+            <Button
+              className="date-picker__button"
+              variant="contained"
+              sx={{ margin: "5px" }}
               key={uuid()}
+              aria-current={
+                day.setHours(0, 0, 0, 0) === startDate.setHours(0, 0, 0, 0)
+                  ? "true"
+                  : "false"
+              }
+              onClick={(e) => handleChangeDay(day, e)}
             >
-              <Typography>{`${format(day, "eee")}`}</Typography>
-              <button
-                key={uuid()}
-                onClick={(e) => handleChangeDay(day, e)}
-                style={{
-                  borderRadius: "100px",
-                  minWidth: "2.5rem",
-                  minHeight: "2.5rem",
-                }}
-              >{`${format(day, "d")}`}</button>
-            </Box>
+              {`${format(day, "eee d")}`}
+            </Button>
           );
         })}
       </div>
-      <MealType startDate={startDate} activeUser={activeUser} />
+      <MealType />
     </div>
   );
 };

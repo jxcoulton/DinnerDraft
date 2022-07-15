@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AuthChecker from "./components/auth/AuthChecker";
+import { UserDataProvider } from "./components/context/userData";
 import Login from "./components/comp/Login";
 import Home from "./components/comp/Home";
 import ForgotPassword from "./components/comp/ForgotPassword";
@@ -15,7 +16,9 @@ const App = () => {
             path="/"
             element={
               <AuthChecker>
-                <Home />
+                <UserDataProvider>
+                  <Home />
+                </UserDataProvider>
               </AuthChecker>
             }
           />

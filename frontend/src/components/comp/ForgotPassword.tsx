@@ -1,16 +1,16 @@
 import { useEffect } from "react";
-import PasswordReset from "../auth/PasswordReset";
 import { useNavigate } from "react-router-dom";
-import { Button, Box } from "@mui/material";
+import PasswordReset from "../auth/PasswordReset";
 import Center from "../utils/Center";
+import { Button, Box } from "@mui/material";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
   useEffect(() => {}, []);
 
-  const returnToLogin = () => {
+  function returnToLogin() {
     navigate("/login");
-  };
+  }
 
   return (
     <Center height={90}>
@@ -21,7 +21,7 @@ const ForgotPassword = () => {
         boxShadow={2}
         margin={3}
         padding={2}
-        sx={{backgroundColor: "white" }}
+        sx={{ backgroundColor: "white" }}
       >
         <PasswordReset />
         <Button size="large" variant="contained" onClick={returnToLogin}>

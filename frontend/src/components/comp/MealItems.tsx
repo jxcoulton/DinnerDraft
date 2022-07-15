@@ -1,61 +1,18 @@
-import { Card, Typography, IconButton } from "@mui/material";
-import { set, ref } from "firebase/database";
-import { database } from "../../config/firebase";
-import { format } from "date-fns";
-import React from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import uuid from "react-uuid";
+import { useContext } from "react";
 import EditMealRecipe from "./EditMealRecipe";
 import MealState from "../interface/MealState";
-import InputValueState from "../interface/InputValueState";
+import { UserDataContext } from "../context/userData";
+import { Card, Typography } from "@mui/material";
+import uuid from "react-uuid";
+import RemoveItemButton from "./RemoveItemButton";
+import AddFavorite from "./AddFavorite";
 
 type Props = {
-  item: string;
-  databaseData: MealState;
-  startDate: Date;
-  activeUser: {
-    uid?: string | null;
-    email?: string | null;
-    displayName?: string | null;
-  };
-  setTrigger: React.Dispatch<React.SetStateAction<boolean>>;
-  trigger: boolean;
-  value: InputValueState;
+  mealType: string;
 };
 
-const MealItems = ({
-  item,
-  databaseData,
-  startDate,
-  activeUser,
-  setTrigger,
-  trigger,
-  value,
-}: Props) => {
-  const handleDelete = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const eTarget = e.target as HTMLInputElement;
-    const newMeal = databaseData[item as keyof MealState];
-    const valueIndex =
-      databaseData[item as keyof MealState]?.findIndex(
-        (s: any) => s.title === eTarget.value
-      ) || 0;
-
-    if (valueIndex === 0 || valueIndex > 0) {
-      newMeal?.splice(valueIndex, 1);
-    }
-
-    set(
-      ref(
-        database,
-        `users/${activeUser.uid}/meals/${format(startDate, "PPP")}/${item}`
-      ),
-      {
-        ...newMeal,
-      }
-    );
-    setTrigger(!trigger);
-  };
+const MealItems = ({ mealType }: Props) => {
+  const { databaseData } = useContext(UserDataContext);
 
   return (
     <div
@@ -66,7 +23,7 @@ const MealItems = ({
         alignItems: "center",
       }}
     >
-      {databaseData[item as keyof MealState]?.map((each: any) => (
+      {databaseData[mealType as keyof MealState]?.map((eachRecipe: any) => (
         <Card
           key={uuid()}
           sx={{
@@ -74,23 +31,15 @@ const MealItems = ({
             justifyContent: "space-between",
             width: "100%",
             borderRadius: "0px",
+            alignItems: "center",
           }}
         >
+          <AddFavorite/>
           <Typography variant="h6" paddingX={"10%"} paddingY={"2%"}>
-            {each.title}
+            {eachRecipe.title}
           </Typography>
-          <EditMealRecipe
-            startDate={startDate}
-            activeUser={activeUser}
-            recipe={each}
-            item={item}
-            databaseData={databaseData}
-            trigger={trigger}
-            setTrigger={setTrigger}
-          />
-          <button value={each.title} onClick={handleDelete}>
-            X
-          </button>
+          <EditMealRecipe recipe={eachRecipe} mealType={mealType} />
+          <RemoveItemButton title={eachRecipe.title} mealType={mealType} />
         </Card>
       ))}
     </div>
