@@ -2,6 +2,8 @@ import MainState from "./MainState";
 import MealState from "./MealState";
 import InputValueState from "./InputValueState";
 import OpenState from "./OpenState";
+import RecipeState from "./RecipeState";
+import React from "react";
 
 export default interface IContextState {
   activeUser: MainState;
@@ -20,4 +22,6 @@ export default interface IContextState {
   setAddMealItemOpen: React.Dispatch<React.SetStateAction<OpenState>>;
   dateMeal: MealState;
   setDateMeal: React.Dispatch<React.SetStateAction<MealState>>;
+  currentRecipe: RecipeState;
+  setCurrentRecipe: React.Dispatch<React.SetStateAction<RecipeState>>;
 }

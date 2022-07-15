@@ -38,6 +38,8 @@ const defaultState = {
   setAddMealItemOpen: () => {},
   dateMeal: {},
   setDateMeal: () => {},
+  currentRecipe: {},
+  setCurrentRecipe: () => {},
 };
 
 export const UserDataContext = createContext<IContextState>(defaultState);
@@ -55,6 +57,9 @@ export const UserDataProvider: React.FC = ({ children }) => {
     defaultState.addMealItemOpen
   );
   const [dateMeal, setDateMeal] = useState<MealState>({});
+  const [currentRecipe, setCurrentRecipe] = useState(
+    defaultState.currentRecipe
+  );
 
   useEffect(() => {
     const unsubscribeAuthChange = onAuthStateChanged(auth, () => {
@@ -93,6 +98,8 @@ export const UserDataProvider: React.FC = ({ children }) => {
         setAddMealItemOpen,
         dateMeal,
         setDateMeal,
+        currentRecipe,
+        setCurrentRecipe,
       }}
     >
       {children}

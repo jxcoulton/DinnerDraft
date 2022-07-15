@@ -7,23 +7,27 @@ import { format } from "date-fns";
 import { TextField } from "@mui/material";
 
 type Props = {
-  recipe: {
-    [key: string]: any;
-  };
   mealType: string;
 };
 
-const EditRecipe = ({ recipe, mealType }: Props) => {
-  const { databaseData, activeUser, startDate, trigger, setTrigger } =
-    useContext(UserDataContext);
+const EditRecipe = ({ mealType }: Props) => {
+  const {
+    databaseData,
+    activeUser,
+    startDate,
+    trigger,
+    setTrigger,
+    currentRecipe,
+    setModalOpen,
+  } = useContext(UserDataContext);
   const [editedRecipe, setEditedRecipe] = useState({
-    title: recipe.title,
-    url: recipe.url || "",
-    ingredients: recipe.ingredients
-      ? recipe.ingredients.map((item: any) => `${item} \n`).join("")
+    title: currentRecipe.title,
+    url: currentRecipe.url || "",
+    ingredients: currentRecipe.ingredients
+      ? currentRecipe.ingredients.map((item: any) => `${item} \n`).join("")
       : "",
-    directions: recipe.directions
-      ? recipe.directions.map((item: any) => `${item} \n`).join("")
+    directions: currentRecipe.directions
+      ? currentRecipe.directions.map((item: any) => `${item} \n`).join("")
       : "",
   });
 
@@ -40,7 +44,7 @@ const EditRecipe = ({ recipe, mealType }: Props) => {
 
     setEditedRecipe({
       ...editedRecipe,
-      url: recipe.url || "",
+      url: currentRecipe.url || "",
       [key]: eTarget.value,
     });
   }
@@ -50,7 +54,7 @@ const EditRecipe = ({ recipe, mealType }: Props) => {
 
     const valueIndex =
       databaseData[mealType as keyof MealState]?.findIndex(
-        (s: any) => s.title === recipe.title
+        (s: any) => s.title === currentRecipe.title
       ) || 0;
 
     setEditedRecipe(() => {
@@ -69,13 +73,14 @@ const EditRecipe = ({ recipe, mealType }: Props) => {
         }
       )
         .then(() => {
-          setTrigger(!trigger); //updating modal set to loading??
+          setModalOpen(false); //updating modal set to loading??
         })
         .catch((error) => {
           console.log(error);
         });
       return editedRecipe;
     });
+    setTrigger(!trigger);
     //get recipe from database to display
   }
 
@@ -89,9 +94,9 @@ const EditRecipe = ({ recipe, mealType }: Props) => {
         onChange={handleChangeRecipe}
       />
 
-      {recipe.url && (
-        <a href={recipe.url} target="_blank" rel="noreferrer">
-          {new URL(recipe.url).hostname.replace("www.", "")}
+      {currentRecipe.url && (
+        <a href={`${currentRecipe.url}`} target="_blank" rel="noreferrer">
+          {new URL(currentRecipe.url).hostname.replace("www.", "")}
         </a>
       )}
 

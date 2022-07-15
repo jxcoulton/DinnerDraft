@@ -1,22 +1,20 @@
 import { Typography } from "@mui/material";
+import { useContext } from "react";
 import uuid from "react-uuid";
+import { UserDataContext } from "../../context/userData";
 
-type Props = {
-  recipe: {
-    [key: string]: any;
-  };
-};
+const ViewRecipe = () => {
+  const { currentRecipe } = useContext(UserDataContext);
 
-const ViewRecipe = ({ recipe }: Props) => {
   return (
     <>
       <Typography id="keep-mounted-modal-title" variant="h6" component="h2">
-        {recipe.title}
+        {currentRecipe.title}
       </Typography>
 
-      {recipe.url && (
-        <a href={recipe.url} target="_blank" rel="noreferrer">
-          {new URL(recipe.url).hostname.replace("www.", "")}
+      {currentRecipe.url && (
+        <a href={`${currentRecipe.url}`} target="_blank" rel="noreferrer">
+          {new URL(currentRecipe.url).hostname.replace("www.", "")}
         </a>
       )}
       <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
@@ -24,7 +22,7 @@ const ViewRecipe = ({ recipe }: Props) => {
       </Typography>
 
       <ul>
-        {recipe.ingredients?.map((item: any) => (
+        {currentRecipe.ingredients?.map((item: any) => (
           <li key={uuid()}>{item}</li>
         ))}
       </ul>
@@ -34,7 +32,7 @@ const ViewRecipe = ({ recipe }: Props) => {
       </Typography>
 
       <ul>
-        {recipe.directions?.map((item: any) => (
+        {currentRecipe.directions?.map((item: any) => (
           <li key={uuid()}>{item}</li>
         ))}
       </ul>

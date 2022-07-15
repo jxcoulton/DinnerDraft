@@ -12,9 +12,10 @@ type Props = {
 };
 
 const EditMealButton = ({ recipe, mealType }: Props) => {
-  const { setModalOpen } = useContext(UserDataContext);
+  const { setModalOpen, setCurrentRecipe } = useContext(UserDataContext);
 
   function handleOpen() {
+    setCurrentRecipe(recipe);
     setModalOpen(true);
   }
 
@@ -23,7 +24,7 @@ const EditMealButton = ({ recipe, mealType }: Props) => {
       <IconButton onClick={handleOpen}>
         <EditIcon />
       </IconButton>
-      <RecipeModal recipe={recipe} mealType={mealType} />
+      <RecipeModal mealType={mealType} />
     </div>
   );
 };

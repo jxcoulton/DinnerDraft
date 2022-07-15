@@ -23,13 +23,10 @@ const style = {
 };
 
 type Props = {
-  recipe: {
-    [key: string]: any;
-  };
   mealType: string;
 };
 
-const RecipeModal = ({ recipe, mealType }: Props) => {
+const RecipeModal = ({ mealType }: Props) => {
   const { modalOpen, setModalOpen } = useContext(UserDataContext);
   const [edit, setEdit] = useState(false);
 
@@ -54,12 +51,12 @@ const RecipeModal = ({ recipe, mealType }: Props) => {
         </IconButton>
         {!edit ? (
           <>
-            <ViewRecipe recipe={recipe} />
+            <ViewRecipe />
             <button onClick={() => setEdit(true)}>edit</button>
           </>
         ) : (
           <>
-            <EditRecipe recipe={recipe} mealType={mealType} />
+            <EditRecipe mealType={mealType} />
             <button onClick={() => setEdit(false)}>cancel changes</button>
           </>
         )}
