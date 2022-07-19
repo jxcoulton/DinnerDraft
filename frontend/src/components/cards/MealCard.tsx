@@ -34,7 +34,7 @@ const MealCard = ({ mealType }: Props) => {
             alignItems: "center",
           }}
         >
-          <FavoriteMealButton />
+          <FavoriteMealButton recipe={eachRecipe} mealType={mealType} />
           <Typography variant="h6" paddingX={"10%"} paddingY={"2%"}>
             {eachRecipe.title}
           </Typography>

@@ -8,7 +8,7 @@ type Props = {
   recipe: {
     [key: string]: any;
   };
-  mealType: string;
+  mealType?: string;
 };
 
 const EditMealButton = ({ recipe, mealType }: Props) => {

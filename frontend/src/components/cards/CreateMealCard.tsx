@@ -8,10 +8,10 @@ import { ref, update } from "firebase/database";
 import { database } from "../../config/firebase";
 import { format } from "date-fns";
 import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from "@mui/icons-material/Close";
+import uuid from "react-uuid";
 
 type Props = {
-  mealType: string;
+  mealType?: string;
 };
 
 const defaultOpenState = {
@@ -44,14 +44,28 @@ const CreateMealCard = ({ mealType }: Props) => {
     setTrigger,
     setAddMealItemOpen,
     dateMeal,
-    setDateMeal,
+    allData,
   } = useContext(UserDataContext);
-
   const backend = "https://dinner-draft-backend.vercel.app/recipe";
+  let favorites = Object.values(allData);
+
+  function autoComplete(input: string) {
+    return favorites?.filter((e: any) =>
+      e.title.toLowerCase().includes(input.toLowerCase())
+    );
+  }
 
   function handleChangeValue(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setValue({ ...value, [e.target.name]: e.target.value });
+  }
+
+  function handleSetValue(e: any) {
+    e.preventDefault();
+    setValue({
+      ...value,
+      [e.target.getAttribute("data-name")]: e.target.innerHTML,
+    });
   }
 
   async function handleSetMeal(e: React.FormEvent) {
@@ -61,6 +75,7 @@ const CreateMealCard = ({ mealType }: Props) => {
       (eTarget.name as keyof InputValueState) ||
       (eTarget.name as keyof MealState);
     let setMeal: MealState = {};
+    let found = autoComplete(`${value[mealName]}`);
 
     if (value[mealName]?.includes("http")) {
       await axios
@@ -71,6 +86,7 @@ const CreateMealCard = ({ mealType }: Props) => {
           const recipe = res.data.recipe;
           recipe.ingredients = mapListToDisplay(recipe.ingredients);
           recipe.directions = mapListToDisplay(recipe.directions);
+          recipe.favorite = mealType ? false : true;
           setMeal = {
             [eTarget.name]: [
               ...(dateMeal[mealName] ? (dateMeal[mealName] as Array<any>) : []),
@@ -80,15 +96,24 @@ const CreateMealCard = ({ mealType }: Props) => {
         })
         .catch((err) => console.log(err)); //set up toast
     } else if (value[mealName]) {
-      setMeal = {
-        [eTarget.name]: [
-          ...(dateMeal[mealName] ? (dateMeal[mealName] as Array<any>) : []),
-          { title: value[mealName] },
-        ],
-      };
+      if (mealType && found.length > 0 && found[0].title === value[mealName]) {
+        setMeal = {
+          [eTarget.name]: [
+            ...(dateMeal[mealName] ? (dateMeal[mealName] as Array<any>) : []),
+            found[0],
+          ],
+        };
+      } else {
+        setMeal = {
+          [eTarget.name]: [
+            ...(dateMeal[mealName] ? (dateMeal[mealName] as Array<any>) : []),
+            { title: value[mealName], favorite: mealType ? false : true },
+          ],
+        };
+      }
     }
 
-    setDateMeal(() => {
+    if (mealType) {
       update(
         ref(
           database,
@@ -103,9 +128,17 @@ const CreateMealCard = ({ mealType }: Props) => {
         .catch((error) => {
           console.log(error);
         });
-      return setMeal;
-    });
-
+    } else {
+      update(ref(database, `users/${activeUser.uid}/favorites`), {
+        [Object.values(setMeal)[0][0].title]: {
+          ...Object.values(setMeal)[0][0],
+        },
+      })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    }
     setValue(defaultValueState);
     setTrigger(!trigger);
     setAddMealItemOpen(defaultOpenState);
@@ -127,23 +160,52 @@ const CreateMealCard = ({ mealType }: Props) => {
       <form
         name={mealType}
         onSubmit={handleSetMeal}
-        style={{ width: "100%", padding: "2% 0", paddingLeft: "10%" }}
+        autoComplete="off"
+        style={{ width: "100%" }}
       >
         <InputBase
           autoFocus
           name={mealType}
           value={value[mealType as keyof typeof value]}
           onChange={handleChangeValue}
-          placeholder={`Add custom ${mealType} item or recipe URL`}
-          sx={{ width: "80%" }}
+          placeholder={`Add custom recipe or recipe URL`}
+          sx={{ width: "80%", padding: "15px 10%" }}
         />
+        {value[mealType as keyof typeof value] && (
+          <ul
+            style={{
+              position: "absolute",
+              width: "400px",
+              margin: "0",
+              padding: "0",
+              zIndex: "2",
+            }}
+          >
+            {autoComplete(`${value[mealType as keyof typeof value]}`)?.map(
+              (each: any) => (
+                <div
+                  key={uuid()}
+                  onClick={handleSetValue}
+                  data-name={mealType}
+                  data-value={each}
+                  style={{
+                    backgroundColor: "#e9e6e6",
+                    padding: "15px 20%",
+                    width: "auto",
+                    border: "solid 0.5px lightgrey",
+                    borderBottom: "none",
+                  }}
+                >
+                  {each.title}
+                </div>
+              )
+            )}
+          </ul>
+        )}
         <IconButton type="submit" color="primary">
           <AddIcon />
         </IconButton>
       </form>
-      <IconButton onClick={() => setAddMealItemOpen(defaultOpenState)}>
-        <CloseIcon />
-      </IconButton>
     </Card>
   );
 };

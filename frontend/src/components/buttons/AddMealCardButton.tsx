@@ -4,7 +4,7 @@ import { IconButton } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 type Props = {
-  mealType: string;
+  mealType?: string;
 };
 
 const AddMealCardButton = ({ mealType }: Props) => {

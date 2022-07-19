@@ -7,7 +7,7 @@ import { format } from "date-fns";
 import { TextField } from "@mui/material";
 
 type Props = {
-  mealType: string;
+  mealType?: string;
 };
 
 const EditRecipe = ({ mealType }: Props) => {
@@ -19,6 +19,7 @@ const EditRecipe = ({ mealType }: Props) => {
     setTrigger,
     currentRecipe,
     setModalOpen,
+    allData,
   } = useContext(UserDataContext);
   const [editedRecipe, setEditedRecipe] = useState({
     title: currentRecipe.title,
@@ -57,7 +58,7 @@ const EditRecipe = ({ mealType }: Props) => {
         (s: any) => s.title === currentRecipe.title
       ) || 0;
 
-    setEditedRecipe(() => {
+    if (mealType) {
       update(
         ref(
           database,
@@ -78,8 +79,25 @@ const EditRecipe = ({ mealType }: Props) => {
         .catch((error) => {
           console.log(error);
         });
-      return editedRecipe;
-    });
+    } else {
+      update(
+        ref(
+          database,
+          `users/${activeUser.uid}/favorites/${editedRecipe.title}`
+        ),
+        {
+          ...editedRecipe,
+          ingredients: [...convertArray(editedRecipe.ingredients)],
+          directions: [...convertArray(editedRecipe.directions)],
+        }
+      )
+        .then(() => {
+          setModalOpen(false); //updating modal set to loading??
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
     setTrigger(!trigger);
     //get recipe from database to display
   }

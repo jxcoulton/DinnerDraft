@@ -24,4 +24,6 @@ export default interface IContextState {
   setDateMeal: React.Dispatch<React.SetStateAction<MealState>>;
   currentRecipe: RecipeState;
   setCurrentRecipe: React.Dispatch<React.SetStateAction<RecipeState>>;
+  allData: RecipeState;
+  setAllData: React.Dispatch<React.SetStateAction<RecipeState>>;
 }

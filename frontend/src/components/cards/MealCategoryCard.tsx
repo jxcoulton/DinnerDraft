@@ -5,10 +5,11 @@ import MealCard from "./MealCard";
 import { ref, get, child } from "firebase/database";
 import { database } from "../../config/firebase";
 import { format } from "date-fns";
-import { Typography } from "@mui/material";
+import { Typography, IconButton } from "@mui/material";
 import uuid from "react-uuid";
 import AddMealCardButton from "../buttons/AddMealCardButton";
 import CreateMealCard from "./CreateMealCard";
+import CloseIcon from "@mui/icons-material/Close";
 
 const defaultOpenState = {
   breakfast: false,
@@ -84,8 +85,12 @@ const MealCategoryCard = () => {
             <Typography variant="h5" paddingX={"5%"} paddingY={"3%"}>
               {mealType}
             </Typography>
-            {!addMealItemOpen[mealType as keyof typeof value] && (
+            {!addMealItemOpen[mealType as keyof typeof value] ? (
               <AddMealCardButton mealType={mealType} />
+            ) : (
+              <IconButton onClick={() => setAddMealItemOpen(defaultOpenState)}>
+                <CloseIcon />
+              </IconButton>
             )}
           </div>
           <div

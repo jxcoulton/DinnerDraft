@@ -23,7 +23,7 @@ const style = {
 };
 
 type Props = {
-  mealType: string;
+  mealType?: string;
 };
 
 const RecipeModal = ({ mealType }: Props) => {

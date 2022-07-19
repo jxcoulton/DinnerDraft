@@ -6,6 +6,9 @@ import IContextState from "../interface/ContextState";
 import OpenState from "../interface/OpenState";
 import { auth } from "../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { ref, get, child } from "firebase/database";
+import { database } from "../config/firebase";
+import RecipeState from "../interface/RecipeState";
 
 const defaultState = {
   activeUser: {
@@ -40,11 +43,15 @@ const defaultState = {
   setDateMeal: () => {},
   currentRecipe: {},
   setCurrentRecipe: () => {},
+  allData: {},
+  setAllData: () => {},
 };
 
 export const UserDataContext = createContext<IContextState>(defaultState);
 
 export const UserDataProvider: React.FC = ({ children }) => {
+  const dbRef = ref(database);
+
   const [activeUser, setActiveUser] = useState<MainState>(
     defaultState.activeUser
   );
@@ -60,6 +67,7 @@ export const UserDataProvider: React.FC = ({ children }) => {
   const [currentRecipe, setCurrentRecipe] = useState(
     defaultState.currentRecipe
   );
+  const [allData, setAllData] = useState<RecipeState>({});
 
   useEffect(() => {
     const unsubscribeAuthChange = onAuthStateChanged(auth, () => {
@@ -78,6 +86,21 @@ export const UserDataProvider: React.FC = ({ children }) => {
       unsubscribeAuthChange();
     };
   }, [activeUser.uid, setActiveUser]);
+
+  useEffect(() => {
+    const getData = async () => {
+      await get(child(dbRef, `users/${activeUser.uid}/favorites`))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            setAllData(snapshot.val());
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
+    getData();
+  }, [activeUser.uid, dbRef, setAllData, trigger]);
 
   return (
     <UserDataContext.Provider
@@ -100,6 +123,8 @@ export const UserDataProvider: React.FC = ({ children }) => {
         setDateMeal,
         currentRecipe,
         setCurrentRecipe,
+        allData,
+        setAllData,
       }}
     >
       {children}
