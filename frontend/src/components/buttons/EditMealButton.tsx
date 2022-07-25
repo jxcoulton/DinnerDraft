@@ -1,8 +1,8 @@
 import { useContext } from "react";
+import { UserDataContext } from "../../context/userData";
+import RecipeModal from "../modal/RecipeModal";
 import { IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import RecipeModal from "../modal/RecipeModal";
-import { UserDataContext } from "../../context/userData";
 
 type Props = {
   recipe: {
@@ -11,9 +11,10 @@ type Props = {
   mealType?: string;
 };
 
-const EditMealButton = ({ recipe, mealType }: Props) => {
+const EditMealButton: React.FC<Props> = ({ recipe, mealType }: Props) => {
   const { setModalOpen, setCurrentRecipe } = useContext(UserDataContext);
 
+  //open modal and set the selected recipe to display
   function handleOpen() {
     setCurrentRecipe(recipe);
     setModalOpen(true);

@@ -1,16 +1,15 @@
-import { UserDataContext } from "../../context/userData";
-import { Card, Typography } from "@mui/material";
 import { useContext } from "react";
-import uuid from "react-uuid";
+import { UserDataContext } from "../../context/userData";
 import FavoriteMealButton from "../buttons/FavoriteMealButton";
 import EditMealButton from "../buttons/EditMealButton";
-import AddMealCardButton from "../buttons/AddMealCardButton";
 import CreateMealCard from "../cards/CreateMealCard";
+import { Card, Typography } from "@mui/material";
+import uuid from "react-uuid";
 
 function Favorites() {
-  const { allData } = useContext(UserDataContext);
+  const { userFavorites } = useContext(UserDataContext);
 
-  let favorites = Object.values(allData);
+  let favorites = Object.values(userFavorites);
 
   return (
     <div

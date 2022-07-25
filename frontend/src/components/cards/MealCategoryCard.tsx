@@ -1,15 +1,15 @@
 import { useEffect, useContext } from "react";
 import { UserDataContext } from "../../context/userData";
+import AddMealCardButton from "../buttons/AddMealCardButton";
+import CreateMealCard from "./CreateMealCard";
 import Center from "../../utils/Center";
 import MealCard from "./MealCard";
 import { ref, get, child } from "firebase/database";
 import { database } from "../../config/firebase";
 import { format } from "date-fns";
 import { Typography, IconButton } from "@mui/material";
-import uuid from "react-uuid";
-import AddMealCardButton from "../buttons/AddMealCardButton";
-import CreateMealCard from "./CreateMealCard";
 import CloseIcon from "@mui/icons-material/Close";
+import uuid from "react-uuid";
 
 const defaultOpenState = {
   breakfast: false,
@@ -29,24 +29,16 @@ const MealCategoryCard = () => {
     trigger,
     addMealItemOpen,
     setAddMealItemOpen,
-    setDateMeal,
   } = useContext(UserDataContext);
 
   useEffect(() => {
     const getData = async () => {
-      await get(
-        child(
-          dbRef,
-          `users/${activeUser.uid}/meals/${format(startDate, "PPP")}`
-        )
-      )
+      await get(child(dbRef, `users/${activeUser.uid}/meals/`))
         .then((snapshot) => {
           if (snapshot.exists()) {
             setDatabaseData(snapshot.val());
-            setDateMeal(snapshot.val()); //sets the start of the meal to the existing meal
           } else {
             setDatabaseData({});
-            setDateMeal({});
           }
         })
         .catch((error) => {
@@ -62,17 +54,15 @@ const MealCategoryCard = () => {
     trigger,
     setDatabaseData,
     setAddMealItemOpen,
-    setDateMeal,
   ]);
 
-  //move cancel add meal from open card to replace +
   return (
     <Center height={"auto"}>
       <Typography key={uuid()} variant="h3">{`${format(
         startDate,
         "eee, LLL d"
       )}`}</Typography>
-      {["Breakfast", "Lunch", "Dinner", "Snack"].map((mealType) => (
+      {["breakfast", "lunch", "dinner", "snack"].map((mealType) => (
         <div key={uuid()} style={{ width: "100%" }}>
           <div
             style={{

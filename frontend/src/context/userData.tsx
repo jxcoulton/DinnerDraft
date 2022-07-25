@@ -1,6 +1,5 @@
 import React, { useState, createContext, useEffect } from "react";
 import MainState from "../interface/MainState";
-import MealState from "../interface/MealState";
 import InputValueState from "../interface/InputValueState";
 import IContextState from "../interface/ContextState";
 import OpenState from "../interface/OpenState";
@@ -9,6 +8,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { ref, get, child } from "firebase/database";
 import { database } from "../config/firebase";
 import RecipeState from "../interface/RecipeState";
+import DatabaseState from "../interface/DatebaseState";
 
 const defaultState = {
   activeUser: {
@@ -39,12 +39,10 @@ const defaultState = {
     snack: false,
   },
   setAddMealItemOpen: () => {},
-  dateMeal: {},
-  setDateMeal: () => {},
   currentRecipe: {},
   setCurrentRecipe: () => {},
-  allData: {},
-  setAllData: () => {},
+  userFavorites: {},
+  setUserFavorites: () => {},
 };
 
 export const UserDataContext = createContext<IContextState>(defaultState);
@@ -56,18 +54,17 @@ export const UserDataProvider: React.FC = ({ children }) => {
     defaultState.activeUser
   );
   const [startDate, setStartDate] = useState(defaultState.startDate);
-  const [databaseData, setDatabaseData] = useState<MealState>({});
+  const [databaseData, setDatabaseData] = useState<DatabaseState>({});
   const [value, setValue] = useState<InputValueState>(defaultState.value);
   const [trigger, setTrigger] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [addMealItemOpen, setAddMealItemOpen] = useState<OpenState>(
     defaultState.addMealItemOpen
   );
-  const [dateMeal, setDateMeal] = useState<MealState>({});
   const [currentRecipe, setCurrentRecipe] = useState(
     defaultState.currentRecipe
   );
-  const [allData, setAllData] = useState<RecipeState>({});
+  const [userFavorites, setUserFavorites] = useState<RecipeState>({});
 
   useEffect(() => {
     const unsubscribeAuthChange = onAuthStateChanged(auth, () => {
@@ -92,7 +89,7 @@ export const UserDataProvider: React.FC = ({ children }) => {
       await get(child(dbRef, `users/${activeUser.uid}/favorites`))
         .then((snapshot) => {
           if (snapshot.exists()) {
-            setAllData(snapshot.val());
+            setUserFavorites(snapshot.val());
           }
         })
         .catch((error) => {
@@ -100,7 +97,7 @@ export const UserDataProvider: React.FC = ({ children }) => {
         });
     };
     getData();
-  }, [activeUser.uid, dbRef, setAllData, trigger]);
+  }, [activeUser.uid, dbRef, setUserFavorites, trigger]);
 
   return (
     <UserDataContext.Provider
@@ -119,12 +116,10 @@ export const UserDataProvider: React.FC = ({ children }) => {
         setModalOpen,
         addMealItemOpen,
         setAddMealItemOpen,
-        dateMeal,
-        setDateMeal,
         currentRecipe,
         setCurrentRecipe,
-        allData,
-        setAllData,
+        userFavorites,
+        setUserFavorites,
       }}
     >
       {children}

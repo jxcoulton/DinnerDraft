@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserDataContext } from "../context/userData";
 import LogoutButton from "./buttons/LogoutButton";
 import { Card, Typography } from "@mui/material";
 
 const Banner: React.FC = () => {
+  const { activeUser } = useContext(UserDataContext);
+
   return (
     <Card
       sx={{
@@ -16,7 +19,7 @@ const Banner: React.FC = () => {
       }}
     >
       <Typography variant="h3">Dinner Draft</Typography>
-      <LogoutButton />
+      {activeUser.uid && <LogoutButton />}
     </Card>
   );
 };

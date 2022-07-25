@@ -2,13 +2,13 @@ import React, { useContext } from "react";
 import { UserDataContext } from "../../context/userData";
 import MealState from "../../interface/MealState";
 import InputValueState from "../../interface/InputValueState";
-import axios from "axios";
-import { Card, InputBase, IconButton } from "@mui/material";
 import { ref, update } from "firebase/database";
 import { database } from "../../config/firebase";
 import { format } from "date-fns";
+import { Card, InputBase, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import uuid from "react-uuid";
+import axios from "axios";
+import AutoCompleteCard from "./AutoCompleteCard";
 
 type Props = {
   mealType?: string;
@@ -28,13 +28,28 @@ const defaultValueState = {
   snack: "",
 };
 
+//map each item to remove line break and trim
 function mapListToDisplay(listItem: string[]) {
   return listItem?.map((i: string) =>
     i.replace(/\n/g, "").replace(/\s+/g, " ").trim()
   );
 }
 
-const CreateMealCard = ({ mealType }: Props) => {
+//check if input is url
+function validURL(str: string | undefined) {
+  var pattern = new RegExp(
+    "^(https?:\\/\\/)?" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i"
+  ); // fragment locator
+  return str ? !!pattern.test(str) : false;
+}
+
+const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
   const {
     activeUser,
     startDate,
@@ -43,41 +58,41 @@ const CreateMealCard = ({ mealType }: Props) => {
     trigger,
     setTrigger,
     setAddMealItemOpen,
-    dateMeal,
-    allData,
+    userFavorites,
+    databaseData,
   } = useContext(UserDataContext);
   const backend = "https://dinner-draft-backend.vercel.app/recipe";
-  let favorites = Object.values(allData);
 
   function autoComplete(input: string) {
-    return favorites?.filter((e: any) =>
+    return Object.values(userFavorites)?.filter((e) =>
       e.title.toLowerCase().includes(input.toLowerCase())
     );
-  }
-
-  function handleChangeValue(e: React.ChangeEvent<HTMLInputElement>) {
-    e.preventDefault();
-    setValue({ ...value, [e.target.name]: e.target.value });
-  }
-
-  function handleSetValue(e: any) {
-    e.preventDefault();
-    setValue({
-      ...value,
-      [e.target.getAttribute("data-name")]: e.target.innerHTML,
-    });
   }
 
   async function handleSetMeal(e: React.FormEvent) {
     e.preventDefault();
     const eTarget = e.target as HTMLInputElement;
+    //mealName needs keyof reference that can be either InputValueState or MealState
     const mealName =
       (eTarget.name as keyof InputValueState) ||
       (eTarget.name as keyof MealState);
-    let setMeal: MealState = {};
+    //database data for selected data
+    const todaysMeal = databaseData[`${format(startDate, "PPP")}`];
+    //set a variable to set the state to at the end of the function
+    let newMeal: MealState = {};
+    //if a meal exists for today and it has the same mealType add new item to array, else create an array
+    const previousMeal = [
+      ...(todaysMeal
+        ? todaysMeal[mealName]
+          ? (todaysMeal[mealName] as Array<any>)
+          : []
+        : []),
+    ];
+    //found favorites that match the input value
     let found = autoComplete(`${value[mealName]}`);
 
-    if (value[mealName]?.includes("http")) {
+    //see if value is a url
+    if (validURL(value[mealName])) {
       await axios
         .post(backend, {
           url: value[mealName],
@@ -86,33 +101,32 @@ const CreateMealCard = ({ mealType }: Props) => {
           const recipe = res.data.recipe;
           recipe.ingredients = mapListToDisplay(recipe.ingredients);
           recipe.directions = mapListToDisplay(recipe.directions);
+          //if entered in planner set favorite to false, if entered in favorites sets to true
           recipe.favorite = mealType ? false : true;
-          setMeal = {
-            [eTarget.name]: [
-              ...(dateMeal[mealName] ? (dateMeal[mealName] as Array<any>) : []),
-              recipe,
-            ],
+          newMeal = {
+            [eTarget.name]: [...previousMeal, recipe],
           };
         })
-        .catch((err) => console.log(err)); //set up toast
+        .catch((err) => console.log(err));
+      //if not url and value is not empty
     } else if (value[mealName]) {
+      //if entered in planner and autocomplete results exist and input value = found results title then set to found results
       if (mealType && found.length > 0 && found[0].title === value[mealName]) {
-        setMeal = {
-          [eTarget.name]: [
-            ...(dateMeal[mealName] ? (dateMeal[mealName] as Array<any>) : []),
-            found[0],
-          ],
+        newMeal = {
+          [eTarget.name]: [...previousMeal, found[0]],
         };
+        //create new recipe, favorite if entered in favorites else default unfavorited
       } else {
-        setMeal = {
+        newMeal = {
           [eTarget.name]: [
-            ...(dateMeal[mealName] ? (dateMeal[mealName] as Array<any>) : []),
+            ...previousMeal,
             { title: value[mealName], favorite: mealType ? false : true },
           ],
         };
       }
     }
 
+    //if entered in planner set to meals database
     if (mealType) {
       update(
         ref(
@@ -120,18 +134,19 @@ const CreateMealCard = ({ mealType }: Props) => {
           `users/${activeUser.uid}/meals/${format(startDate, "PPP")}`
         ),
         {
-          ...dateMeal,
-          ...setMeal,
+          ...todaysMeal,
+          ...newMeal,
         }
       )
         .then(() => {})
         .catch((error) => {
           console.log(error);
         });
+      //if entered in favorites tab set title as key and recipe as value
     } else {
       update(ref(database, `users/${activeUser.uid}/favorites`), {
-        [Object.values(setMeal)[0][0].title]: {
-          ...Object.values(setMeal)[0][0],
+        [Object.values(newMeal)[0][0].title]: {
+          ...Object.values(newMeal)[0][0],
         },
       })
         .then(() => {})
@@ -143,8 +158,6 @@ const CreateMealCard = ({ mealType }: Props) => {
     setTrigger(!trigger);
     setAddMealItemOpen(defaultOpenState);
   }
-  //move cancel button to parent replacing the +
-  //deactivate the add button if empty
 
   return (
     <Card
@@ -167,40 +180,14 @@ const CreateMealCard = ({ mealType }: Props) => {
           autoFocus
           name={mealType}
           value={value[mealType as keyof typeof value]}
-          onChange={handleChangeValue}
+          onChange={(e) =>
+            setValue({ ...value, [e.target.name]: e.target.value })
+          }
           placeholder={`Add custom recipe or recipe URL`}
           sx={{ width: "80%", padding: "15px 10%" }}
         />
         {value[mealType as keyof typeof value] && (
-          <ul
-            style={{
-              position: "absolute",
-              width: "400px",
-              margin: "0",
-              padding: "0",
-              zIndex: "2",
-            }}
-          >
-            {autoComplete(`${value[mealType as keyof typeof value]}`)?.map(
-              (each: any) => (
-                <div
-                  key={uuid()}
-                  onClick={handleSetValue}
-                  data-name={mealType}
-                  data-value={each}
-                  style={{
-                    backgroundColor: "#e9e6e6",
-                    padding: "15px 20%",
-                    width: "auto",
-                    border: "solid 0.5px lightgrey",
-                    borderBottom: "none",
-                  }}
-                >
-                  {each.title}
-                </div>
-              )
-            )}
-          </ul>
+          <AutoCompleteCard mealType={mealType} autoComplete={autoComplete} />
         )}
         <IconButton type="submit" color="primary">
           <AddIcon />

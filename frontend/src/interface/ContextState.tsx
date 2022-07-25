@@ -1,17 +1,17 @@
 import MainState from "./MainState";
-import MealState from "./MealState";
 import InputValueState from "./InputValueState";
 import OpenState from "./OpenState";
 import RecipeState from "./RecipeState";
 import React from "react";
+import DatabaseState from "./DatebaseState";
 
 export default interface IContextState {
   activeUser: MainState;
   setActiveUser: React.Dispatch<React.SetStateAction<MainState>>;
   startDate: Date;
   setStartDate: React.Dispatch<React.SetStateAction<Date>>;
-  databaseData: MealState;
-  setDatabaseData: React.Dispatch<React.SetStateAction<MealState>>;
+  databaseData: DatabaseState;
+  setDatabaseData: React.Dispatch<React.SetStateAction<DatabaseState>>;
   value: InputValueState;
   setValue: React.Dispatch<React.SetStateAction<InputValueState>>;
   trigger: boolean;
@@ -20,10 +20,8 @@ export default interface IContextState {
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   addMealItemOpen: OpenState;
   setAddMealItemOpen: React.Dispatch<React.SetStateAction<OpenState>>;
-  dateMeal: MealState;
-  setDateMeal: React.Dispatch<React.SetStateAction<MealState>>;
   currentRecipe: RecipeState;
   setCurrentRecipe: React.Dispatch<React.SetStateAction<RecipeState>>;
-  allData: RecipeState;
-  setAllData: React.Dispatch<React.SetStateAction<RecipeState>>;
+  userFavorites: RecipeState;
+  setUserFavorites: React.Dispatch<React.SetStateAction<RecipeState>>;
 }

@@ -12,23 +12,30 @@ type Props = {
   title: string;
 };
 
-const DeleteMealButton = ({ mealType, title }: Props) => {
+const DeleteMealButton: React.FC<Props> = ({ mealType, title }: Props) => {
   const { activeUser, startDate, databaseData, trigger, setTrigger } =
     useContext(UserDataContext);
 
+  //selected dates database data
+  const DatabaseDataByDate = databaseData[`${format(startDate, "PPP")}`];
+
   function handleDelete(e: React.MouseEvent) {
     e.preventDefault();
-    const eTarget = e.currentTarget as HTMLInputElement;
-    const newMeal = databaseData[mealType as keyof MealState];
+    //set selected dates item by mealtime to array
+    const newMeal = DatabaseDataByDate[mealType as keyof MealState];
+
+    //find the index of the item to delete from the new meal array
     const valueIndex =
-      databaseData[mealType as keyof MealState]?.findIndex(
-        (s: any) => s.title === eTarget.value
+      newMeal?.findIndex(
+        (s) => s?.title === (e.currentTarget as HTMLInputElement).value
       ) || 0;
 
-    if (valueIndex === 0 || valueIndex > 0) {
+    //if index exists splice out that item and set new indexes
+    if (valueIndex >= 0) {
       newMeal?.splice(valueIndex, 1);
     }
 
+    //use set to update the whole array with new index values to avoid errors
     set(
       ref(
         database,

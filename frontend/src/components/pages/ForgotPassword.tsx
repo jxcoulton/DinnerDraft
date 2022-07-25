@@ -1,12 +1,11 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Banner from "../Banner";
 import PasswordReset from "../login/PasswordReset";
 import Center from "../../utils/Center";
 import { Button, Box } from "@mui/material";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  useEffect(() => {}, []);
 
   function returnToLogin() {
     navigate("/login");
@@ -16,6 +15,7 @@ const ForgotPassword = () => {
 
   return (
     <Center height={90}>
+      <Banner />
       <Box
         display={"flex"}
         alignItems={"center"}

@@ -1,7 +1,7 @@
-import { Typography } from "@mui/material";
 import { useContext } from "react";
-import uuid from "react-uuid";
 import { UserDataContext } from "../../context/userData";
+import { Typography } from "@mui/material";
+import uuid from "react-uuid";
 
 const ViewRecipe = () => {
   const { currentRecipe } = useContext(UserDataContext);

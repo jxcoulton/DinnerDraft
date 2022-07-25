@@ -7,15 +7,15 @@ type Props = {
   mealType?: string;
 };
 
-const AddMealCardButton = ({ mealType }: Props) => {
+const AddMealCardButton: React.FC<Props> = ({ mealType }: Props) => {
   const { setAddMealItemOpen } = useContext(UserDataContext);
 
+  //open input for new item
   function handleOpen(e: React.MouseEvent) {
     e.preventDefault();
-    const eTarget = e.target as HTMLInputElement;
 
     setAddMealItemOpen({
-      [eTarget.name]: true,
+      [(e.target as HTMLInputElement).name]: true,
     });
   }
 

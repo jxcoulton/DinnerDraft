@@ -19,16 +19,15 @@ const EditRecipe = ({ mealType }: Props) => {
     setTrigger,
     currentRecipe,
     setModalOpen,
-    allData,
   } = useContext(UserDataContext);
   const [editedRecipe, setEditedRecipe] = useState({
     title: currentRecipe.title,
     url: currentRecipe.url || "",
     ingredients: currentRecipe.ingredients
-      ? currentRecipe.ingredients.map((item: any) => `${item} \n`).join("")
+      ? currentRecipe.ingredients.map((item) => `${item} \n`).join("")
       : "",
     directions: currentRecipe.directions
-      ? currentRecipe.directions.map((item: any) => `${item} \n`).join("")
+      ? currentRecipe.directions.map((item) => `${item} \n`).join("")
       : "",
   });
 
@@ -54,9 +53,9 @@ const EditRecipe = ({ mealType }: Props) => {
     e.preventDefault();
 
     const valueIndex =
-      databaseData[mealType as keyof MealState]?.findIndex(
-        (s: any) => s.title === currentRecipe.title
-      ) || 0;
+      databaseData[`${format(startDate, "PPP")}`][
+        mealType as keyof MealState
+      ]?.findIndex((s) => s?.title === currentRecipe.title) || 0;
 
     if (mealType) {
       update(

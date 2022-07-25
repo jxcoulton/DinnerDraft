@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Banner from "../Banner";
 import SignInGoogle from "../login/SignInGoogle";
 import SignUpNewUser from "../login/SignUpNewUser";
 import SignInExisting from "../login/SignInExisting";
@@ -12,7 +13,7 @@ const SignUpAndIn = () => {
   const navigate = useNavigate();
   const [value, setValue] = React.useState("1");
 
-  function handleChange(event: React.SyntheticEvent, newValue: string) {
+  function handleChange(_: any, newValue: string) {
     setValue(newValue);
   }
 
@@ -20,10 +21,9 @@ const SignUpAndIn = () => {
     navigate("/reset");
   }
 
-  //add banner to login page
-
   return (
     <Center height={90}>
+      <Banner />
       <TabContext value={value}>
         <Box
           display={"flex"}

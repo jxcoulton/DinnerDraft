@@ -21,7 +21,7 @@ const SignInExisting = () => {
 
   const signInExistingUser = () => {
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(() => {
         navigate("/");
       })
       .catch((error) => {

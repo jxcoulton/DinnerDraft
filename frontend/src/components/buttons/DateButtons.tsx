@@ -3,22 +3,15 @@ import { UserDataContext } from "../../context/userData";
 import MealCategoryCard from "../cards/MealCategoryCard";
 import { format, eachDayOfInterval, startOfWeek, endOfWeek } from "date-fns";
 import { Button } from "@mui/material";
-import uuid from "react-uuid";
 
 const DateButtons: React.FC = () => {
   const { startDate, setStartDate } = useContext(UserDataContext);
 
-  function handleChangeDay(day: Date, e: any) {
-    setStartDate(day);
-  }
-
-  let dateList = eachDayOfInterval({
+  //list of current weeks dates
+  const dateList = eachDayOfInterval({
     start: startOfWeek(new Date()),
     end: endOfWeek(new Date()),
   });
-
-  //edit aria-current for current selected date
-  //change some state names to make more sense
 
   return (
     <div style={{ width: "90vw", padding: "5vh 0" }}>
@@ -29,19 +22,19 @@ const DateButtons: React.FC = () => {
           padding: "5%",
         }}
       >
-        {dateList.map((day) => {
+        {dateList.map((day: Date) => {
           return (
             <Button
               className="date-picker__button"
               variant="contained"
               sx={{ margin: "5px" }}
-              key={uuid()}
+              key={day.getDate()}
               aria-current={
                 day.setHours(0, 0, 0, 0) === startDate.setHours(0, 0, 0, 0)
                   ? "true"
                   : "false"
               }
-              onClick={(e) => handleChangeDay(day, e)}
+              onClick={() => setStartDate(day)}
             >
               {`${format(day, "eee d")}`}
             </Button>

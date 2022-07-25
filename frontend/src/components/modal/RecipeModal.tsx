@@ -1,11 +1,11 @@
 import { useState, useContext } from "react";
-import { Modal } from "@mui/material";
+import { UserDataContext } from "../../context/userData";
 import ViewRecipe from "./ViewRecipe";
 import EditRecipe from "./EditRecipe";
 import { Box } from "@mui/system";
+import { Modal } from "@mui/material";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { UserDataContext } from "../../context/userData";
 
 const style = {
   position: "absolute",

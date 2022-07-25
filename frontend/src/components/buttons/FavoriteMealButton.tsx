@@ -4,9 +4,9 @@ import MealState from "../../interface/MealState";
 import { update, ref, remove } from "firebase/database";
 import { database } from "../../config/firebase";
 import { format } from "date-fns";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite"; //filled
 import { IconButton } from "@mui/material";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 type Props = {
   recipe: {
@@ -15,24 +15,23 @@ type Props = {
   mealType?: string;
 };
 
-const FavoriteMealButton = ({ recipe, mealType }: Props) => {
-  const { databaseData, activeUser, startDate, trigger, setTrigger, allData } =
+const FavoriteMealButton: React.FC<Props> = ({ recipe, mealType }: Props) => {
+  const { databaseData, activeUser, startDate, trigger, setTrigger } =
     useContext(UserDataContext);
 
-  function handleFavorites(e: React.SyntheticEvent) {
+  function handleFavorites(e: React.MouseEvent) {
     e.preventDefault();
     const favorited = recipe.favorite ? false : true;
 
-    const favoriteIndex = Object.keys(allData)?.findIndex(
-      (fav: any) => fav !== recipe.title
-    );
-
+    //find the index of the selected item
     const valueIndex =
-      databaseData[mealType as keyof MealState]?.findIndex(
-        (s: any) => s.title === recipe.title
-      ) || 0;
+      databaseData[`${format(startDate, "PPP")}`][
+        mealType as keyof MealState
+      ]?.findIndex((s: any) => s.title === recipe.title) || 0;
 
+    //check to see it event occurred in planner (mealType exists) or favorites tab
     if (mealType) {
+      //update in planner
       update(
         ref(
           database,
@@ -47,23 +46,21 @@ const FavoriteMealButton = ({ recipe, mealType }: Props) => {
         }
       )
         .then(() => {
+          //if favorited add to favorites
           if (favorited) {
             update(ref(database, `users/${activeUser.uid}/favorites`), {
               [recipe.title]: { ...recipe, favorite: true },
             })
-              .then(() => {
-                setTrigger(!trigger);
-              })
+              .then(() => {})
               .catch((error) => {
                 console.log(error);
               });
+            //if unfavorited remove from favorites
           } else {
             remove(
               ref(database, `users/${activeUser.uid}/favorites/${recipe.title}`)
             )
-              .then(() => {
-                setTrigger(!trigger);
-              })
+              .then(() => {})
               .catch((error) => {
                 console.log(error);
               });
@@ -72,28 +69,16 @@ const FavoriteMealButton = ({ recipe, mealType }: Props) => {
         .catch((error) => {
           console.log(error);
         });
+      //event occurred in favorites tab
     } else {
-      if (favorited) {
-        update(ref(database, `users/${activeUser.uid}/favorites`), {
-          [recipe.title]: { ...recipe, favorite: true },
+      //occurred in favorites then remove from favorites
+      remove(ref(database, `users/${activeUser.uid}/favorites/${recipe.title}`))
+        .then(() => {
+          setTrigger(!trigger);
         })
-          .then(() => {
-            setTrigger(!trigger);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else {
-        remove(
-          ref(database, `users/${activeUser.uid}/favorites/${recipe.title}`)
-        )
-          .then(() => {
-            setTrigger(!trigger);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }
 
