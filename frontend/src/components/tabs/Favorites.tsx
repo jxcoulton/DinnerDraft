@@ -24,7 +24,7 @@ function Favorites() {
       {favorites?.map((eachRecipe: any) => {
         return (
           <Card
-            key={uuid()}
+            key={eachRecipe.id}
             sx={{
               display: "flex",
               justifyContent: "space-between",

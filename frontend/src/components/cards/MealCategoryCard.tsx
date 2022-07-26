@@ -9,7 +9,6 @@ import { database } from "../../config/firebase";
 import { format } from "date-fns";
 import { Typography, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import uuid from "react-uuid";
 
 const defaultOpenState = {
   breakfast: false,
@@ -58,12 +57,12 @@ const MealCategoryCard = () => {
 
   return (
     <Center height={"auto"}>
-      <Typography key={uuid()} variant="h3">{`${format(
+      <Typography key={startDate.getDate()} variant="h3">{`${format(
         startDate,
         "eee, LLL d"
       )}`}</Typography>
       {["breakfast", "lunch", "dinner", "snack"].map((mealType) => (
-        <div key={uuid()} style={{ width: "100%" }}>
+        <div key={mealType} style={{ width: "100%" }}>
           <div
             style={{
               display: "flex",

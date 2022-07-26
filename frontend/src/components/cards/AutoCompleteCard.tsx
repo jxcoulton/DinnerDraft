@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { UserDataContext } from "../../context/userData";
-import uuid from "react-uuid";
 
 type Props = {
   mealType?: string;
@@ -36,7 +35,7 @@ const AutoCompleteCard: React.FC<Props> = ({
     >
       {autoComplete(`${value[mealType as keyof typeof value]}`)?.map((each) => (
         <div
-          key={uuid()}
+          key={each.id}
           onClick={handleSetValue}
           data-name={mealType}
           data-value={each}

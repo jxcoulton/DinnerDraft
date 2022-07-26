@@ -9,10 +9,12 @@ import { IconButton } from "@mui/material";
 
 type Props = {
   mealType: string;
-  title: string;
+  recipe: {
+    [key: string]: any;
+  };
 };
 
-const DeleteMealButton: React.FC<Props> = ({ mealType, title }: Props) => {
+const DeleteMealButton: React.FC<Props> = ({ mealType, recipe }: Props) => {
   const { activeUser, startDate, databaseData, trigger, setTrigger } =
     useContext(UserDataContext);
 
@@ -25,10 +27,7 @@ const DeleteMealButton: React.FC<Props> = ({ mealType, title }: Props) => {
     const newMeal = DatabaseDataByDate[mealType as keyof MealState];
 
     //find the index of the item to delete from the new meal array
-    const valueIndex =
-      newMeal?.findIndex(
-        (s) => s?.title === (e.currentTarget as HTMLInputElement).value
-      ) || 0;
+    const valueIndex = newMeal?.findIndex((s) => s?.id === recipe.id) || 0;
 
     //if index exists splice out that item and set new indexes
     if (valueIndex >= 0) {
@@ -49,7 +48,7 @@ const DeleteMealButton: React.FC<Props> = ({ mealType, title }: Props) => {
   }
 
   return (
-    <IconButton value={title} onClick={handleDelete}>
+    <IconButton value={recipe.title} onClick={handleDelete}>
       <DeleteForeverIcon />
     </IconButton>
   );

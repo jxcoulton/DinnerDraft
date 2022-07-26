@@ -1,30 +1,34 @@
 export default interface MealState {
   breakfast?: [
+    { [title: string]: string },
+    { [favorite: string]: boolean },
+    { [id: string]: string },
     { [directions: string]: string[] }?,
     { [instructions: string]: string[] }?,
-    { [title: string]: string }?,
-    { [favorite: string]: boolean }?,
     { [url: string]: string }?
   ];
   lunch?: [
+    { [title: string]: string },
+    { [favorite: string]: boolean },
+    { [id: string]: string },
     { [directions: string]: string[] }?,
     { [instructions: string]: string[] }?,
-    { [title: string]: string }?,
-    { [favorite: string]: boolean }?,
     { [url: string]: string }?
   ];
   dinner?: [
+    { [title: string]: string },
+    { [favorite: string]: boolean },
+    { [id: string]: string },
     { [directions: string]: string[] }?,
     { [instructions: string]: string[] }?,
-    { [title: string]: string }?,
-    { [favorite: string]: boolean }?,
     { [url: string]: string }?
   ];
   snack?: [
+    { [title: string]: string },
+    { [favorite: string]: boolean },
+    { [id: string]: string },
     { [directions: string]: string[] }?,
     { [instructions: string]: string[] }?,
-    { [title: string]: string }?,
-    { [favorite: string]: boolean }?,
     { [url: string]: string }?
   ];
 }

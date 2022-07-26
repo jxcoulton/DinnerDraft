@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { UserDataContext } from "../../context/userData";
 import { Typography } from "@mui/material";
-import uuid from "react-uuid";
 
 const ViewRecipe = () => {
   const { currentRecipe } = useContext(UserDataContext);
@@ -23,7 +22,7 @@ const ViewRecipe = () => {
 
       <ul>
         {currentRecipe.ingredients?.map((item: any) => (
-          <li key={uuid()}>{item}</li>
+          <li key={item}>{item}</li>
         ))}
       </ul>
 
@@ -33,7 +32,7 @@ const ViewRecipe = () => {
 
       <ul>
         {currentRecipe.directions?.map((item: any) => (
-          <li key={uuid()}>{item}</li>
+          <li key={item}>{item}</li>
         ))}
       </ul>
     </>

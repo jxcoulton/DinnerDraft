@@ -56,7 +56,7 @@ const RecipeModal = ({ mealType }: Props) => {
           </>
         ) : (
           <>
-            <EditRecipe mealType={mealType} />
+            <EditRecipe mealType={mealType} setEdit={setEdit} />
             <button onClick={() => setEdit(false)}>cancel changes</button>
           </>
         )}

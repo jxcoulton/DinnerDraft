@@ -8,9 +8,10 @@ import { TextField } from "@mui/material";
 
 type Props = {
   mealType?: string;
+  setEdit: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const EditRecipe = ({ mealType }: Props) => {
+const EditRecipe = ({ mealType, setEdit }: Props) => {
   const {
     databaseData,
     activeUser,
@@ -98,6 +99,7 @@ const EditRecipe = ({ mealType }: Props) => {
         });
     }
     setTrigger(!trigger);
+    setEdit(false);
     //get recipe from database to display
   }
 

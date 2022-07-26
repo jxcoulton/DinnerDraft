@@ -9,6 +9,7 @@ import { Card, InputBase, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 import AutoCompleteCard from "./AutoCompleteCard";
+import uuid from "react-uuid";
 
 type Props = {
   mealType?: string;
@@ -99,6 +100,7 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
         })
         .then((res) => {
           const recipe = res.data.recipe;
+          recipe.id = uuid();
           recipe.ingredients = mapListToDisplay(recipe.ingredients);
           recipe.directions = mapListToDisplay(recipe.directions);
           //if entered in planner set favorite to false, if entered in favorites sets to true
@@ -120,7 +122,11 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
         newMeal = {
           [eTarget.name]: [
             ...previousMeal,
-            { title: value[mealName], favorite: mealType ? false : true },
+            {
+              title: value[mealName],
+              favorite: mealType ? false : true,
+              id: uuid(),
+            },
           ],
         };
       }
@@ -134,7 +140,6 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
           `users/${activeUser.uid}/meals/${format(startDate, "PPP")}`
         ),
         {
-          ...todaysMeal,
           ...newMeal,
         }
       )
@@ -189,7 +194,11 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
         {value[mealType as keyof typeof value] && (
           <AutoCompleteCard mealType={mealType} autoComplete={autoComplete} />
         )}
-        <IconButton type="submit" color="primary">
+        <IconButton
+          type="submit"
+          color="primary"
+          disabled={!Object.values(value).some((val) => val)}
+        >
           <AddIcon />
         </IconButton>
       </form>
