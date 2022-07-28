@@ -8,7 +8,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { ref, get, child } from "firebase/database";
 import { database } from "../config/firebase";
 import RecipeState from "../interface/RecipeState";
-import DatabaseState from "../interface/DatebaseState";
+import DatabaseState from "../interface/DatabaseState";
 
 const defaultState = {
   activeUser: {
@@ -43,6 +43,13 @@ const defaultState = {
   setCurrentRecipe: () => {},
   userFavorites: {},
   setUserFavorites: () => {},
+};
+
+const defaultOpenState = {
+  breakfast: false,
+  lunch: false,
+  dinner: false,
+  snack: false,
 };
 
 export const UserDataContext = createContext<IContextState>(defaultState);
@@ -85,19 +92,47 @@ export const UserDataProvider: React.FC = ({ children }) => {
   }, [activeUser.uid, setActiveUser]);
 
   useEffect(() => {
-    const getData = async () => {
-      await get(child(dbRef, `users/${activeUser.uid}/favorites`))
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            setUserFavorites(snapshot.val());
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    };
-    getData();
-  }, [activeUser.uid, dbRef, setUserFavorites, trigger]);
+    if (activeUser.uid) {
+      const getFavorites = async () => {
+        await get(child(dbRef, `users/${activeUser.uid}/favorites`))
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              setUserFavorites(snapshot.val());
+            } else {
+              setUserFavorites({});
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      };
+
+      const getData = async () => {
+        await get(child(dbRef, `users/${activeUser.uid}/meals/`))
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              setDatabaseData(snapshot.val());
+            } else {
+              setDatabaseData({});
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      };
+
+      setAddMealItemOpen(defaultOpenState);
+      getData();
+      getFavorites();
+    }
+  }, [
+    activeUser.uid,
+    dbRef,
+    setUserFavorites,
+    trigger,
+    setDatabaseData,
+    setAddMealItemOpen,
+  ]);
 
   return (
     <UserDataContext.Provider

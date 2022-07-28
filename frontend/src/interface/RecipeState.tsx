@@ -3,5 +3,6 @@ export default interface RecipeState {
   ingredients?: string[];
   title?: string;
   favorite?: boolean;
+  id?: string;
   url?: URL | string;
 }

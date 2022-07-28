@@ -62,7 +62,7 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
     userFavorites,
     databaseData,
   } = useContext(UserDataContext);
-  const backend = "https://dinner-draft-backend.vercel.app/recipe";
+  // const backend = "https://dinner-draft-backend.vercel.app/recipe";
 
   function autoComplete(input: string) {
     return Object.values(userFavorites)?.filter((e) =>
@@ -95,7 +95,7 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
     //see if value is a url
     if (validURL(value[mealName])) {
       await axios
-        .post(backend, {
+        .post("https://dinner-draft-backend.vercel.app/recipe", {
           url: value[mealName],
         })
         .then((res) => {

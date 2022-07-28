@@ -41,7 +41,7 @@ const MealCard = ({ mealType }: Props) => {
             <Typography variant="h6" paddingX={"10%"} paddingY={"2%"}>
               {eachRecipe.title}
             </Typography>
-            <EditMealButton recipe={eachRecipe} mealType={mealType} />
+            <EditMealButton recipe={eachRecipe} />
             <DeleteMealButton recipe={eachRecipe} mealType={mealType} />
           </Card>
         ))}

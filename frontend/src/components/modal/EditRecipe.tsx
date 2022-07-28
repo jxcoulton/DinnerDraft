@@ -3,24 +3,22 @@ import MealState from "../../interface/MealState";
 import { UserDataContext } from "../../context/userData";
 import { update, ref } from "firebase/database";
 import { database } from "../../config/firebase";
-import { format } from "date-fns";
 import { TextField } from "@mui/material";
 
 type Props = {
-  mealType?: string;
   setEdit: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const EditRecipe = ({ mealType, setEdit }: Props) => {
+const EditRecipe = ({ setEdit }: Props) => {
   const {
     databaseData,
     activeUser,
-    startDate,
     trigger,
     setTrigger,
     currentRecipe,
     setModalOpen,
   } = useContext(UserDataContext);
+
   const [editedRecipe, setEditedRecipe] = useState({
     title: currentRecipe.title,
     url: currentRecipe.url || "",
@@ -30,6 +28,7 @@ const EditRecipe = ({ mealType, setEdit }: Props) => {
     directions: currentRecipe.directions
       ? currentRecipe.directions.map((item) => `${item} \n`).join("")
       : "",
+    favorite: currentRecipe.favorite,
   });
 
   function convertArray(string: string) {
@@ -53,50 +52,51 @@ const EditRecipe = ({ mealType, setEdit }: Props) => {
   function handleSaveEditedMeal(e: React.SyntheticEvent) {
     e.preventDefault();
 
-    const valueIndex =
-      databaseData[`${format(startDate, "PPP")}`][
-        mealType as keyof MealState
-      ]?.findIndex((s) => s?.title === currentRecipe.title) || 0;
+    for (var date in databaseData) {
+      let dateItems = databaseData[date];
+      for (var type in dateItems) {
+        let meal = dateItems[type as keyof MealState];
+        for (var index in meal) {
+          let item = meal[index as unknown as number];
+          if (item?.id === currentRecipe.id) {
+            update(
+              ref(
+                database,
+                `users/${activeUser.uid}/meals/${date}/${type}/${index}`
+              ),
+              {
+                ...editedRecipe,
+                ingredients: [...convertArray(editedRecipe.ingredients)],
+                directions: [...convertArray(editedRecipe.directions)],
+              }
+            )
+              .then(() => {
+                setModalOpen(false); //updating modal set to loading??
+              })
+              .catch((error) => {
+                console.log(error);
+              });
 
-    if (mealType) {
-      update(
-        ref(
-          database,
-          `users/${activeUser.uid}/meals/${format(
-            startDate,
-            "PPP"
-          )}/${mealType}/${valueIndex}`
-        ),
-        {
-          ...editedRecipe,
-          ingredients: [...convertArray(editedRecipe.ingredients)],
-          directions: [...convertArray(editedRecipe.directions)],
+            update(
+              ref(
+                database,
+                `users/${activeUser.uid}/favorites/${editedRecipe.title}`
+              ),
+              {
+                ...editedRecipe,
+                ingredients: [...convertArray(editedRecipe.ingredients)],
+                directions: [...convertArray(editedRecipe.directions)],
+              }
+            )
+              .then(() => {
+                setModalOpen(false); //updating modal set to loading??
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
         }
-      )
-        .then(() => {
-          setModalOpen(false); //updating modal set to loading??
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else {
-      update(
-        ref(
-          database,
-          `users/${activeUser.uid}/favorites/${editedRecipe.title}`
-        ),
-        {
-          ...editedRecipe,
-          ingredients: [...convertArray(editedRecipe.ingredients)],
-          directions: [...convertArray(editedRecipe.directions)],
-        }
-      )
-        .then(() => {
-          setModalOpen(false); //updating modal set to loading??
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      }
     }
     setTrigger(!trigger);
     setEdit(false);

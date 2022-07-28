@@ -3,7 +3,7 @@ import InputValueState from "./InputValueState";
 import OpenState from "./OpenState";
 import RecipeState from "./RecipeState";
 import React from "react";
-import DatabaseState from "./DatebaseState";
+import DatabaseState from "./DatabaseState";
 
 export default interface IContextState {
   activeUser: MainState;

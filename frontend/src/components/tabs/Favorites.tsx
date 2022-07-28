@@ -4,7 +4,6 @@ import FavoriteMealButton from "../buttons/FavoriteMealButton";
 import EditMealButton from "../buttons/EditMealButton";
 import CreateMealCard from "../cards/CreateMealCard";
 import { Card, Typography } from "@mui/material";
-import uuid from "react-uuid";
 
 function Favorites() {
   const { userFavorites } = useContext(UserDataContext);

@@ -8,10 +8,9 @@ type Props = {
   recipe: {
     [key: string]: any;
   };
-  mealType?: string;
 };
 
-const EditMealButton: React.FC<Props> = ({ recipe, mealType }: Props) => {
+const EditMealButton: React.FC<Props> = ({ recipe }: Props) => {
   const { setModalOpen, setCurrentRecipe } = useContext(UserDataContext);
 
   //open modal and set the selected recipe to display
@@ -25,7 +24,7 @@ const EditMealButton: React.FC<Props> = ({ recipe, mealType }: Props) => {
       <IconButton onClick={handleOpen}>
         <EditIcon />
       </IconButton>
-      <RecipeModal mealType={mealType} />
+      <RecipeModal />
     </div>
   );
 };

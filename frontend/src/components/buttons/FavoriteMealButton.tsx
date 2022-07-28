@@ -47,7 +47,9 @@ const FavoriteMealButton: React.FC<Props> = ({ recipe, mealType }: Props) => {
                     update(ref(database, `users/${activeUser.uid}/favorites`), {
                       [recipe.title]: { ...recipe, favorite: true },
                     })
-                      .then(() => {})
+                      .then(() => {
+                        setTrigger(!trigger);
+                      })
                       .catch((error) => {
                         console.log(error);
                       });
@@ -59,7 +61,9 @@ const FavoriteMealButton: React.FC<Props> = ({ recipe, mealType }: Props) => {
                         `users/${activeUser.uid}/favorites/${recipe.title}`
                       )
                     )
-                      .then(() => {})
+                      .then(() => {
+                        setTrigger(!trigger);
+                      })
                       .catch((error) => {
                         console.log(error);
                       });

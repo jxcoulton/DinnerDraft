@@ -1,59 +1,16 @@
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import { UserDataContext } from "../../context/userData";
 import AddMealCardButton from "../buttons/AddMealCardButton";
 import CreateMealCard from "./CreateMealCard";
 import Center from "../../utils/Center";
 import MealCard from "./MealCard";
-import { ref, get, child } from "firebase/database";
-import { database } from "../../config/firebase";
 import { format } from "date-fns";
 import { Typography, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-const defaultOpenState = {
-  breakfast: false,
-  lunch: false,
-  dinner: false,
-  snack: false,
-};
-
 const MealCategoryCard = () => {
-  const dbRef = ref(database);
-
-  const {
-    activeUser,
-    startDate,
-    setDatabaseData,
-    value,
-    trigger,
-    addMealItemOpen,
-    setAddMealItemOpen,
-  } = useContext(UserDataContext);
-
-  useEffect(() => {
-    const getData = async () => {
-      await get(child(dbRef, `users/${activeUser.uid}/meals/`))
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            setDatabaseData(snapshot.val());
-          } else {
-            setDatabaseData({});
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    };
-    setAddMealItemOpen(defaultOpenState);
-    getData();
-  }, [
-    activeUser.uid,
-    dbRef,
-    startDate,
-    trigger,
-    setDatabaseData,
-    setAddMealItemOpen,
-  ]);
+  const { startDate, value, addMealItemOpen, setAddMealItemOpen } =
+    useContext(UserDataContext);
 
   return (
     <Center height={"auto"}>
@@ -77,7 +34,16 @@ const MealCategoryCard = () => {
             {!addMealItemOpen[mealType as keyof typeof value] ? (
               <AddMealCardButton mealType={mealType} />
             ) : (
-              <IconButton onClick={() => setAddMealItemOpen(defaultOpenState)}>
+              <IconButton
+                onClick={() =>
+                  setAddMealItemOpen({
+                    breakfast: false,
+                    lunch: false,
+                    dinner: false,
+                    snack: false,
+                  })
+                }
+              >
                 <CloseIcon />
               </IconButton>
             )}

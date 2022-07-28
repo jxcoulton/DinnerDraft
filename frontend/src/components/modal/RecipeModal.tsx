@@ -22,11 +22,7 @@ const style = {
   overflow: "scroll",
 };
 
-type Props = {
-  mealType?: string;
-};
-
-const RecipeModal = ({ mealType }: Props) => {
+const RecipeModal = () => {
   const { modalOpen, setModalOpen } = useContext(UserDataContext);
   const [edit, setEdit] = useState(false);
 
@@ -35,11 +31,8 @@ const RecipeModal = ({ mealType }: Props) => {
     setEdit(false);
   }
 
-  //fix modal flash on change
-
   return (
     <Modal
-      keepMounted
       open={modalOpen}
       onClose={handleClose}
       aria-labelledby="keep-mounted-modal-title"
@@ -56,7 +49,7 @@ const RecipeModal = ({ mealType }: Props) => {
           </>
         ) : (
           <>
-            <EditRecipe mealType={mealType} setEdit={setEdit} />
+            <EditRecipe setEdit={setEdit} />
             <button onClick={() => setEdit(false)}>cancel changes</button>
           </>
         )}
