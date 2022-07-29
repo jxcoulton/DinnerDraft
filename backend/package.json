@@ -7,8 +7,7 @@
   },
   "scripts": {
     "start": "npx tsc && node index.js",
-    "build": "tsc --build",
-    "convert": "npx tsc -w"
+    "build": "tsc --build"
   },
   "keywords": [],
   "author": "",

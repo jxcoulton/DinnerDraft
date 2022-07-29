@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { UserDataContext } from "../../context/userData";
-import MealState from "../../interface/MealState";
+import IMealState from "../../interface/IMealState";
 import { update, ref, remove } from "firebase/database";
 import { database } from "../../config/firebase";
 import { IconButton } from "@mui/material";
@@ -25,7 +25,7 @@ const FavoriteMealButton: React.FC<Props> = ({ recipe, mealType }: Props) => {
     for (var date in databaseData) {
       let dateItems = databaseData[date];
       for (var type in dateItems) {
-        let meal = dateItems[type as keyof MealState];
+        let meal = dateItems[type as keyof IMealState];
         for (var index in meal) {
           let item = meal[index as unknown as number];
           if (item?.id === recipe.id) {

@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { PublicVariablesContext } from "../../context/PublicVariables";
 import { auth } from "../../config/firebase";
-import { Button, TextField, Typography } from "@mui/material";
-import Center from "../../utils/Center";
+import { Button, TextField } from "@mui/material";
 
 const SignUpNewUser = () => {
   const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { loading, setLoading, setShowAlert } = useContext(
+    PublicVariablesContext
+  );
 
   const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -20,24 +22,31 @@ const SignUpNewUser = () => {
   };
 
   const signUpNewUserFunc = () => {
+    setLoading(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
+        setLoading(false);
         navigate("/");
       })
       .catch((error) => {
-        setErrorMessage(error.code + ": " + error.message);
-        console.log("user already exists"); //TODO post request showing with API key
+        setLoading(false);
+        setShowAlert({
+          show: true,
+          severity: "error",
+          message: `${error.message}`,
+        });
       });
   };
-  //TODO Send email verification
+
   return (
-    <Center height={"auto"}>
+    <>
       <TextField
         label="email"
         name="email"
         value={email}
         onChange={handleChangeEmail}
         sx={{ margin: "15px" }}
+        disabled={loading}
       />
       <TextField
         label="password"
@@ -46,19 +55,17 @@ const SignUpNewUser = () => {
         value={password}
         onChange={handleChangePassword}
         sx={{ marginBottom: "15px" }}
+        disabled={loading}
       />
       <Button
         size="large"
         variant="contained"
         onClick={signUpNewUserFunc}
-        disabled={!email || !password}
+        disabled={!email || !password || loading}
       >
         Sign Up
       </Button>
-      <Typography sx={{ mt: 2 }} color={"red"}>
-        {errorMessage}
-      </Typography>
-    </Center>
+    </>
   );
 };
 

@@ -3,7 +3,7 @@ import { UserDataContext } from "../../context/userData";
 import EditMealButton from "../buttons/EditMealButton";
 import DeleteMealButton from "../buttons/DeleteMealButton";
 import FavoriteMealButton from "../buttons/FavoriteMealButton";
-import MealState from "../../interface/MealState";
+import IMealState from "../../interface/IMealState";
 import { Card, Typography } from "@mui/material";
 import { format } from "date-fns";
 
@@ -25,7 +25,7 @@ const MealCard = ({ mealType }: Props) => {
     >
       {databaseData[`${format(startDate, "PPP")}`] &&
         databaseData[`${format(startDate, "PPP")}`][
-          mealType as keyof MealState
+          mealType as keyof IMealState
         ]?.map((eachRecipe: any) => (
           <Card
             key={eachRecipe.id}

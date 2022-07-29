@@ -1,4 +1,4 @@
-export default interface MealState {
+export default interface IMealState {
   breakfast?: [
     { [title: string]: string },
     { [favorite: string]: boolean },

@@ -1,21 +1,19 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import Banner from "../Banner";
 import PasswordReset from "../login/PasswordReset";
-import Center from "../../utils/Center";
+import { PublicVariablesContext } from "../../context/PublicVariables";
 import { Button, Box } from "@mui/material";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+  const { loading } = useContext(PublicVariablesContext);
 
   function returnToLogin() {
     navigate("/login");
   }
 
-  //fix this page
-
   return (
-    <Center height={90}>
-      <Banner />
+    <>
       <Box
         display={"flex"}
         alignItems={"center"}
@@ -26,11 +24,16 @@ const ForgotPassword = () => {
         sx={{ backgroundColor: "white" }}
       >
         <PasswordReset />
-        <Button size="large" variant="contained" onClick={returnToLogin}>
+        <Button
+          size="large"
+          variant="contained"
+          onClick={returnToLogin}
+          disabled={loading}
+        >
           return to login
         </Button>
       </Box>
-    </Center>
+    </>
   );
 };
 

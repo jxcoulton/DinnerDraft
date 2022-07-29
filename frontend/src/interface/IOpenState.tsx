@@ -1,4 +1,4 @@
-export default interface OpenState {
+export default interface IOpenState {
   breakfast?: boolean;
   lunch?: boolean;
   dinner?: boolean;

@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { UserDataContext } from "../../context/userData";
 import AddMealCardButton from "../buttons/AddMealCardButton";
 import CreateMealCard from "./CreateMealCard";
-import Center from "../../utils/Center";
 import MealCard from "./MealCard";
 import { format } from "date-fns";
 import { Typography, IconButton } from "@mui/material";
@@ -13,7 +12,7 @@ const MealCategoryCard = () => {
     useContext(UserDataContext);
 
   return (
-    <Center height={"auto"}>
+    <>
       <Typography key={startDate.getDate()} variant="h3">{`${format(
         startDate,
         "eee, LLL d"
@@ -64,7 +63,7 @@ const MealCategoryCard = () => {
           </div>
         </div>
       ))}
-    </Center>
+    </>
   );
 };
 

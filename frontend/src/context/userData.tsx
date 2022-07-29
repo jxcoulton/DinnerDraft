@@ -1,14 +1,14 @@
 import React, { useState, createContext, useEffect } from "react";
-import MainState from "../interface/MainState";
-import InputValueState from "../interface/InputValueState";
-import IContextState from "../interface/ContextState";
-import OpenState from "../interface/OpenState";
+import IMainState from "../interface/IMainState";
+import IInputValueState from "../interface/IInputValueState";
+import IUserContextState from "../interface/IUserContextState";
+import IOpenState from "../interface/IOpenState";
 import { auth } from "../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { ref, get, child } from "firebase/database";
 import { database } from "../config/firebase";
-import RecipeState from "../interface/RecipeState";
-import DatabaseState from "../interface/DatabaseState";
+import IRecipeState from "../interface/IRecipeState";
+import IDatabaseState from "../interface/IDatabaseState";
 
 const defaultState = {
   activeUser: {
@@ -52,26 +52,26 @@ const defaultOpenState = {
   snack: false,
 };
 
-export const UserDataContext = createContext<IContextState>(defaultState);
+export const UserDataContext = createContext<IUserContextState>(defaultState);
 
 export const UserDataProvider: React.FC = ({ children }) => {
   const dbRef = ref(database);
 
-  const [activeUser, setActiveUser] = useState<MainState>(
+  const [activeUser, setActiveUser] = useState<IMainState>(
     defaultState.activeUser
   );
   const [startDate, setStartDate] = useState(defaultState.startDate);
-  const [databaseData, setDatabaseData] = useState<DatabaseState>({});
-  const [value, setValue] = useState<InputValueState>(defaultState.value);
+  const [databaseData, setDatabaseData] = useState<IDatabaseState>({});
+  const [value, setValue] = useState<IInputValueState>(defaultState.value);
   const [trigger, setTrigger] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [addMealItemOpen, setAddMealItemOpen] = useState<OpenState>(
+  const [addMealItemOpen, setAddMealItemOpen] = useState<IOpenState>(
     defaultState.addMealItemOpen
   );
   const [currentRecipe, setCurrentRecipe] = useState(
     defaultState.currentRecipe
   );
-  const [userFavorites, setUserFavorites] = useState<RecipeState>({});
+  const [userFavorites, setUserFavorites] = useState<IRecipeState>({});
 
   useEffect(() => {
     const unsubscribeAuthChange = onAuthStateChanged(auth, () => {

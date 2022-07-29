@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { UserDataContext } from "../../context/userData";
-import MealState from "../../interface/MealState";
-import InputValueState from "../../interface/InputValueState";
+import IMealState from "../../interface/IMealState";
+import IInputValueState from "../../interface/IInputValueState";
 import { ref, update } from "firebase/database";
 import { database } from "../../config/firebase";
 import { format } from "date-fns";
@@ -15,7 +15,7 @@ type Props = {
   mealType?: string;
 };
 
-const defaultOpenState = {
+const defaultIOpenState = {
   breakfast: false,
   lunch: false,
   dinner: false,
@@ -62,7 +62,6 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
     userFavorites,
     databaseData,
   } = useContext(UserDataContext);
-  // const backend = "https://dinner-draft-backend.vercel.app/recipe";
 
   function autoComplete(input: string) {
     return Object.values(userFavorites)?.filter((e) =>
@@ -73,14 +72,14 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
   async function handleSetMeal(e: React.FormEvent) {
     e.preventDefault();
     const eTarget = e.target as HTMLInputElement;
-    //mealName needs keyof reference that can be either InputValueState or MealState
+    //mealName needs keyof reference that can be either IInputValueState or IMealState
     const mealName =
-      (eTarget.name as keyof InputValueState) ||
-      (eTarget.name as keyof MealState);
+      (eTarget.name as keyof IInputValueState) ||
+      (eTarget.name as keyof IMealState);
     //database data for selected data
     const todaysMeal = databaseData[`${format(startDate, "PPP")}`];
     //set a variable to set the state to at the end of the function
-    let newMeal: MealState = {};
+    let newMeal: IMealState = {};
     //if a meal exists for today and it has the same mealType add new item to array, else create an array
     const previousMeal = [
       ...(todaysMeal
@@ -161,7 +160,7 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
     }
     setValue(defaultValueState);
     setTrigger(!trigger);
-    setAddMealItemOpen(defaultOpenState);
+    setAddMealItemOpen(defaultIOpenState);
   }
 
   return (

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import MealState from "../../interface/MealState";
+import IMealState from "../../interface/IMealState";
 import { UserDataContext } from "../../context/userData";
 import { set, ref } from "firebase/database";
 import { database } from "../../config/firebase";
@@ -24,7 +24,7 @@ const DeleteMealButton: React.FC<Props> = ({ mealType, recipe }: Props) => {
   function handleDelete(e: React.MouseEvent) {
     e.preventDefault();
     //set selected dates item by mealtime to array
-    const newMeal = DatabaseDataByDate[mealType as keyof MealState];
+    const newMeal = DatabaseDataByDate[mealType as keyof IMealState];
 
     //find the index of the item to delete from the new meal array
     const valueIndex = newMeal?.findIndex((s) => s?.id === recipe.id) || 0;

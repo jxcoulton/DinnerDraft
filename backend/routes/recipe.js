@@ -6,7 +6,6 @@ var router = express.Router();
 var re = new RegExp("^[0-9]+$");
 router.post("/", function (req, res) {
     axios(req.body.url)
-        // axios("https://www.tasteofhome.com/recipes/sour-cream-chocolate-cookies/")
         .then(function (response) {
         var html = response.data;
         var $ = cheerio.load(html);

@@ -1,39 +1,46 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { PublicVariablesContext } from "../../context/PublicVariables";
 import { auth, Providers } from "../../config/firebase";
-import { Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
-import Center from "../../utils/Center";
 
 const SignInGoogle = () => {
   const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState("");
+  const { loading, setLoading, setShowAlert } = useContext(
+    PublicVariablesContext
+  );
 
   const signInWithGoogle = () => {
+    setLoading(true);
     signInWithPopup(auth, Providers.google)
       .then(() => {
+        setLoading(false);
         navigate("/");
       })
       .catch((error) => {
-        setErrorMessage(error.code + ": " + error.message);
+        setLoading(false);
+        setShowAlert({
+          show: true,
+          severity: "error",
+          message: `${error.message}`,
+        });
       });
   };
 
   return (
-    <Center height={"auto"}>
+    <>
       <Button
         startIcon={<GoogleIcon />}
         size="large"
         variant="contained"
         onClick={signInWithGoogle}
+        disabled={loading}
       >
         Sign In With Google
       </Button>
-      <Typography sx={{ mt: 2 }} color={"red"}>
-        {errorMessage}
-      </Typography>
-    </Center>
+    </>
   );
 };
 

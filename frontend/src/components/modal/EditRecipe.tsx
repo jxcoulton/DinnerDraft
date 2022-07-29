@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import MealState from "../../interface/MealState";
+import IMealState from "../../interface/IMealState";
 import { UserDataContext } from "../../context/userData";
 import { update, ref } from "firebase/database";
 import { database } from "../../config/firebase";
@@ -55,7 +55,7 @@ const EditRecipe = ({ setEdit }: Props) => {
     for (var date in databaseData) {
       let dateItems = databaseData[date];
       for (var type in dateItems) {
-        let meal = dateItems[type as keyof MealState];
+        let meal = dateItems[type as keyof IMealState];
         for (var index in meal) {
           let item = meal[index as unknown as number];
           if (item?.id === currentRecipe.id) {

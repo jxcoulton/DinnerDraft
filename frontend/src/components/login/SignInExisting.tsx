@@ -1,15 +1,17 @@
-import { useState } from "react";
+import React, { useState, useContext } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { Button, TextField, Typography } from "@mui/material";
+import { PublicVariablesContext } from "../../context/PublicVariables";
+import { Button, TextField } from "@mui/material";
 import { auth } from "../../config/firebase";
-import Center from "../../utils/Center";
 
 const SignInExisting = () => {
   const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { loading, setLoading, setShowAlert } = useContext(
+    PublicVariablesContext
+  );
 
   const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -20,24 +22,31 @@ const SignInExisting = () => {
   };
 
   const signInExistingUser = () => {
+    setLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
+        setLoading(false);
         navigate("/");
       })
       .catch((error) => {
-        setErrorMessage(error.code + ": " + error.message);
-        console.log("user not found"); //TODO
+        setLoading(false);
+        setShowAlert({
+          show: true,
+          severity: "error",
+          message: `${error.message}`,
+        });
       });
   };
 
   return (
-    <Center height={"auto"}>
+    <>
       <TextField
         label="email"
         name="email"
         value={email}
         onChange={handleChangeEmail}
         sx={{ margin: "15px" }}
+        disabled={loading}
       />
       <TextField
         label="password"
@@ -46,19 +55,17 @@ const SignInExisting = () => {
         value={password}
         onChange={handleChangePassword}
         sx={{ marginBottom: "15px" }}
+        disabled={loading}
       />
       <Button
         size="large"
         variant="contained"
         onClick={signInExistingUser}
-        disabled={!email || !password}
+        disabled={!email || !password || loading}
       >
         Login
       </Button>
-      <Typography sx={{ mt: 2 }} color={"red"}>
-        {errorMessage}
-      </Typography>
-    </Center>
+    </>
   );
 };
 

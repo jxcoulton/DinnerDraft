@@ -1,47 +1,63 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { PublicVariablesContext } from "../../context/PublicVariables";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../config/firebase";
-import { Button, TextField, Typography } from "@mui/material";
-import Center from "../../utils/Center";
+import { Button, TextField } from "@mui/material";
 
 const PasswordReset = () => {
   const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState("");
   const [email, setEmail] = useState("");
+  const { loading, setLoading, setShowAlert } = useContext(
+    PublicVariablesContext
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
 
   const requestPasswordReset = () => {
+    setLoading(true);
     sendPasswordResetEmail(auth, email)
       .then(() => {
-        console.log("email sent");
+        setLoading(false);
         navigate("/login");
       })
+      .then(() => {
+        setShowAlert({
+          show: true,
+          severity: "success",
+          message: "Recovery email sent",
+        });
+      })
       .catch((error) => {
-        setErrorMessage(error.code + ": " + error.message);
-        console.log("email not sent");
+        setLoading(false);
+        setShowAlert({
+          show: true,
+          severity: "error",
+          message: `${error.message}`,
+        });
       });
     setEmail("");
   };
 
   return (
-    <Center height={"auto"}>
-      <TextField label="email" onChange={handleChange} value={email} />
+    <>
+      <TextField
+        label="email"
+        onChange={handleChange}
+        value={email}
+        disabled={loading}
+      />
       <Button
         size="large"
         variant="contained"
-        disabled={!email}
+        disabled={!email || loading}
         onClick={requestPasswordReset}
       >
         reset password
       </Button>
-      <Typography sx={{ mt: 2 }} color={"red"}>
-        {errorMessage}
-      </Typography>
-    </Center>
+    </>
   );
 };
 

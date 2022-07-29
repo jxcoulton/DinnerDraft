@@ -1,4 +1,4 @@
-export default interface InputValueState {
+export default interface IInputValueState {
   breakfast?: string;
   lunch?: string;
   dinner?: string;

@@ -1,4 +1,4 @@
-export default interface RecipeState {
+export default interface IRecipeState {
   directions?: string[];
   ingredients?: string[];
   title?: string;

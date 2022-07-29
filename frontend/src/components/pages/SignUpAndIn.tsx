@@ -1,17 +1,17 @@
-import React from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Banner from "../Banner";
 import SignInGoogle from "../login/SignInGoogle";
 import SignUpNewUser from "../login/SignUpNewUser";
 import SignInExisting from "../login/SignInExisting";
-import Center from "../../utils/Center";
+import { PublicVariablesContext } from "../../context/PublicVariables";
 import { Box, Tab, Tabs, Button } from "@mui/material";
 import TabContext from "@mui/lab/TabContext";
 import TabPanel from "@mui/lab/TabPanel";
 
 const SignUpAndIn = () => {
   const navigate = useNavigate();
-  const [value, setValue] = React.useState("1");
+  const [value, setValue] = useState("1");
+  const { loading } = useContext(PublicVariablesContext);
 
   function handleChange(_: any, newValue: string) {
     setValue(newValue);
@@ -22,8 +22,7 @@ const SignUpAndIn = () => {
   }
 
   return (
-    <Center height={90}>
-      <Banner />
+    <>
       <TabContext value={value}>
         <Box
           display={"flex"}
@@ -36,11 +35,17 @@ const SignUpAndIn = () => {
         >
           <Box sx={{ borderBottom: 1, borderColor: "divider", width: "100%" }}>
             <Tabs value={value} onChange={handleChange} variant="fullWidth">
-              <Tab sx={{ px: { lg: 20, xs: 6 } }} label="Login" value={"1"} />
+              <Tab
+                sx={{ px: { lg: 20, xs: 6 } }}
+                label="Login"
+                value={"1"}
+                disabled={loading}
+              />
               <Tab
                 sx={{ px: { lg: 16, xs: 6 } }}
                 label="Register"
                 value={"2"}
+                disabled={loading}
               />
             </Tabs>
           </Box>
@@ -51,12 +56,17 @@ const SignUpAndIn = () => {
             <SignUpNewUser />
           </TabPanel>
           <SignInGoogle />
-          <Button size="large" variant="contained" onClick={handleReset}>
+          <Button
+            size="large"
+            variant="contained"
+            onClick={handleReset}
+            disabled={loading}
+          >
             forgot password?
           </Button>
         </Box>
       </TabContext>
-    </Center>
+    </>
   );
 };
 
