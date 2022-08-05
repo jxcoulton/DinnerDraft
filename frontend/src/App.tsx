@@ -7,7 +7,7 @@ import Home from "./components/pages/Home";
 import ForgotPassword from "./components/pages/ForgotPassword";
 import Banner from "./components/common/Banner";
 import Alerts from "./components/common/Alerts";
-import LoadingBar from "./components/common/LoadingBar";
+import LoadingCircle from "./components/common/LoadingCircle";
 
 const App = () => {
   return (
@@ -16,7 +16,7 @@ const App = () => {
         <PublicVariablesProvider>
           <Banner />
           <Alerts />
-          <LoadingBar />
+          <LoadingCircle />
           <Routes>
             <Route path="/login" element={<SignUpAndIn />} />
             <Route path="/reset" element={<ForgotPassword />} />

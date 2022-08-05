@@ -4,8 +4,10 @@ import IAlertsState from "../interface/IAlertsState";
 import { AlertColor } from "@mui/material";
 
 const defaultPublicState = {
-  loading: false,
-  setLoading: () => {},
+  loadingBar: false,
+  setLoadingBar: () => {},
+  loadingCircle: false,
+  setLoadingCircle: () => {},
   showAlert: {
     show: false,
     severity: "success" as AlertColor,
@@ -18,7 +20,8 @@ export const PublicVariablesContext =
   createContext<IPublicContextState>(defaultPublicState);
 
 export const PublicVariablesProvider: React.FC = ({ children }) => {
-  const [loading, setLoading] = useState(false);
+  const [loadingBar, setLoadingBar] = useState(false);
+  const [loadingCircle, setLoadingCircle] = useState(false);
   const [showAlert, setShowAlert] = useState<IAlertsState>(
     defaultPublicState.showAlert
   );
@@ -26,8 +29,10 @@ export const PublicVariablesProvider: React.FC = ({ children }) => {
   return (
     <PublicVariablesContext.Provider
       value={{
-        loading,
-        setLoading,
+        loadingBar,
+        setLoadingBar,
+        loadingCircle,
+        setLoadingCircle,
         showAlert,
         setShowAlert,
       }}

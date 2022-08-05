@@ -8,19 +8,19 @@ import GoogleIcon from "@mui/icons-material/Google";
 
 const SignInGoogle = () => {
   const navigate = useNavigate();
-  const { loading, setLoading, setShowAlert } = useContext(
+  const { loadingCircle, setLoadingCircle, setShowAlert } = useContext(
     PublicVariablesContext
   );
 
   const signInWithGoogle = () => {
-    setLoading(true);
+    setLoadingCircle(true);
     signInWithPopup(auth, Providers.google)
       .then(() => {
-        setLoading(false);
+        setLoadingCircle(false);
         navigate("/");
       })
       .catch((error) => {
-        setLoading(false);
+        setLoadingCircle(false);
         setShowAlert({
           show: true,
           severity: "error",
@@ -36,7 +36,7 @@ const SignInGoogle = () => {
         size="large"
         variant="contained"
         onClick={signInWithGoogle}
-        disabled={loading}
+        disabled={loadingCircle}
       >
         Sign In With Google
       </Button>

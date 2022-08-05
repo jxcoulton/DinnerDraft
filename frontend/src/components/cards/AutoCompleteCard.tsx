@@ -4,11 +4,13 @@ import { UserDataContext } from "../../context/userData";
 type Props = {
   mealType?: string;
   autoComplete: (input: string) => any[];
+  inputRef?: React.MutableRefObject<any>;
 };
 
 const AutoCompleteCard: React.FC<Props> = ({
   mealType,
   autoComplete,
+  inputRef,
 }: Props) => {
   const { value, setValue } = useContext(UserDataContext);
 
@@ -21,6 +23,9 @@ const AutoCompleteCard: React.FC<Props> = ({
         e.target as HTMLDivElement
       ).innerHTML,
     });
+    if (inputRef?.current !== undefined) {
+      inputRef.current.firstChild.focus();
+    }
   }
 
   return (

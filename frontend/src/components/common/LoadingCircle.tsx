@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import { PublicVariablesContext } from "../../context/PublicVariables";
-import { Box, LinearProgress } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 
-function LoadingBar() {
-  const { loadingBar } = useContext(PublicVariablesContext);
+function LoadingCircle() {
+  const { loadingCircle } = useContext(PublicVariablesContext);
 
-  if (!loadingBar) {
+  if (!loadingCircle) {
     return null;
   }
 
@@ -13,15 +13,15 @@ function LoadingBar() {
     <Box
       sx={{
         position: "absolute",
-        width: "70%",
+        width: "100%",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <LinearProgress variant="indeterminate" sx={{ width: "50%" }} />
+      <CircularProgress variant="indeterminate" size={75} />
     </Box>
   );
 }
 
-export default LoadingBar;
+export default LoadingCircle;

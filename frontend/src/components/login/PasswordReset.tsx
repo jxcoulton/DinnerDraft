@@ -8,7 +8,7 @@ import { Button, TextField } from "@mui/material";
 const PasswordReset = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const { loading, setLoading, setShowAlert } = useContext(
+  const { loadingCircle, setLoadingCircle, setShowAlert } = useContext(
     PublicVariablesContext
   );
 
@@ -17,10 +17,10 @@ const PasswordReset = () => {
   };
 
   const requestPasswordReset = () => {
-    setLoading(true);
+    setLoadingCircle(true);
     sendPasswordResetEmail(auth, email)
       .then(() => {
-        setLoading(false);
+        setLoadingCircle(false);
         navigate("/login");
       })
       .then(() => {
@@ -31,7 +31,7 @@ const PasswordReset = () => {
         });
       })
       .catch((error) => {
-        setLoading(false);
+        setLoadingCircle(false);
         setShowAlert({
           show: true,
           severity: "error",
@@ -47,12 +47,12 @@ const PasswordReset = () => {
         label="email"
         onChange={handleChange}
         value={email}
-        disabled={loading}
+        disabled={loadingCircle}
       />
       <Button
         size="large"
         variant="contained"
-        disabled={!email || loading}
+        disabled={!email || loadingCircle}
         onClick={requestPasswordReset}
       >
         reset password

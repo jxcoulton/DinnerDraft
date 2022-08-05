@@ -1,11 +1,13 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { UserDataContext } from "../../context/userData";
+import { PublicVariablesContext } from "../../context/PublicVariables";
 import ViewRecipe from "./ViewRecipe";
 import EditRecipe from "./EditRecipe";
 import { Box } from "@mui/system";
 import { Modal } from "@mui/material";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import LoadingBar from "../common/LoadingBar";
 
 const style = {
   position: "absolute",
@@ -23,8 +25,9 @@ const style = {
 };
 
 const RecipeModal = () => {
-  const { modalOpen, setModalOpen } = useContext(UserDataContext);
-  const [edit, setEdit] = useState(false);
+  const { modalOpen, setModalOpen, edit, setEdit } =
+    useContext(UserDataContext);
+  const { loadingBar } = useContext(PublicVariablesContext);
 
   function handleClose() {
     setModalOpen(false);
@@ -42,16 +45,20 @@ const RecipeModal = () => {
         <IconButton onClick={handleClose}>
           <CloseIcon />
         </IconButton>
-        {!edit ? (
-          <>
-            <ViewRecipe />
-            <button onClick={() => setEdit(true)}>edit</button>
-          </>
+        {!loadingBar ? (
+          !edit ? (
+            <>
+              <ViewRecipe />
+              <button onClick={() => setEdit(true)}>edit</button>
+            </>
+          ) : (
+            <>
+              <EditRecipe />
+              <button onClick={() => setEdit(false)}>cancel changes</button>
+            </>
+          )
         ) : (
-          <>
-            <EditRecipe setEdit={setEdit} />
-            <button onClick={() => setEdit(false)}>cancel changes</button>
-          </>
+          <LoadingBar />
         )}
       </Box>
     </Modal>

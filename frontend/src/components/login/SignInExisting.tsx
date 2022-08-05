@@ -9,7 +9,7 @@ const SignInExisting = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { loading, setLoading, setShowAlert } = useContext(
+  const { loadingCircle, setLoadingCircle, setShowAlert } = useContext(
     PublicVariablesContext
   );
 
@@ -22,14 +22,14 @@ const SignInExisting = () => {
   };
 
   const signInExistingUser = () => {
-    setLoading(true);
+    setLoadingCircle(true);
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-        setLoading(false);
+        setLoadingCircle(false);
         navigate("/");
       })
       .catch((error) => {
-        setLoading(false);
+        setLoadingCircle(false);
         setShowAlert({
           show: true,
           severity: "error",
@@ -46,7 +46,7 @@ const SignInExisting = () => {
         value={email}
         onChange={handleChangeEmail}
         sx={{ margin: "15px" }}
-        disabled={loading}
+        disabled={loadingCircle}
       />
       <TextField
         label="password"
@@ -55,13 +55,13 @@ const SignInExisting = () => {
         value={password}
         onChange={handleChangePassword}
         sx={{ marginBottom: "15px" }}
-        disabled={loading}
+        disabled={loadingCircle}
       />
       <Button
         size="large"
         variant="contained"
         onClick={signInExistingUser}
-        disabled={!email || !password || loading}
+        disabled={!email || !password || loadingCircle}
       >
         Login
       </Button>

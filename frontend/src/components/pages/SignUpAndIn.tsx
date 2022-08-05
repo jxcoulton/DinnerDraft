@@ -11,7 +11,7 @@ import TabPanel from "@mui/lab/TabPanel";
 const SignUpAndIn = () => {
   const navigate = useNavigate();
   const [value, setValue] = useState("1");
-  const { loading } = useContext(PublicVariablesContext);
+  const { loadingCircle } = useContext(PublicVariablesContext);
 
   function handleChange(_: any, newValue: string) {
     setValue(newValue);
@@ -39,13 +39,13 @@ const SignUpAndIn = () => {
                 sx={{ px: { lg: 20, xs: 6 } }}
                 label="Login"
                 value={"1"}
-                disabled={loading}
+                disabled={loadingCircle}
               />
               <Tab
                 sx={{ px: { lg: 16, xs: 6 } }}
                 label="Register"
                 value={"2"}
-                disabled={loading}
+                disabled={loadingCircle}
               />
             </Tabs>
           </Box>
@@ -60,7 +60,7 @@ const SignUpAndIn = () => {
             size="large"
             variant="contained"
             onClick={handleReset}
-            disabled={loading}
+            disabled={loadingCircle}
           >
             forgot password?
           </Button>

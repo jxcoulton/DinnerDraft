@@ -1,5 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { UserDataContext } from "../../context/userData";
+import { PublicVariablesContext } from "../../context/PublicVariables";
 import IMealState from "../../interface/IMealState";
 import IInputValueState from "../../interface/IInputValueState";
 import { ref, update } from "firebase/database";
@@ -10,6 +11,7 @@ import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 import AutoCompleteCard from "./AutoCompleteCard";
 import uuid from "react-uuid";
+import LoadingBar from "../common/LoadingBar";
 
 type Props = {
   mealType?: string;
@@ -62,6 +64,10 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
     userFavorites,
     databaseData,
   } = useContext(UserDataContext);
+  const { loadingBar, setLoadingBar, setShowAlert } = useContext(
+    PublicVariablesContext
+  );
+  const inputRef = useRef<any>();
 
   function autoComplete(input: string) {
     return Object.values(userFavorites)?.filter((e) =>
@@ -71,6 +77,7 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
 
   async function handleSetMeal(e: React.FormEvent) {
     e.preventDefault();
+    setLoadingBar(true);
     const eTarget = e.target as HTMLInputElement;
     //mealName needs keyof reference that can be either IInputValueState or IMealState
     const mealName =
@@ -108,7 +115,14 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
             [eTarget.name]: [...previousMeal, recipe],
           };
         })
-        .catch((err) => console.log(err));
+        .catch((error) => {
+          setLoadingBar(false);
+          setShowAlert({
+            show: true,
+            severity: "error",
+            message: `${error.message}`,
+          });
+        });
       //if not url and value is not empty
     } else if (value[mealName]) {
       //if entered in planner and autocomplete results exist and input value = found results title then set to found results
@@ -132,32 +146,55 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
     }
 
     //if entered in planner set to meals database
-    if (mealType) {
-      update(
-        ref(
-          database,
-          `users/${activeUser.uid}/meals/${format(startDate, "PPP")}`
-        ),
-        {
-          ...newMeal,
-        }
-      )
-        .then(() => {})
-        .catch((error) => {
-          console.log(error);
-        });
-      //if entered in favorites tab set title as key and recipe as value
-    } else {
-      update(ref(database, `users/${activeUser.uid}/favorites`), {
-        [Object.values(newMeal)[0][0].title]: {
-          ...Object.values(newMeal)[0][0],
-        },
-      })
-        .then(() => {})
-        .catch((error) => {
-          console.log(error);
-        });
+    setValue(defaultValueState);
+    if (Object.keys(newMeal).length) {
+      if (mealType) {
+        update(
+          ref(
+            database,
+            `users/${activeUser.uid}/meals/${format(startDate, "PPP")}`
+          ),
+          {
+            ...newMeal,
+          }
+        )
+          .then(() => {
+            setLoadingBar(false);
+          })
+          .catch((error) => {
+            setLoadingBar(false);
+            setShowAlert({
+              show: true,
+              severity: "error",
+              message: `${error.message}`,
+            });
+          });
+        //if entered in favorites tab set title as key and recipe as value
+      } else {
+        update(ref(database, `users/${activeUser.uid}/favorites`), {
+          [Object.values(newMeal)[0][0].title]: {
+            ...Object.values(newMeal)[0][0],
+          },
+        })
+          .then(() => {
+            setLoadingBar(false);
+          })
+          .catch((error) => {
+            setLoadingBar(false);
+            setShowAlert({
+              show: true,
+              severity: "error",
+              message: `${error.message}`,
+            });
+          });
+      }
+      setShowAlert({
+        show: true,
+        severity: "success",
+        message: `Recipe Added`,
+      });
     }
+    setLoadingBar(false);
     setValue(defaultValueState);
     setTrigger(!trigger);
     setAddMealItemOpen(defaultIOpenState);
@@ -183,15 +220,30 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
         <InputBase
           autoFocus
           name={mealType}
-          value={value[mealType as keyof typeof value]}
+          value={
+            !loadingBar
+              ? value[mealType as keyof typeof value]
+              : defaultValueState[mealType as keyof typeof value]
+          }
           onChange={(e) =>
             setValue({ ...value, [e.target.name]: e.target.value })
           }
-          placeholder={`Add custom recipe or recipe URL`}
+          placeholder={
+            !loadingBar ? `Add custom recipe or recipe URL` : "Loading..."
+          }
           sx={{ width: "80%", padding: "15px 10%" }}
+          disabled={loadingBar}
+          ref={inputRef}
+          type="text"
         />
+
+        <LoadingBar />
         {value[mealType as keyof typeof value] && (
-          <AutoCompleteCard mealType={mealType} autoComplete={autoComplete} />
+          <AutoCompleteCard
+            mealType={mealType}
+            autoComplete={autoComplete}
+            inputRef={inputRef}
+          />
         )}
         <IconButton
           type="submit"

@@ -43,6 +43,8 @@ const defaultState = {
   setCurrentRecipe: () => {},
   userFavorites: {},
   setUserFavorites: () => {},
+  edit: false,
+  setEdit: () => {},
 };
 
 const defaultOpenState = {
@@ -72,6 +74,7 @@ export const UserDataProvider: React.FC = ({ children }) => {
     defaultState.currentRecipe
   );
   const [userFavorites, setUserFavorites] = useState<IRecipeState>({});
+  const [edit, setEdit] = useState(false);
 
   useEffect(() => {
     const unsubscribeAuthChange = onAuthStateChanged(auth, () => {
@@ -155,6 +158,8 @@ export const UserDataProvider: React.FC = ({ children }) => {
         setCurrentRecipe,
         userFavorites,
         setUserFavorites,
+        edit,
+        setEdit,
       }}
     >
       {children}

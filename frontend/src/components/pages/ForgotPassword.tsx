@@ -6,7 +6,7 @@ import { Button, Box } from "@mui/material";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const { loading } = useContext(PublicVariablesContext);
+  const { loadingCircle } = useContext(PublicVariablesContext);
 
   function returnToLogin() {
     navigate("/login");
@@ -28,7 +28,7 @@ const ForgotPassword = () => {
           size="large"
           variant="contained"
           onClick={returnToLogin}
-          disabled={loading}
+          disabled={loadingCircle}
         >
           return to login
         </Button>

@@ -12,7 +12,8 @@ type Props = {
 };
 
 const MealCard = ({ mealType }: Props) => {
-  const { databaseData, startDate } = useContext(UserDataContext);
+  const { databaseData, startDate, setModalOpen, setCurrentRecipe } =
+    useContext(UserDataContext);
 
   return (
     <div
@@ -38,7 +39,15 @@ const MealCard = ({ mealType }: Props) => {
             }}
           >
             <FavoriteMealButton recipe={eachRecipe} mealType={mealType} />
-            <Typography variant="h6" paddingX={"10%"} paddingY={"2%"}>
+            <Typography
+              variant="h6"
+              paddingX={"10%"}
+              paddingY={"2%"}
+              onClick={() => {
+                setModalOpen(true);
+                setCurrentRecipe(eachRecipe);
+              }}
+            >
               {eachRecipe.title}
             </Typography>
             <EditMealButton recipe={eachRecipe} />

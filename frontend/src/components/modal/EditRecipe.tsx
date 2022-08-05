@@ -1,23 +1,22 @@
 import { useContext, useState } from "react";
 import IMealState from "../../interface/IMealState";
 import { UserDataContext } from "../../context/userData";
+import { PublicVariablesContext } from "../../context/PublicVariables";
 import { update, ref } from "firebase/database";
 import { database } from "../../config/firebase";
 import { TextField } from "@mui/material";
+import LoadingBar from "../common/LoadingBar";
 
-type Props = {
-  setEdit: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-const EditRecipe = ({ setEdit }: Props) => {
+const EditRecipe = () => {
   const {
     databaseData,
     activeUser,
     trigger,
     setTrigger,
     currentRecipe,
-    setModalOpen,
+    setEdit,
   } = useContext(UserDataContext);
+  const { setLoadingBar, setShowAlert } = useContext(PublicVariablesContext);
 
   const [editedRecipe, setEditedRecipe] = useState({
     title: currentRecipe.title,
@@ -51,6 +50,7 @@ const EditRecipe = ({ setEdit }: Props) => {
 
   function handleSaveEditedMeal(e: React.SyntheticEvent) {
     e.preventDefault();
+    setLoadingBar(true);
 
     for (var date in databaseData) {
       let dateItems = databaseData[date];
@@ -70,11 +70,13 @@ const EditRecipe = ({ setEdit }: Props) => {
                 directions: [...convertArray(editedRecipe.directions)],
               }
             )
-              .then(() => {
-                setModalOpen(false); //updating modal set to loading??
-              })
+              .then(() => {})
               .catch((error) => {
-                console.log(error);
+                setShowAlert({
+                  show: true,
+                  severity: "error",
+                  message: `${error.message}`,
+                });
               });
 
             update(
@@ -88,11 +90,13 @@ const EditRecipe = ({ setEdit }: Props) => {
                 directions: [...convertArray(editedRecipe.directions)],
               }
             )
-              .then(() => {
-                setModalOpen(false); //updating modal set to loading??
-              })
+              .then(() => {})
               .catch((error) => {
-                console.log(error);
+                setShowAlert({
+                  show: true,
+                  severity: "error",
+                  message: `${error.message}`,
+                });
               });
           }
         }
@@ -100,11 +104,16 @@ const EditRecipe = ({ setEdit }: Props) => {
     }
     setTrigger(!trigger);
     setEdit(false);
-    //get recipe from database to display
+    setShowAlert({
+      show: true,
+      severity: "success",
+      message: `Recipe Updated`,
+    });
   }
 
   return (
     <form onSubmit={handleSaveEditedMeal}>
+      <LoadingBar />
       <TextField
         label="Edit Recipe Name"
         value={editedRecipe.title}

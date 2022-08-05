@@ -7,10 +7,8 @@ function Alerts() {
 
   useEffect(() => {
     const timeId = setTimeout(() => {
-      console.log("ran");
       setShowAlert({ show: false });
     }, 3000);
-
     return () => {
       clearTimeout(timeId);
     };
@@ -21,7 +19,7 @@ function Alerts() {
   }
 
   return (
-    <Box sx={{ position: "absolute", top: "5%", left: "5%" }}>
+    <Box sx={{ position: "absolute", top: "5%", left: "5%", zIndex: 9999 }}>
       <Alert severity={showAlert.severity}>{showAlert.message}</Alert>
     </Box>
   );

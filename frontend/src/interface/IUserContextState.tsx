@@ -24,4 +24,6 @@ export default interface IUserContextState {
   setCurrentRecipe: React.Dispatch<React.SetStateAction<IRecipeState>>;
   userFavorites: IRecipeState;
   setUserFavorites: React.Dispatch<React.SetStateAction<IRecipeState>>;
+  edit: boolean;
+  setEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }

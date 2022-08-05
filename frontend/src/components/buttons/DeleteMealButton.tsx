@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import IMealState from "../../interface/IMealState";
 import { UserDataContext } from "../../context/userData";
+import { PublicVariablesContext } from "../../context/PublicVariables";
 import { set, ref } from "firebase/database";
 import { database } from "../../config/firebase";
 import { format } from "date-fns";
@@ -17,6 +18,7 @@ type Props = {
 const DeleteMealButton: React.FC<Props> = ({ mealType, recipe }: Props) => {
   const { activeUser, startDate, databaseData, trigger, setTrigger } =
     useContext(UserDataContext);
+  const { setShowAlert } = useContext(PublicVariablesContext);
 
   //selected dates database data
   const DatabaseDataByDate = databaseData[`${format(startDate, "PPP")}`];
@@ -43,7 +45,21 @@ const DeleteMealButton: React.FC<Props> = ({ mealType, recipe }: Props) => {
       {
         ...newMeal,
       }
-    );
+    )
+      .then(() => {
+        setShowAlert({
+          show: true,
+          severity: "warning",
+          message: `Recipe Deleted`,
+        });
+      })
+      .catch((error) => {
+        setShowAlert({
+          show: true,
+          severity: "error",
+          message: `${error.message}`,
+        });
+      });
     setTrigger(!trigger);
   }
 
