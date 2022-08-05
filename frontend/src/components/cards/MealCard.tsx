@@ -15,6 +15,11 @@ const MealCard = ({ mealType }: Props) => {
   const { databaseData, startDate, setModalOpen, setCurrentRecipe } =
     useContext(UserDataContext);
 
+  function handleOpenModal(eachRecipe: any) {
+    setModalOpen(true);
+    setCurrentRecipe(eachRecipe);
+  }
+
   return (
     <div
       style={{
@@ -43,10 +48,7 @@ const MealCard = ({ mealType }: Props) => {
               variant="h6"
               paddingX={"10%"}
               paddingY={"2%"}
-              onClick={() => {
-                setModalOpen(true);
-                setCurrentRecipe(eachRecipe);
-              }}
+              onClick={() => handleOpenModal(eachRecipe)}
             >
               {eachRecipe.title}
             </Typography>

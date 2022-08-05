@@ -6,9 +6,15 @@ import CreateMealCard from "../cards/CreateMealCard";
 import { Card, Typography } from "@mui/material";
 
 function Favorites() {
-  const { userFavorites } = useContext(UserDataContext);
+  const { userFavorites, setModalOpen, setCurrentRecipe } =
+    useContext(UserDataContext);
 
   let favorites = Object.values(userFavorites);
+
+  function handleOpenModal(eachRecipe: any) {
+    setModalOpen(true);
+    setCurrentRecipe(eachRecipe);
+  }
 
   return (
     <div
@@ -33,7 +39,11 @@ function Favorites() {
             }}
           >
             <FavoriteMealButton recipe={eachRecipe} />
-            <Typography variant="h6" sx={{ padding: "20px" }}>
+            <Typography
+              variant="h6"
+              onClick={() => handleOpenModal(eachRecipe)}
+              sx={{ padding: "20px" }}
+            >
               {eachRecipe.title}
             </Typography>
             <EditMealButton recipe={eachRecipe} />

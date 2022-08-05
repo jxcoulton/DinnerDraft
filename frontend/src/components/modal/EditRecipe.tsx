@@ -109,6 +109,7 @@ const EditRecipe = () => {
     }
     setTrigger(!trigger);
     setEdit(false);
+    setLoadingBar(false);
     setShowAlert({
       show: true,
       severity: "success",
