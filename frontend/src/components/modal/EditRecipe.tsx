@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import IMealState from "../../interface/IMealState";
+import IRecipeState from "../../interface/IRecipeState";
 import { UserDataContext } from "../../context/userData";
 import { PublicVariablesContext } from "../../context/PublicVariables";
 import { update, ref } from "firebase/database";
@@ -15,6 +16,7 @@ const EditRecipe = () => {
     setTrigger,
     currentRecipe,
     setEdit,
+    userFavorites,
   } = useContext(UserDataContext);
   const { setLoadingBar, setShowAlert } = useContext(PublicVariablesContext);
 
@@ -28,6 +30,7 @@ const EditRecipe = () => {
       ? currentRecipe.directions.map((item) => `${item} \n`).join("")
       : "",
     favorite: currentRecipe.favorite,
+    id: currentRecipe.id,
   });
 
   function convertArray(string: string) {
@@ -78,28 +81,30 @@ const EditRecipe = () => {
                   message: `${error.message}`,
                 });
               });
-
-            update(
-              ref(
-                database,
-                `users/${activeUser.uid}/favorites/${editedRecipe.title}`
-              ),
-              {
-                ...editedRecipe,
-                ingredients: [...convertArray(editedRecipe.ingredients)],
-                directions: [...convertArray(editedRecipe.directions)],
-              }
-            )
-              .then(() => {})
-              .catch((error) => {
-                setShowAlert({
-                  show: true,
-                  severity: "error",
-                  message: `${error.message}`,
-                });
-              });
           }
         }
+      }
+    }
+
+    for (var fav in userFavorites) {
+      let items = userFavorites[fav as keyof IRecipeState] as IRecipeState;
+      if (items?.id === editedRecipe.id) {
+        update(
+          ref(database, `users/${activeUser.uid}/favorites/${editedRecipe.id}`),
+          {
+            ...editedRecipe,
+            ingredients: [...convertArray(editedRecipe.ingredients)],
+            directions: [...convertArray(editedRecipe.directions)],
+          }
+        )
+          .then(() => {})
+          .catch((error) => {
+            setShowAlert({
+              show: true,
+              severity: "error",
+              message: `${error.message}`,
+            });
+          });
       }
     }
     setTrigger(!trigger);

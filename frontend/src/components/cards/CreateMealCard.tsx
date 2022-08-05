@@ -172,7 +172,7 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
         //if entered in favorites tab set title as key and recipe as value
       } else {
         update(ref(database, `users/${activeUser.uid}/favorites`), {
-          [Object.values(newMeal)[0][0].title]: {
+          [Object.values(newMeal)[0][0].id]: {
             ...Object.values(newMeal)[0][0],
           },
         })

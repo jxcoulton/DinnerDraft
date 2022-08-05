@@ -38,8 +38,8 @@ const RecipeModal = () => {
     <Modal
       open={modalOpen}
       onClose={handleClose}
-      aria-labelledby="keep-mounted-modal-title"
-      aria-describedby="keep-mounted-modal-description"
+      aria-labelledby="modal-title"
+      aria-describedby="modal-description"
     >
       <Box sx={style}>
         <IconButton onClick={handleClose}>

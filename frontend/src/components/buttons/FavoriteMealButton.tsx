@@ -13,10 +13,9 @@ type Props = {
   recipe: {
     [key: string]: any;
   };
-  mealType?: string;
 };
 
-const FavoriteMealButton: React.FC<Props> = ({ recipe, mealType }: Props) => {
+const FavoriteMealButton: React.FC<Props> = ({ recipe }: Props) => {
   const { databaseData, activeUser, trigger, setTrigger, userFavorites } =
     useContext(UserDataContext);
   const { setShowAlert } = useContext(PublicVariablesContext);
@@ -46,7 +45,7 @@ const FavoriteMealButton: React.FC<Props> = ({ recipe, mealType }: Props) => {
                 //if favorited add to favorites
                 if (favorited) {
                   update(ref(database, `users/${activeUser.uid}/favorites`), {
-                    [recipe.title]: { ...recipe, favorite: true },
+                    [recipe.id]: { ...recipe, favorite: true },
                   })
                     .then(() => {
                       setTrigger(!trigger);
@@ -59,7 +58,7 @@ const FavoriteMealButton: React.FC<Props> = ({ recipe, mealType }: Props) => {
                   remove(
                     ref(
                       database,
-                      `users/${activeUser.uid}/favorites/${recipe.title}`
+                      `users/${activeUser.uid}/favorites/${recipe.id}`
                     )
                   )
                     .then(() => {
@@ -88,9 +87,7 @@ const FavoriteMealButton: React.FC<Props> = ({ recipe, mealType }: Props) => {
     for (var fav in userFavorites) {
       let items = userFavorites[fav as keyof IRecipeState] as IRecipeState;
       if (items?.id === recipe.id) {
-        remove(
-          ref(database, `users/${activeUser.uid}/favorites/${recipe.title}`)
-        )
+        remove(ref(database, `users/${activeUser.uid}/favorites/${recipe.id}`))
           .then(() => {
             setTrigger(!trigger);
           })
