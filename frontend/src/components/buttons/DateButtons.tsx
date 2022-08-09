@@ -29,12 +29,10 @@ const DateButtons: React.FC = () => {
               variant="contained"
               sx={{ margin: "5px" }}
               key={day.getDate()}
-              aria-current={
-                day.setHours(0, 0, 0, 0) === startDate.setHours(0, 0, 0, 0)
-                  ? "true"
-                  : "false"
-              }
               onClick={() => setStartDate(day)}
+              disabled={
+                day.setHours(0, 0, 0, 0) === startDate.setHours(0, 0, 0, 0)
+              }
             >
               {`${format(day, "eee d")}`}
             </Button>

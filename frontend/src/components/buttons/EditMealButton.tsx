@@ -16,7 +16,6 @@ const EditMealButton: React.FC<Props> = ({ recipe }: Props) => {
 
   //open modal and set the selected recipe to display
   function handleOpen() {
-    console.log(recipe);
     setCurrentRecipe(recipe);
     setModalOpen(true);
     setEdit(true);

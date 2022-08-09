@@ -11,7 +11,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
-.date-picker__button[aria-current="true"] {
-  background-color: rgba(38, 73, 156, 0.295);
-}

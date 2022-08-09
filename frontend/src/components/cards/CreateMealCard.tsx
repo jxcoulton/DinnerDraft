@@ -146,7 +146,6 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
     }
 
     //if entered in planner set to meals database
-    setValue(defaultValueState);
     if (Object.keys(newMeal).length) {
       if (mealType) {
         update(
@@ -197,6 +196,9 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
     setLoadingBar(false);
     setValue(defaultValueState);
     setTrigger(!trigger);
+    if (inputRef?.current !== undefined) {
+      inputRef.current.firstChild.value = "";
+    }
     setAddMealItemOpen(defaultIOpenState);
   }
 
@@ -220,13 +222,12 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
         <InputBase
           autoFocus
           name={mealType}
-          value={
-            !loadingBar
-              ? value[mealType as keyof typeof value]
-              : defaultValueState[mealType as keyof typeof value]
-          }
+          value={value[mealType as keyof typeof value]}
           onChange={(e) =>
-            setValue({ ...value, [e.target.name]: e.target.value })
+            setValue({
+              ...value,
+              [e.target.name]: e.target.value,
+            })
           }
           placeholder={
             !loadingBar ? `Add custom recipe or recipe URL` : "Loading..."
@@ -234,7 +235,6 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
           sx={{ width: "80%", padding: "15px 10%" }}
           disabled={loadingBar}
           ref={inputRef}
-          type="text"
         />
 
         <LoadingBar />
