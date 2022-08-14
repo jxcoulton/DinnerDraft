@@ -8,11 +8,13 @@ import ForgotPassword from "./components/pages/ForgotPassword";
 import Banner from "./components/common/Banner";
 import Alerts from "./components/common/Alerts";
 import LoadingCircle from "./components/common/LoadingCircle";
+import { ThemeProvider } from "@mui/private-theming";
+import theme from "./styles/ThemeProvider";
 
 const App = () => {
   return (
-    <div>
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <ThemeProvider theme={theme}>
         <PublicVariablesProvider>
           <Banner />
           <Alerts />
@@ -32,8 +34,8 @@ const App = () => {
             />
           </Routes>
         </PublicVariablesProvider>
-      </BrowserRouter>
-    </div>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 };
 

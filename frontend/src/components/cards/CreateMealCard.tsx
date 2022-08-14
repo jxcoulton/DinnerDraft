@@ -6,7 +6,7 @@ import IInputValueState from "../../interface/IInputValueState";
 import { ref, update } from "firebase/database";
 import { database } from "../../config/firebase";
 import { format } from "date-fns";
-import { Card, InputBase, IconButton } from "@mui/material";
+import { Card, InputBase, IconButton, useTheme } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 import AutoCompleteCard from "./AutoCompleteCard";
@@ -68,6 +68,7 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
     PublicVariablesContext
   );
   const inputRef = useRef<any>();
+  const theme = useTheme();
 
   function autoComplete(input: string) {
     return Object.values(userFavorites)?.filter((e) =>
@@ -209,7 +210,7 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
         justifyContent: "center",
         width: "100%",
         borderRadius: "0px",
-        backgroundColor: "#e9e6e6",
+        backgroundColor: theme.palette.grey[50],
         border: "solid 1px dark grey",
       }}
     >

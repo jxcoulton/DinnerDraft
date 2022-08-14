@@ -20,6 +20,7 @@ const AuthChecker = ({ children }: { children: JSX.Element }) => {
 
     //cleanup listeners
     return () => {
+      setLoading(false);
       unsubscribeAuthChange();
     };
   }, [navigate]);

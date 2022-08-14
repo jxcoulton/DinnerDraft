@@ -2,10 +2,23 @@ import { useContext } from "react";
 import { UserDataContext } from "../../context/userData";
 import MealCategoryCard from "../cards/MealCategoryCard";
 import { format, eachDayOfInterval, startOfWeek, endOfWeek } from "date-fns";
-import { Button } from "@mui/material";
+import { Button, useTheme, styled, Theme } from "@mui/material";
+
+type StyleProps = {
+  theme: Theme;
+};
+
+const StyledDateButton = styled(Button)(({ theme }: StyleProps) => ({
+  background: theme.palette.primary.main,
+  margin: "5px",
+  "&:hover": {
+    background: theme.palette.secondary.main,
+  },
+}));
 
 const DateButtons: React.FC = () => {
   const { startDate, setStartDate } = useContext(UserDataContext);
+  const theme = useTheme();
 
   //list of current weeks dates
   const dateList = eachDayOfInterval({
@@ -24,10 +37,9 @@ const DateButtons: React.FC = () => {
       >
         {dateList.map((day: Date) => {
           return (
-            <Button
-              className="date-picker__button"
+            <StyledDateButton
+              theme={theme}
               variant="contained"
-              sx={{ margin: "5px" }}
               key={day.getDate()}
               onClick={() => setStartDate(day)}
               disabled={
@@ -35,7 +47,7 @@ const DateButtons: React.FC = () => {
               }
             >
               {`${format(day, "eee d")}`}
-            </Button>
+            </StyledDateButton>
           );
         })}
       </div>

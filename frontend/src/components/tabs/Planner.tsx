@@ -1,14 +1,14 @@
 import React from "react";
 import DateButtons from "../buttons/DateButtons";
-import { Card } from "@mui/material";
+import { Card, useTheme } from "@mui/material";
 
 const Planner: React.FC = () => {
+  const theme = useTheme();
+
   return (
     <Card
       sx={{
-        minHeight: "80vh",
-        marginBottom: "10vh",
-        backgroundColor: "lightgrey",
+        backgroundColor: theme.palette.grey[50],
       }}
     >
       <DateButtons />
