@@ -41,7 +41,12 @@ const PasswordReset = () => {
   };
 
   return (
-    <Box display={"flex"} alignItems={"center"} flexDirection={"column"}>
+    <Box
+      display={"flex"}
+      alignItems={"center"}
+      flexDirection={"column"}
+      width={"50%"}
+    >
       <TextField
         label="Email"
         onChange={handleChange}

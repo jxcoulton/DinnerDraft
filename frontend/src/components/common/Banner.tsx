@@ -87,20 +87,20 @@ const Banner: React.FC = () => {
               onClose={() => setShowMenu(false)}
             >
               <List>
-                <ListItemButton>
-                  <ListItemIcon onClick={() => navigate("/")}>
+                <ListItemButton onClick={() => navigate("/")}>
+                  <ListItemIcon>
                     <HomeIcon />
                   </ListItemIcon>
                   <ListItemText primary="Home"></ListItemText>
                 </ListItemButton>
-                <ListItemButton>
-                  <ListItemIcon onClick={() => navigate("/favorite")}>
+                <ListItemButton onClick={() => navigate("/favorite")}>
+                  <ListItemIcon>
                     <FavoriteIcon />
                   </ListItemIcon>
                   <ListItemText primary="Favorites"></ListItemText>
                 </ListItemButton>
-                <ListItemButton>
-                  <ListItemIcon onClick={() => logout()}>
+                <ListItemButton onClick={() => logout()}>
+                  <ListItemIcon>
                     <LogoutIcon />
                   </ListItemIcon>
                   <ListItemText primary="Logout"></ListItemText>

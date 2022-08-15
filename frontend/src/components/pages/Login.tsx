@@ -15,6 +15,7 @@ const SignUpAndIn = () => {
       sx={{
         backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.25),  rgba(0, 0, 0, 0.25)), url("LoginBackground.jpg")`,
         backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
     >
       <Box

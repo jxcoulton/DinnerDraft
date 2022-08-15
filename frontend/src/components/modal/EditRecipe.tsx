@@ -15,6 +15,7 @@ const EditRecipe = () => {
     trigger,
     setTrigger,
     currentRecipe,
+    setCurrentRecipe,
     setEdit,
     userFavorites,
   } = useContext(UserDataContext);
@@ -32,6 +33,15 @@ const EditRecipe = () => {
     favorite: currentRecipe.favorite,
     id: currentRecipe.id,
   });
+
+  const editedState = {
+    directions: editedRecipe?.directions.trim().split("\n"),
+    ingredients: editedRecipe?.ingredients.trim().split("\n"),
+    title: editedRecipe?.title,
+    favorite: editedRecipe?.favorite,
+    id: editedRecipe?.id,
+    url: editedRecipe?.url,
+  };
 
   function convertArray(string: string) {
     return string
@@ -107,6 +117,7 @@ const EditRecipe = () => {
           });
       }
     }
+    setCurrentRecipe(editedState);
     setTrigger(!trigger);
     setEdit(false);
     setLoadingBar(false);

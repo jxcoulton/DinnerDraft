@@ -41,6 +41,7 @@ const FavoritesPage = () => {
                 width: "100%",
                 alignItems: "center",
                 borderTop: `1px solid ${theme.palette.grey[200]}`,
+                cursor: "pointer",
               }}
             >
               <FavoriteMealButton recipe={eachRecipe} />

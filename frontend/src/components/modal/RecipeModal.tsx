@@ -3,23 +3,10 @@ import { UserDataContext } from "../../context/userData";
 import { PublicVariablesContext } from "../../context/PublicVariables";
 import ViewRecipe from "./ViewRecipe";
 import EditRecipe from "./EditRecipe";
-import { Modal, Card, Typography, Box, Button } from "@mui/material";
+import { Modal, Card, Typography, Box } from "@mui/material";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import LoadingBar from "../common/LoadingBar";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "95%",
-  maxWidth: "600px",
-  maxHeight: "85vh",
-  backgroundColor: "white",
-  padding: "1rem",
-  overflowY: "auto",
-};
 
 const RecipeModal = () => {
   const { modalOpen, setModalOpen, edit, setEdit } =
@@ -32,13 +19,21 @@ const RecipeModal = () => {
   }
 
   return (
-    <Modal
-      open={modalOpen}
-      onClose={handleClose}
-      aria-labelledby="modal-title"
-      aria-describedby="modal-description"
-    >
-      <Card sx={style}>
+    <Modal open={modalOpen} onClose={handleClose}>
+      <Card
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "95%",
+          maxWidth: "600px",
+          maxHeight: "85vh",
+          backgroundColor: "white",
+          padding: "1rem",
+          overflowY: "auto",
+        }}
+      >
         <Box
           display="flex"
           justifyContent="space-between"

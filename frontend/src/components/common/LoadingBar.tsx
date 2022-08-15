@@ -19,7 +19,7 @@ function LoadingBar() {
         alignItems: "center",
       }}
     >
-      <LinearProgress variant="indeterminate" sx={{ width: "100%" }} />
+      <LinearProgress variant="indeterminate" sx={{ width: "90%" }} />
     </Box>
   );
 }

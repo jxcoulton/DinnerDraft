@@ -50,6 +50,15 @@ const theme: Theme = createTheme({
       main: colorTheme.palette.secondary.main,
     },
   },
+  components: {
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "rgba(0,0,0,0.25)",
+        },
+      },
+    },
+  },
 });
 
 export default theme;
