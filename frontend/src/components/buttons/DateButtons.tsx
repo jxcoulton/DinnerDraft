@@ -1,20 +1,7 @@
 import { useContext } from "react";
 import { UserDataContext } from "../../context/userData";
-import MealCategoryCard from "../cards/MealCategoryCard";
 import { format, eachDayOfInterval, startOfWeek, endOfWeek } from "date-fns";
-import { Button, useTheme, styled, Theme } from "@mui/material";
-
-type StyleProps = {
-  theme: Theme;
-};
-
-const StyledDateButton = styled(Button)(({ theme }: StyleProps) => ({
-  background: theme.palette.primary.main,
-  margin: "5px",
-  "&:hover": {
-    background: theme.palette.secondary.main,
-  },
-}));
+import { Box, Button, Typography, useTheme } from "@mui/material";
 
 const DateButtons: React.FC = () => {
   const { startDate, setStartDate } = useContext(UserDataContext);
@@ -27,32 +14,62 @@ const DateButtons: React.FC = () => {
   });
 
   return (
-    <div style={{ width: "90vw", padding: "5vh 0" }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-around",
-          padding: "5%",
-        }}
-      >
-        {dateList.map((day: Date) => {
-          return (
-            <StyledDateButton
-              theme={theme}
-              variant="contained"
-              key={day.getDate()}
-              onClick={() => setStartDate(day)}
-              disabled={
+    <Box
+      style={{
+        display: "flex",
+        justifyContent: "space-around",
+      }}
+    >
+      {dateList.map((day: Date) => {
+        return (
+          <Button
+            color={
+              day.setHours(0, 0, 0, 0) === startDate.setHours(0, 0, 0, 0)
+                ? "primary"
+                : "inherit"
+            }
+            variant="contained"
+            key={day.getDate()}
+            onClick={() => setStartDate(day)}
+            disableElevation
+            sx={{
+              backgroundColor:
                 day.setHours(0, 0, 0, 0) === startDate.setHours(0, 0, 0, 0)
-              }
+                  ? "primary"
+                  : "inherit",
+              minWidth: "2.5rem",
+              minHeight: "4rem",
+              borderRadius: "50px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              padding: "0.75rem 0 0 0",
+              margin: "0 0.25rem",
+            }}
+          >
+            <Typography variant="caption">{`${format(day, "eee")}`}</Typography>
+            <Box
+              color={theme.palette.text.primary}
+              borderRadius={50}
+              width={"100%"}
+              minHeight={"2.5rem"}
+              sx={{
+                border:
+                  day.setHours(0, 0, 0, 0) === startDate.setHours(0, 0, 0, 0)
+                    ? `${theme.palette.primary.main} solid`
+                    : `${theme.palette.grey[100]} solid`,
+                backgroundColor: theme.palette.grey[50],
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
-              {`${format(day, "eee d")}`}
-            </StyledDateButton>
-          );
-        })}
-      </div>
-      <MealCategoryCard />
-    </div>
+              <Typography variant="h5">{`${format(day, "d")}`}</Typography>
+            </Box>
+          </Button>
+        );
+      })}
+    </Box>
   );
 };
 

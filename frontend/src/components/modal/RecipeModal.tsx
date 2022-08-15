@@ -3,8 +3,7 @@ import { UserDataContext } from "../../context/userData";
 import { PublicVariablesContext } from "../../context/PublicVariables";
 import ViewRecipe from "./ViewRecipe";
 import EditRecipe from "./EditRecipe";
-import { Box } from "@mui/system";
-import { Modal } from "@mui/material";
+import { Modal, Card, Typography, Box, Button } from "@mui/material";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import LoadingBar from "../common/LoadingBar";
@@ -14,14 +13,12 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "60vw",
-  minWidth: 350,
-  bgcolor: "white",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-  maxHeight: "80vh",
-  overflow: "scroll",
+  width: "95%",
+  maxWidth: "600px",
+  maxHeight: "85vh",
+  backgroundColor: "white",
+  padding: "1rem",
+  overflowY: "auto",
 };
 
 const RecipeModal = () => {
@@ -41,26 +38,34 @@ const RecipeModal = () => {
       aria-labelledby="modal-title"
       aria-describedby="modal-description"
     >
-      <Box sx={style}>
-        <IconButton onClick={handleClose}>
-          <CloseIcon />
-        </IconButton>
+      <Card sx={style}>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          marginBottom={2}
+        >
+          <Typography variant="h5">
+            {!edit ? "View Recipe" : "Edit Recipe"}
+          </Typography>
+          <IconButton onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
         {!loadingBar ? (
           !edit ? (
             <>
               <ViewRecipe />
-              <button onClick={() => setEdit(true)}>edit</button>
             </>
           ) : (
             <>
               <EditRecipe />
-              <button onClick={() => setEdit(false)}>cancel changes</button>
             </>
           )
         ) : (
           <LoadingBar />
         )}
-      </Box>
+      </Card>
     </Modal>
   );
 };

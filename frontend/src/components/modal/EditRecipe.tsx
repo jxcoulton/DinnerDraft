@@ -5,7 +5,7 @@ import { UserDataContext } from "../../context/userData";
 import { PublicVariablesContext } from "../../context/PublicVariables";
 import { update, ref } from "firebase/database";
 import { database } from "../../config/firebase";
-import { TextField } from "@mui/material";
+import { TextField, Button, Link } from "@mui/material";
 import LoadingBar from "../common/LoadingBar";
 
 const EditRecipe = () => {
@@ -126,12 +126,13 @@ const EditRecipe = () => {
         fullWidth
         name="title"
         onChange={handleChangeRecipe}
+        sx={{ marginBottom: "1rem" }}
       />
 
       {currentRecipe.url && (
-        <a href={`${currentRecipe.url}`} target="_blank" rel="noreferrer">
+        <Link href={`${currentRecipe.url}`} target="_blank" rel="noreferrer">
           {new URL(currentRecipe.url).hostname.replace("www.", "")}
-        </a>
+        </Link>
       )}
 
       <TextField
@@ -141,6 +142,7 @@ const EditRecipe = () => {
         fullWidth
         name="ingredients"
         onChange={handleChangeRecipe}
+        sx={{ marginY: "1rem" }}
       />
 
       <TextField
@@ -151,7 +153,21 @@ const EditRecipe = () => {
         name="directions"
         onChange={handleChangeRecipe}
       />
-      <button type="submit">save changes</button>
+      <Button
+        variant="contained"
+        type="submit"
+        sx={{ margin: "1rem 1rem 0 0" }}
+      >
+        save changes
+      </Button>
+      <Button
+        variant="contained"
+        color="inherit"
+        onClick={() => setEdit(false)}
+        sx={{ margin: "1rem 1rem 0 0" }}
+      >
+        cancel changes
+      </Button>
     </form>
   );
 };

@@ -6,7 +6,7 @@ import IInputValueState from "../../interface/IInputValueState";
 import { ref, update } from "firebase/database";
 import { database } from "../../config/firebase";
 import { format } from "date-fns";
-import { Card, InputBase, IconButton, useTheme } from "@mui/material";
+import { Box, InputBase, IconButton, useTheme } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 import AutoCompleteCard from "./AutoCompleteCard";
@@ -204,7 +204,7 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
   }
 
   return (
-    <Card
+    <Box
       sx={{
         display: "flex",
         justifyContent: "center",
@@ -233,7 +233,7 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
           placeholder={
             !loadingBar ? `Add custom recipe or recipe URL` : "Loading..."
           }
-          sx={{ width: "80%", padding: "15px 10%" }}
+          sx={{ padding: "1rem", width: "100%" }}
           disabled={loadingBar}
           ref={inputRef}
         />
@@ -250,11 +250,12 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
           type="submit"
           color="primary"
           disabled={!Object.values(value).some((val) => val)}
+          sx={{ marginLeft: "-3rem" }}
         >
           <AddIcon />
         </IconButton>
       </form>
-    </Card>
+    </Box>
   );
 };
 

@@ -24,7 +24,7 @@ const EditMealButton: React.FC<Props> = ({ recipe }: Props) => {
   return (
     <div>
       <IconButton onClick={handleOpen}>
-        <EditIcon />
+        <EditIcon fontSize={"medium"} sx={{ pointerEvents: "none" }} />
       </IconButton>
       <RecipeModal />
     </div>

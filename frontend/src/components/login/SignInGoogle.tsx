@@ -1,26 +1,25 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { PublicVariablesContext } from "../../context/PublicVariables";
 import { auth, Providers } from "../../config/firebase";
-import { Button } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import GoogleIcon from "@mui/icons-material/Google";
 
 const SignInGoogle = () => {
   const navigate = useNavigate();
-  const { loadingCircle, setLoadingCircle, setShowAlert } = useContext(
-    PublicVariablesContext
-  );
+  const [loading, setLoading] = useState(false);
+  const { setShowAlert } = useContext(PublicVariablesContext);
 
   const signInWithGoogle = () => {
-    setLoadingCircle(true);
+    setLoading(true);
     signInWithPopup(auth, Providers.google)
       .then(() => {
-        setLoadingCircle(false);
+        setLoading(false);
         navigate("/");
       })
       .catch((error) => {
-        setLoadingCircle(false);
+        setLoading(false);
         setShowAlert({
           show: true,
           severity: "error",
@@ -30,17 +29,15 @@ const SignInGoogle = () => {
   };
 
   return (
-    <>
-      <Button
-        startIcon={<GoogleIcon />}
-        size="large"
-        variant="contained"
-        onClick={signInWithGoogle}
-        disabled={loadingCircle}
-      >
-        Sign In With Google
-      </Button>
-    </>
+    <LoadingButton
+      startIcon={<GoogleIcon />}
+      size="large"
+      variant="contained"
+      onClick={signInWithGoogle}
+      loading={loading}
+    >
+      Sign In With Google
+    </LoadingButton>
   );
 };
 

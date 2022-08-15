@@ -3,24 +3,23 @@ import { useNavigate } from "react-router-dom";
 import { PublicVariablesContext } from "../../context/PublicVariables";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../config/firebase";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Box } from "@mui/material";
 
 const PasswordReset = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const { loadingCircle, setLoadingCircle, setShowAlert } = useContext(
-    PublicVariablesContext
-  );
+  const [loading, setLoading] = useState(false);
+  const { setShowAlert } = useContext(PublicVariablesContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
 
   const requestPasswordReset = () => {
-    setLoadingCircle(true);
+    setLoading(true);
     sendPasswordResetEmail(auth, email)
       .then(() => {
-        setLoadingCircle(false);
+        setLoading(false);
         navigate("/login");
       })
       .then(() => {
@@ -31,7 +30,7 @@ const PasswordReset = () => {
         });
       })
       .catch((error) => {
-        setLoadingCircle(false);
+        setLoading(false);
         setShowAlert({
           show: true,
           severity: "error",
@@ -42,22 +41,26 @@ const PasswordReset = () => {
   };
 
   return (
-    <>
+    <Box display={"flex"} alignItems={"center"} flexDirection={"column"}>
       <TextField
-        label="email"
+        label="Email"
         onChange={handleChange}
         value={email}
-        disabled={loadingCircle}
+        disabled={loading}
+        fullWidth
+        sx={{ marginBottom: "1rem" }}
       />
       <Button
         size="large"
+        fullWidth
         variant="contained"
-        disabled={!email || loadingCircle}
+        color="primary"
+        disabled={!email || loading}
         onClick={requestPasswordReset}
       >
-        reset password
+        Reset password
       </Button>
-    </>
+    </Box>
   );
 };
 

@@ -13,13 +13,13 @@ function LoadingBar() {
     <Box
       sx={{
         position: "absolute",
-        width: "70%",
+        width: "90%",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <LinearProgress variant="indeterminate" sx={{ width: "50%" }} />
+      <LinearProgress variant="indeterminate" sx={{ width: "100%" }} />
     </Box>
   );
 }

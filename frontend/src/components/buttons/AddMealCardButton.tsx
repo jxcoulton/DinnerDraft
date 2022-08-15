@@ -20,8 +20,8 @@ const AddMealCardButton: React.FC<Props> = ({ mealType }: Props) => {
   }
 
   return (
-    <IconButton name={mealType} onClick={handleOpen}>
-      <AddCircleIcon sx={{ pointerEvents: "none" }} />
+    <IconButton name={mealType} onClick={handleOpen} color={"secondary"}>
+      <AddCircleIcon fontSize={"large"} sx={{ pointerEvents: "none" }} />
     </IconButton>
   );
 };

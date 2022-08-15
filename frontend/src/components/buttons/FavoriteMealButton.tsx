@@ -110,7 +110,18 @@ const FavoriteMealButton: React.FC<Props> = ({ recipe }: Props) => {
 
   return (
     <IconButton onClick={handleFavorites}>
-      {recipe.favorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+      {recipe.favorite ? (
+        <FavoriteIcon
+          fontSize={"medium"}
+          sx={{ pointerEvents: "none" }}
+          color="secondary"
+        />
+      ) : (
+        <FavoriteBorderIcon
+          fontSize={"medium"}
+          sx={{ pointerEvents: "none" }}
+        />
+      )}
     </IconButton>
   );
 };

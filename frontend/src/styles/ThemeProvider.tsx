@@ -6,12 +6,19 @@ declare module "@mui/material/styles" {
     palette: {
       primary: {
         main: string;
+        dark: string;
       };
       secondary: {
         main: string;
       };
       grey: {
         [key: number]: string;
+      };
+      text: {
+        primary: string;
+      };
+      background: {
+        default: string;
       };
     };
   }
@@ -25,10 +32,10 @@ declare module "@mui/material/styles" {
 const colorTheme = createTheme({
   palette: {
     primary: {
-      main: "#40843A",
+      main: "#9eba4d",
     },
     secondary: {
-      main: "#C22828",
+      main: "#f29366",
     },
   },
 });
@@ -41,43 +48,6 @@ const theme: Theme = createTheme({
     },
     secondary: {
       main: colorTheme.palette.secondary.main,
-    },
-  },
-  components: {
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          padding: "15px",
-          margin: "10px",
-          backgroundColor: colorTheme.palette.grey[100],
-          height: "90%",
-        },
-      },
-    },
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          "& .MuiInput-underline:after": {
-            borderBottomColor: colorTheme.palette.secondary.main,
-          },
-          "& .MuiInputLabel-root.Mui-focused": {
-            color: colorTheme.palette.secondary.main,
-          },
-          "& .MuiOutlinedInput-root": {
-            "&.Mui-focused fieldset": {
-              borderColor: colorTheme.palette.secondary.main,
-            },
-          },
-          input: { textTransform: "capitalize" },
-        },
-      },
-    },
-    MuiInput: {
-      styleOverrides: {
-        input: {
-          textTransform: "capitalize",
-        },
-      },
     },
   },
 });

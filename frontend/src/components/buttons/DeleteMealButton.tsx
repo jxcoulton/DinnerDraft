@@ -65,7 +65,7 @@ const DeleteMealButton: React.FC<Props> = ({ mealType, recipe }: Props) => {
 
   return (
     <IconButton value={recipe.title} onClick={handleDelete}>
-      <DeleteForeverIcon />
+      <DeleteForeverIcon fontSize={"medium"} sx={{ pointerEvents: "none" }} />
     </IconButton>
   );
 };

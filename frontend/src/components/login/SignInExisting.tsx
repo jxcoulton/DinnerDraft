@@ -2,16 +2,16 @@ import React, { useState, useContext } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { PublicVariablesContext } from "../../context/PublicVariables";
-import { Button, TextField } from "@mui/material";
+import { TextField, Box } from "@mui/material";
 import { auth } from "../../config/firebase";
+import { LoadingButton } from "@mui/lab";
 
 const SignInExisting = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { loadingCircle, setLoadingCircle, setShowAlert } = useContext(
-    PublicVariablesContext
-  );
+  const [loading, setLoading] = useState(false);
+  const { setShowAlert } = useContext(PublicVariablesContext);
 
   const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -22,14 +22,14 @@ const SignInExisting = () => {
   };
 
   const signInExistingUser = () => {
-    setLoadingCircle(true);
+    setLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-        setLoadingCircle(false);
+        setLoading(false);
         navigate("/");
       })
       .catch((error) => {
-        setLoadingCircle(false);
+        setLoading(false);
         setShowAlert({
           show: true,
           severity: "error",
@@ -39,33 +39,37 @@ const SignInExisting = () => {
   };
 
   return (
-    <>
+    <Box display={"flex"} alignItems={"center"} flexDirection={"column"}>
       <TextField
-        label="email"
-        name="email"
+        label="Email"
+        fullWidth
+        name="Email"
         value={email}
         onChange={handleChangeEmail}
-        sx={{ margin: "15px" }}
-        disabled={loadingCircle}
+        sx={{ marginBottom: "1rem" }}
+        disabled={loading}
       />
       <TextField
-        label="password"
-        name="password"
+        fullWidth
+        label="Password"
+        name="Password"
         type="password"
         value={password}
         onChange={handleChangePassword}
-        sx={{ marginBottom: "15px" }}
-        disabled={loadingCircle}
+        sx={{ marginBottom: "1rem" }}
+        disabled={loading}
       />
-      <Button
+      <LoadingButton
         size="large"
+        fullWidth
         variant="contained"
         onClick={signInExistingUser}
-        disabled={!email || !password || loadingCircle}
+        disabled={!email || !password}
+        loading={loading}
       >
         Login
-      </Button>
-    </>
+      </LoadingButton>
+    </Box>
   );
 };
 

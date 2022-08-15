@@ -6,8 +6,6 @@ import { AlertColor } from "@mui/material";
 const defaultPublicState = {
   loadingBar: false,
   setLoadingBar: () => {},
-  loadingCircle: false,
-  setLoadingCircle: () => {},
   showAlert: {
     show: false,
     severity: "success" as AlertColor,
@@ -21,7 +19,6 @@ export const PublicVariablesContext =
 
 export const PublicVariablesProvider: React.FC = ({ children }) => {
   const [loadingBar, setLoadingBar] = useState(false);
-  const [loadingCircle, setLoadingCircle] = useState(false);
   const [showAlert, setShowAlert] = useState<IAlertsState>(
     defaultPublicState.showAlert
   );
@@ -31,8 +28,6 @@ export const PublicVariablesProvider: React.FC = ({ children }) => {
       value={{
         loadingBar,
         setLoadingBar,
-        loadingCircle,
-        setLoadingCircle,
         showAlert,
         setShowAlert,
       }}

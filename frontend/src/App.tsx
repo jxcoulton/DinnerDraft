@@ -2,13 +2,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AuthChecker from "./auth/AuthChecker";
 import { UserDataProvider } from "./context/userData";
 import { PublicVariablesProvider } from "./context/PublicVariables";
-import SignUpAndIn from "./components/pages/SignUpAndIn";
+import Login from "./components/pages/Login";
+import Register from "./components/pages/Register";
 import Home from "./components/pages/Home";
+import FavoritesPage from "./components/pages/FavoritesPage";
 import ForgotPassword from "./components/pages/ForgotPassword";
-import Banner from "./components/common/Banner";
 import Alerts from "./components/common/Alerts";
-import LoadingCircle from "./components/common/LoadingCircle";
-import { ThemeProvider } from "@mui/private-theming";
+import { ThemeProvider, Box } from "@mui/material";
 import theme from "./styles/ThemeProvider";
 
 const App = () => {
@@ -16,18 +16,42 @@ const App = () => {
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <ThemeProvider theme={theme}>
         <PublicVariablesProvider>
-          <Banner />
           <Alerts />
-          <LoadingCircle />
           <Routes>
-            <Route path="/login" element={<SignUpAndIn />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/reset" element={<ForgotPassword />} />
+            <Route path="/register" element={<Register />} />
+
             <Route
               path="/"
               element={
                 <AuthChecker>
                   <UserDataProvider>
-                    <Home />
+                    <Box
+                      height="100%"
+                      minHeight="100vh"
+                      paddingBottom={6}
+                      sx={{ backgroundColor: theme.palette.grey[300] }}
+                    >
+                      <Home />
+                    </Box>
+                  </UserDataProvider>
+                </AuthChecker>
+              }
+            />
+            <Route
+              path="/favorite"
+              element={
+                <AuthChecker>
+                  <UserDataProvider>
+                    <Box
+                      height="100%"
+                      minHeight="100vh"
+                      paddingBottom={6}
+                      sx={{ backgroundColor: theme.palette.grey[300] }}
+                    >
+                      <FavoritesPage />
+                    </Box>
                   </UserDataProvider>
                 </AuthChecker>
               }

@@ -1,22 +1,22 @@
 import { useContext } from "react";
 import { UserDataContext } from "../../context/userData";
-import { Typography } from "@mui/material";
+import { Typography, Button, Link } from "@mui/material";
 
 const ViewRecipe = () => {
-  const { currentRecipe } = useContext(UserDataContext);
+  const { currentRecipe, setEdit } = useContext(UserDataContext);
 
   return (
     <>
-      <Typography id="keep-mounted-modal-title" variant="h6" component="h2">
+      <Typography variant="h6" component="h2">
         {currentRecipe.title}
       </Typography>
 
       {currentRecipe.url && (
-        <a href={`${currentRecipe.url}`} target="_blank" rel="noreferrer">
+        <Link href={`${currentRecipe.url}`} target="_blank" rel="noreferrer">
           {new URL(currentRecipe.url).hostname.replace("www.", "")}
-        </a>
+        </Link>
       )}
-      <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
+      <Typography sx={{ marginTop: "1rem" }} variant="h6">
         Ingredients
       </Typography>
 
@@ -26,15 +26,22 @@ const ViewRecipe = () => {
         ))}
       </ul>
 
-      <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
+      <Typography sx={{ marginTop: "1rem" }} variant="h6">
         Directions
       </Typography>
 
-      <ul>
+      <ol>
         {currentRecipe.directions?.map((item: any) => (
           <li key={item}>{item}</li>
         ))}
-      </ul>
+      </ol>
+      <Button
+        variant="contained"
+        onClick={() => setEdit(true)}
+        sx={{ marginTop: "1rem" }}
+      >
+        edit recipe
+      </Button>
     </>
   );
 };
