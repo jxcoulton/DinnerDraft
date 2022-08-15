@@ -19,7 +19,7 @@ function Alerts() {
   }
 
   return (
-    <Box sx={{ position: "absolute", top: "4rem", left: "1rem", zIndex: 9999 }}>
+    <Box sx={{ position: "fixed", top: "1rem", left: "1rem", zIndex: 9999 }}>
       <Alert variant="filled" severity={showAlert.severity}>
         {showAlert.message}
       </Alert>
