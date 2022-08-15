@@ -1,5 +1,7 @@
 # DinnerDraft
 
+https://dinner-draft.vercel.app/login
+
 ## About
 
 This application is designed to help individuals streamline the meal planning process by quickly creating and scheduling meals, importing recipes from the internet, and tracking stored favorite recipes for future use.
