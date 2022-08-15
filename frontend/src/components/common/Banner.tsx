@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../config/firebase";
+import { signOut } from "firebase/auth";
 import {
   Typography,
   AppBar,
@@ -41,7 +41,7 @@ const Banner: React.FC = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Dinner Draft
         </Typography>
 
@@ -76,7 +76,6 @@ const Banner: React.FC = () => {
               size="large"
               edge="start"
               color="inherit"
-              aria-label="menu"
               onClick={() => setShowMenu(true)}
             >
               <MenuIcon />

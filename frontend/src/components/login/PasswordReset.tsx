@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { PublicVariablesContext } from "../../context/PublicVariables";
+import { UserDataContext } from "../../context/userData";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../config/firebase";
 import { Button, TextField, Box } from "@mui/material";
@@ -9,7 +9,7 @@ const PasswordReset = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const { setShowAlert } = useContext(PublicVariablesContext);
+  const { setShowAlert } = useContext(UserDataContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -42,10 +42,12 @@ const PasswordReset = () => {
 
   return (
     <Box
-      display={"flex"}
-      alignItems={"center"}
-      flexDirection={"column"}
-      width={"50%"}
+      sx={{
+        width: "50%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
     >
       <TextField
         label="Email"
@@ -59,7 +61,6 @@ const PasswordReset = () => {
         size="large"
         fullWidth
         variant="contained"
-        color="primary"
         disabled={!email || loading}
         onClick={requestPasswordReset}
       >

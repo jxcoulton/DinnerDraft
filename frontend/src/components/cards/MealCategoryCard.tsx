@@ -17,9 +17,7 @@ const MealCategoryCard = () => {
       <Typography
         key={startDate.getDate()}
         variant="h4"
-        margin="2rem auto 1rem"
-        maxWidth="1250px"
-        width="95%"
+        sx={{ width: "95%", maxWidth: "1250px", margin: "2rem auto 1rem" }}
       >{`${format(startDate, "eee, LLL d")}`}</Typography>
       {["breakfast", "lunch", "dinner", "snack"].map((mealType) => (
         <Card
@@ -41,10 +39,11 @@ const MealCategoryCard = () => {
           >
             <Typography
               variant="h6"
-              paddingX={4}
-              paddingY={2}
-              textTransform={"uppercase"}
-              color={theme.palette.grey[600]}
+              sx={{
+                padding: "1rem 2rem",
+                color: theme.palette.grey[600],
+                textTransform: "uppercase",
+              }}
             >
               {mealType}
             </Typography>

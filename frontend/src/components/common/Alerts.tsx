@@ -1,9 +1,9 @@
 import { useEffect, useContext } from "react";
-import { PublicVariablesContext } from "../../context/PublicVariables";
+import { UserDataContext } from "../../context/userData";
 import { Alert, Box } from "@mui/material";
 
 function Alerts() {
-  const { showAlert, setShowAlert } = useContext(PublicVariablesContext);
+  const { showAlert, setShowAlert } = useContext(UserDataContext);
 
   useEffect(() => {
     const timeId = setTimeout(() => {
@@ -19,8 +19,10 @@ function Alerts() {
   }
 
   return (
-    <Box sx={{ position: "absolute", top: "5%", left: "5%", zIndex: 9999 }}>
-      <Alert severity={showAlert.severity}>{showAlert.message}</Alert>
+    <Box sx={{ position: "absolute", top: "4rem", left: "1rem", zIndex: 9999 }}>
+      <Alert variant="filled" severity={showAlert.severity}>
+        {showAlert.message}
+      </Alert>
     </Box>
   );
 }

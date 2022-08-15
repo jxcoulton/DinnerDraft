@@ -2,10 +2,9 @@ import { useContext, useState } from "react";
 import IMealState from "../../interface/IMealState";
 import IRecipeState from "../../interface/IRecipeState";
 import { UserDataContext } from "../../context/userData";
-import { PublicVariablesContext } from "../../context/PublicVariables";
 import { update, ref } from "firebase/database";
 import { database } from "../../config/firebase";
-import { TextField, Button, Link } from "@mui/material";
+import { TextField, Button, Link, useTheme } from "@mui/material";
 import LoadingBar from "../common/LoadingBar";
 
 const EditRecipe = () => {
@@ -18,8 +17,10 @@ const EditRecipe = () => {
     setCurrentRecipe,
     setEdit,
     userFavorites,
+    setLoadingBar,
+    setShowAlert,
   } = useContext(UserDataContext);
-  const { setLoadingBar, setShowAlert } = useContext(PublicVariablesContext);
+  const theme = useTheme();
 
   const [editedRecipe, setEditedRecipe] = useState({
     title: currentRecipe.title,
@@ -33,6 +34,15 @@ const EditRecipe = () => {
     favorite: currentRecipe.favorite,
     id: currentRecipe.id,
   });
+
+  const style = {
+    fontFamily: "Roboto,Helvetica,Arial,sans-serif",
+    fontWeight: 400,
+    fontSize: "1rem",
+    lineHeight: 1.5,
+    letterSpacing: "0.00938em",
+    color: theme.palette.grey[700],
+  };
 
   const editedState = {
     directions: editedRecipe?.directions.trim().split("\n"),
@@ -133,11 +143,12 @@ const EditRecipe = () => {
       <LoadingBar />
       <TextField
         label="Edit Recipe Name"
+        onChange={handleChangeRecipe}
+        name="title"
         value={editedRecipe.title}
         fullWidth
-        name="title"
-        onChange={handleChangeRecipe}
         sx={{ marginBottom: "1rem" }}
+        inputProps={{ style: style }}
       />
 
       {currentRecipe.url && (
@@ -148,21 +159,29 @@ const EditRecipe = () => {
 
       <TextField
         label="Edit Ingredients"
-        multiline
-        value={editedRecipe.ingredients}
-        fullWidth
-        name="ingredients"
         onChange={handleChangeRecipe}
-        sx={{ marginY: "1rem" }}
+        name="ingredients"
+        value={editedRecipe.ingredients}
+        multiline
+        fullWidth
+        sx={{
+          marginY: "1rem",
+        }}
+        inputProps={{
+          style: style,
+        }}
       />
 
       <TextField
         label="Edit Directions"
-        multiline
-        value={editedRecipe.directions}
-        fullWidth
-        name="directions"
         onChange={handleChangeRecipe}
+        name="directions"
+        value={editedRecipe.directions}
+        multiline
+        fullWidth
+        inputProps={{
+          style: style,
+        }}
       />
       <Button
         variant="contained"

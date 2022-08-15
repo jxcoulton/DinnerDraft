@@ -4,6 +4,7 @@ import IOpenState from "./IOpenState";
 import IRecipeState from "./IRecipeState";
 import React from "react";
 import IDatabaseState from "./IDatabaseState";
+import AlertsState from "./IAlertsState";
 
 export default interface IUserContextState {
   activeUser: IMainState;
@@ -26,4 +27,8 @@ export default interface IUserContextState {
   setUserFavorites: React.Dispatch<React.SetStateAction<IRecipeState>>;
   edit: boolean;
   setEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  loadingBar: boolean;
+  setLoadingBar: React.Dispatch<React.SetStateAction<boolean>>;
+  showAlert: AlertsState;
+  setShowAlert: React.Dispatch<React.SetStateAction<AlertsState>>;
 }

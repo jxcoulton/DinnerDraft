@@ -9,7 +9,6 @@ import { Box, Card, Typography, useTheme } from "@mui/material";
 const FavoritesPage = () => {
   const { userFavorites, setModalOpen, setCurrentRecipe } =
     useContext(UserDataContext);
-
   const theme = useTheme();
 
   let favorites = Object.values(userFavorites);
@@ -48,8 +47,7 @@ const FavoritesPage = () => {
               <Typography
                 variant="h6"
                 onClick={() => handleOpenModal(eachRecipe)}
-                flexGrow={1}
-                sx={{ padding: "20px" }}
+                sx={{ padding: "20px", flexGrow: "1" }}
               >
                 {eachRecipe.title}
               </Typography>

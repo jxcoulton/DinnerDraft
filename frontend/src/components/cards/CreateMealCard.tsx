@@ -1,17 +1,16 @@
 import React, { useContext, useRef } from "react";
 import { UserDataContext } from "../../context/userData";
-import { PublicVariablesContext } from "../../context/PublicVariables";
+import AutoCompleteCard from "./AutoCompleteCard";
+import LoadingBar from "../common/LoadingBar";
 import IMealState from "../../interface/IMealState";
 import IInputValueState from "../../interface/IInputValueState";
+import axios from "axios";
 import { ref, update } from "firebase/database";
 import { database } from "../../config/firebase";
+import uuid from "react-uuid";
 import { format } from "date-fns";
 import { Box, InputBase, IconButton, useTheme } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import axios from "axios";
-import AutoCompleteCard from "./AutoCompleteCard";
-import uuid from "react-uuid";
-import LoadingBar from "../common/LoadingBar";
 
 type Props = {
   mealType?: string;
@@ -63,10 +62,11 @@ const CreateMealCard: React.FC<Props> = ({ mealType }: Props) => {
     setAddMealItemOpen,
     userFavorites,
     databaseData,
+    loadingBar,
+    setLoadingBar,
+    setShowAlert,
   } = useContext(UserDataContext);
-  const { loadingBar, setLoadingBar, setShowAlert } = useContext(
-    PublicVariablesContext
-  );
+
   const inputRef = useRef<any>();
   const theme = useTheme();
 

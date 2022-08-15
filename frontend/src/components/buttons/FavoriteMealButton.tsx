@@ -1,13 +1,12 @@
 import { useContext } from "react";
 import { UserDataContext } from "../../context/userData";
-import { PublicVariablesContext } from "../../context/PublicVariables";
+import IRecipeState from "../../interface/IRecipeState";
 import IMealState from "../../interface/IMealState";
 import { update, ref, remove } from "firebase/database";
 import { database } from "../../config/firebase";
 import { IconButton } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import IRecipeState from "../../interface/IRecipeState";
 
 type Props = {
   recipe: {
@@ -16,9 +15,14 @@ type Props = {
 };
 
 const FavoriteMealButton: React.FC<Props> = ({ recipe }: Props) => {
-  const { databaseData, activeUser, trigger, setTrigger, userFavorites } =
-    useContext(UserDataContext);
-  const { setShowAlert } = useContext(PublicVariablesContext);
+  const {
+    databaseData,
+    activeUser,
+    trigger,
+    setTrigger,
+    userFavorites,
+    setShowAlert,
+  } = useContext(UserDataContext);
 
   function handleFavorites(e: React.MouseEvent) {
     e.preventDefault();

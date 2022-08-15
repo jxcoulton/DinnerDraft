@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
-import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { PublicVariablesContext } from "../../context/PublicVariables";
+import { UserDataContext } from "../../context/userData";
+import { signInWithPopup } from "firebase/auth";
 import { auth, Providers } from "../../config/firebase";
 import { LoadingButton } from "@mui/lab";
 import GoogleIcon from "@mui/icons-material/Google";
@@ -9,7 +9,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 const SignInGoogle = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const { setShowAlert } = useContext(PublicVariablesContext);
+  const { setShowAlert } = useContext(UserDataContext);
 
   const signInWithGoogle = () => {
     setLoading(true);

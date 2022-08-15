@@ -1,21 +1,20 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AuthChecker from "./auth/AuthChecker";
 import { UserDataProvider } from "./context/userData";
-import { PublicVariablesProvider } from "./context/PublicVariables";
 import Login from "./components/pages/Login";
 import Register from "./components/pages/Register";
 import Home from "./components/pages/Home";
 import FavoritesPage from "./components/pages/FavoritesPage";
 import ForgotPassword from "./components/pages/ForgotPassword";
 import Alerts from "./components/common/Alerts";
-import { ThemeProvider, Box } from "@mui/material";
 import theme from "./styles/ThemeProvider";
+import { ThemeProvider, Box } from "@mui/material";
 
 const App = () => {
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <ThemeProvider theme={theme}>
-        <PublicVariablesProvider>
+        <UserDataProvider>
           <Alerts />
           <Routes>
             <Route path="/login" element={<Login />} />
@@ -26,16 +25,16 @@ const App = () => {
               path="/"
               element={
                 <AuthChecker>
-                  <UserDataProvider>
-                    <Box
-                      height="100%"
-                      minHeight="100vh"
-                      paddingBottom={6}
-                      sx={{ backgroundColor: theme.palette.grey[300] }}
-                    >
-                      <Home />
-                    </Box>
-                  </UserDataProvider>
+                  <Box
+                    sx={{
+                      backgroundColor: theme.palette.grey[300],
+                      height: "100px",
+                      minHeight: "100vh",
+                      paddingBottom: "3rem",
+                    }}
+                  >
+                    <Home />
+                  </Box>
                 </AuthChecker>
               }
             />
@@ -45,10 +44,12 @@ const App = () => {
                 <AuthChecker>
                   <UserDataProvider>
                     <Box
-                      height="100%"
-                      minHeight="100vh"
-                      paddingBottom={6}
-                      sx={{ backgroundColor: theme.palette.grey[300] }}
+                      sx={{
+                        backgroundColor: theme.palette.grey[300],
+                        height: "100px",
+                        minHeight: "100vh",
+                        paddingBottom: "3rem",
+                      }}
                     >
                       <FavoritesPage />
                     </Box>
@@ -57,7 +58,7 @@ const App = () => {
               }
             />
           </Routes>
-        </PublicVariablesProvider>
+        </UserDataProvider>
       </ThemeProvider>
     </BrowserRouter>
   );

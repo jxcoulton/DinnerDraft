@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { PublicVariablesContext } from "../../context/PublicVariables";
-import { TextField, Box } from "@mui/material";
+import { UserDataContext } from "../../context/userData";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../config/firebase";
+import { TextField, Box } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 const SignInExisting = () => {
@@ -11,7 +11,7 @@ const SignInExisting = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const { setShowAlert } = useContext(PublicVariablesContext);
+  const { setShowAlert } = useContext(UserDataContext);
 
   const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -40,35 +40,37 @@ const SignInExisting = () => {
 
   return (
     <Box
-      display={"flex"}
-      alignItems={"center"}
-      flexDirection={"column"}
-      width={"50%"}
+      sx={{
+        width: "50%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
     >
       <TextField
         label="Email"
-        fullWidth
+        onChange={handleChangeEmail}
         name="Email"
         value={email}
-        onChange={handleChangeEmail}
-        sx={{ marginBottom: "1rem" }}
         disabled={loading}
+        fullWidth
+        sx={{ marginBottom: "1rem" }}
       />
       <TextField
-        fullWidth
         label="Password"
-        name="Password"
-        type="password"
-        value={password}
         onChange={handleChangePassword}
-        sx={{ marginBottom: "1rem" }}
+        name="Password"
+        value={password}
+        type="password"
         disabled={loading}
+        fullWidth
+        sx={{ marginBottom: "1rem" }}
       />
       <LoadingButton
         size="large"
-        fullWidth
         variant="contained"
         onClick={signInExistingUser}
+        fullWidth
         disabled={!email || !password}
         loading={loading}
       >

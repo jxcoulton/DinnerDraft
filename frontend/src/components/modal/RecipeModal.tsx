@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { UserDataContext } from "../../context/userData";
-import { PublicVariablesContext } from "../../context/PublicVariables";
 import ViewRecipe from "./ViewRecipe";
 import EditRecipe from "./EditRecipe";
 import { Modal, Card, Typography, Box } from "@mui/material";
@@ -9,9 +8,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import LoadingBar from "../common/LoadingBar";
 
 const RecipeModal = () => {
-  const { modalOpen, setModalOpen, edit, setEdit } =
+  const { modalOpen, setModalOpen, edit, setEdit, loadingBar } =
     useContext(UserDataContext);
-  const { loadingBar } = useContext(PublicVariablesContext);
 
   function handleClose() {
     setModalOpen(false);
@@ -35,10 +33,12 @@ const RecipeModal = () => {
         }}
       >
         <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          marginBottom={2}
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "1rem",
+          }}
         >
           <Typography variant="h5">
             {!edit ? "View Recipe" : "Edit Recipe"}
@@ -47,19 +47,7 @@ const RecipeModal = () => {
             <CloseIcon />
           </IconButton>
         </Box>
-        {!loadingBar ? (
-          !edit ? (
-            <>
-              <ViewRecipe />
-            </>
-          ) : (
-            <>
-              <EditRecipe />
-            </>
-          )
-        ) : (
-          <LoadingBar />
-        )}
+        {!loadingBar ? !edit ? <ViewRecipe /> : <EditRecipe /> : <LoadingBar />}
       </Card>
     </Modal>
   );

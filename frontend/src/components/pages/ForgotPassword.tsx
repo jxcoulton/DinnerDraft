@@ -1,40 +1,43 @@
 import PasswordReset from "../login/PasswordReset";
-import { Link, Box, useTheme, Typography } from "@mui/material";
+import { Link, Box, Typography } from "@mui/material";
 
 const ForgotPassword = () => {
-  const theme = useTheme();
-
   return (
     <Box
-      display={"flex"}
-      flexDirection={"column"}
-      alignItems={"center"}
-      justifyContent={"center"}
-      height={"100vh"}
       sx={{
-        backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.25),  rgba(0, 0, 0, 0.25)), url("LoginBackground.jpg")`,
+        backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.50),  rgba(0, 0, 0, 0.25)), url("LoginBackground.jpg")`,
         backgroundSize: "cover",
         backgroundPosition: "center",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
       }}
     >
       <Box
-        display={"flex"}
-        alignItems={"center"}
-        flexDirection={"column"}
-        boxShadow={2}
-        margin={3}
-        padding={2}
-        maxWidth={"500px"}
-        width={"100%"}
-        sx={{ backgroundColor: "white" }}
+        sx={{
+          backgroundColor: "white",
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+          boxShadow: "1rem",
+          margin: "1.5rem",
+          padding: "1rem",
+          maxWidth: "500px",
+          width: "100%",
+        }}
       >
-        <Typography variant="h4" marginBottom={4}>
+        <Typography variant="h4" sx={{ marginBottom: "2rem" }}>
           Forgot password?
         </Typography>
 
         <PasswordReset />
 
-        <Link href="/login" marginTop={4} textTransform={"uppercase"}>
+        <Link
+          href="/login"
+          sx={{ marginTop: "2rem", textTransform: "uppercase" }}
+        >
           Return to login
         </Link>
       </Box>

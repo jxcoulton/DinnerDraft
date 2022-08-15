@@ -1,6 +1,6 @@
-import { List, ListItem, useTheme } from "@mui/material";
 import { useContext } from "react";
 import { UserDataContext } from "../../context/userData";
+import { List, ListItem, useTheme } from "@mui/material";
 
 type Props = {
   mealType?: string;
@@ -42,7 +42,6 @@ const AutoCompleteCard: React.FC<Props> = ({
           key={each.id}
           onClick={handleSetValue}
           data-name={mealType}
-          data-value={each}
           style={{
             backgroundColor: theme.palette.grey[50],
             cursor: "pointer",

@@ -9,6 +9,8 @@ import { ref, get, child } from "firebase/database";
 import { database } from "../config/firebase";
 import IRecipeState from "../interface/IRecipeState";
 import IDatabaseState from "../interface/IDatabaseState";
+import IAlertsState from "../interface/IAlertsState";
+import { AlertColor } from "@mui/material";
 
 const defaultState = {
   activeUser: {
@@ -45,6 +47,14 @@ const defaultState = {
   setUserFavorites: () => {},
   edit: false,
   setEdit: () => {},
+  loadingBar: false,
+  setLoadingBar: () => {},
+  showAlert: {
+    show: false,
+    severity: "success" as AlertColor,
+    message: "",
+  },
+  setShowAlert: () => {},
 };
 
 const defaultOpenState = {
@@ -75,6 +85,10 @@ export const UserDataProvider: React.FC = ({ children }) => {
   );
   const [userFavorites, setUserFavorites] = useState<IRecipeState>({});
   const [edit, setEdit] = useState(false);
+  const [loadingBar, setLoadingBar] = useState(false);
+  const [showAlert, setShowAlert] = useState<IAlertsState>(
+    defaultState.showAlert
+  );
 
   useEffect(() => {
     const unsubscribeAuthChange = onAuthStateChanged(auth, () => {
@@ -160,6 +174,10 @@ export const UserDataProvider: React.FC = ({ children }) => {
         setUserFavorites,
         edit,
         setEdit,
+        loadingBar,
+        setLoadingBar,
+        showAlert,
+        setShowAlert,
       }}
     >
       {children}

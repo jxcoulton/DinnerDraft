@@ -23,11 +23,6 @@ const DateButtons: React.FC = () => {
       {dateList.map((day: Date) => {
         return (
           <Button
-            color={
-              day.setHours(0, 0, 0, 0) === startDate.setHours(0, 0, 0, 0)
-                ? "primary"
-                : "inherit"
-            }
             variant="contained"
             key={day.getDate()}
             onClick={() => setStartDate(day)}
@@ -35,8 +30,8 @@ const DateButtons: React.FC = () => {
             sx={{
               backgroundColor:
                 day.setHours(0, 0, 0, 0) === startDate.setHours(0, 0, 0, 0)
-                  ? "primary"
-                  : "inherit",
+                  ? `${theme.palette.primary.main}`
+                  : `${theme.palette.background.default}`,
               minWidth: "2.5rem",
               minHeight: "4rem",
               borderRadius: "50px",
@@ -49,16 +44,16 @@ const DateButtons: React.FC = () => {
           >
             <Typography variant="caption">{`${format(day, "eee")}`}</Typography>
             <Box
-              color={theme.palette.text.primary}
-              borderRadius={50}
-              width={"100%"}
-              minHeight={"2.5rem"}
               sx={{
+                color: `${theme.palette.text.primary}`,
                 border:
                   day.setHours(0, 0, 0, 0) === startDate.setHours(0, 0, 0, 0)
                     ? `${theme.palette.primary.main} solid`
                     : `${theme.palette.grey[100]} solid`,
                 backgroundColor: theme.palette.grey[50],
+                width: "100%",
+                minHeight: "2.5rem",
+                borderRadius: "50px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",

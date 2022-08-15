@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { PublicVariablesContext } from "../../context/PublicVariables";
+import { UserDataContext } from "../../context/userData";
 import { Box, LinearProgress } from "@mui/material";
 
 function LoadingBar() {
-  const { loadingBar } = useContext(PublicVariablesContext);
+  const { loadingBar } = useContext(UserDataContext);
 
   if (!loadingBar) {
     return null;

@@ -36,10 +36,10 @@ const MealCard = ({ mealType }: Props) => {
         ]?.map((eachRecipe: any) => (
           <Box
             key={eachRecipe.id}
-            borderTop={`1px solid ${theme.palette.grey[200]}`}
             sx={{
               display: "flex",
               width: "100%",
+              borderTop: `1px solid ${theme.palette.grey[200]}`,
               alignItems: "center",
               cursor: "pointer",
             }}
@@ -47,10 +47,8 @@ const MealCard = ({ mealType }: Props) => {
             <FavoriteMealButton recipe={eachRecipe} />
             <Typography
               variant="h6"
-              paddingX={2}
-              paddingY={2}
               onClick={() => handleOpenModal(eachRecipe)}
-              sx={{ flexGrow: 1 }}
+              sx={{ flexGrow: 1, padding: "1rem" }}
             >
               {eachRecipe.title}
             </Typography>

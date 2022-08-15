@@ -1,12 +1,11 @@
 import React, { useContext } from "react";
 import IMealState from "../../interface/IMealState";
 import { UserDataContext } from "../../context/userData";
-import { PublicVariablesContext } from "../../context/PublicVariables";
 import { set, ref } from "firebase/database";
 import { database } from "../../config/firebase";
 import { format } from "date-fns";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { IconButton } from "@mui/material";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 type Props = {
   mealType: string;
@@ -16,9 +15,14 @@ type Props = {
 };
 
 const DeleteMealButton: React.FC<Props> = ({ mealType, recipe }: Props) => {
-  const { activeUser, startDate, databaseData, trigger, setTrigger } =
-    useContext(UserDataContext);
-  const { setShowAlert } = useContext(PublicVariablesContext);
+  const {
+    activeUser,
+    startDate,
+    databaseData,
+    trigger,
+    setTrigger,
+    setShowAlert,
+  } = useContext(UserDataContext);
 
   //selected dates database data
   const DatabaseDataByDate = databaseData[`${format(startDate, "PPP")}`];
