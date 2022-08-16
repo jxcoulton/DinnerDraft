@@ -24,9 +24,8 @@ const FavoriteMealButton: React.FC<Props> = ({ recipe }: Props) => {
     setShowAlert,
   } = useContext(UserDataContext);
 
-  function handleFavorites(e: React.MouseEvent) {
+  async function handleFavorites(e: React.MouseEvent) {
     e.preventDefault();
-    const favorited = recipe.favorite ? false : true;
 
     for (var date in databaseData) {
       let dateItems = databaseData[date];
@@ -35,19 +34,19 @@ const FavoriteMealButton: React.FC<Props> = ({ recipe }: Props) => {
         for (var index in meal) {
           let item = meal[index as unknown as number];
           if (item?.id === recipe.id) {
-            update(
+            await update(
               ref(
                 database,
                 `users/${activeUser.uid}/meals/${date}/${type}/${index}`
               ),
               {
                 ...recipe,
-                favorite: favorited,
+                favorite: !recipe.favorite,
               }
             )
               .then(() => {
                 //if favorited add to favorites
-                if (favorited) {
+                if (!recipe.favorite) {
                   update(ref(database, `users/${activeUser.uid}/favorites`), {
                     [recipe.id]: { ...recipe, favorite: true },
                   })
@@ -88,10 +87,13 @@ const FavoriteMealButton: React.FC<Props> = ({ recipe }: Props) => {
         }
       }
     }
+
     for (var fav in userFavorites) {
       let items = userFavorites[fav as keyof IRecipeState] as IRecipeState;
       if (items?.id === recipe.id) {
-        remove(ref(database, `users/${activeUser.uid}/favorites/${recipe.id}`))
+        await remove(
+          ref(database, `users/${activeUser.uid}/favorites/${recipe.id}`)
+        )
           .then(() => {
             setTrigger(!trigger);
           })
@@ -104,11 +106,12 @@ const FavoriteMealButton: React.FC<Props> = ({ recipe }: Props) => {
           });
       }
     }
-
     setShowAlert({
       show: true,
-      severity: `${favorited ? "success" : "warning"}`,
-      message: `${favorited ? "Added to favorites" : "Removed from favorites"}`,
+      severity: `${!recipe.favorite ? "success" : "warning"}`,
+      message: `${
+        !recipe.favorite ? "Added to favorites" : "Removed from favorites"
+      }`,
     });
   }
 

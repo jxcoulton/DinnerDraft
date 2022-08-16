@@ -19,6 +19,7 @@ const EditRecipe = () => {
     userFavorites,
     setLoadingBar,
     setShowAlert,
+    showAlert,
   } = useContext(UserDataContext);
   const theme = useTheme();
 
@@ -45,8 +46,12 @@ const EditRecipe = () => {
   };
 
   const editedState = {
-    directions: editedRecipe?.directions.trim().split("\n"),
-    ingredients: editedRecipe?.ingredients.trim().split("\n"),
+    directions: !!editedRecipe.directions
+      ? editedRecipe?.directions.trim().split("\n")
+      : [],
+    ingredients: !!editedRecipe.ingredients
+      ? editedRecipe?.ingredients.trim().split("\n")
+      : [],
     title: editedRecipe?.title,
     favorite: editedRecipe?.favorite,
     id: editedRecipe?.id,
@@ -71,9 +76,8 @@ const EditRecipe = () => {
     });
   }
 
-  function handleSaveEditedMeal(e: React.SyntheticEvent) {
+  async function handleSaveEditedMeal(e: React.SyntheticEvent) {
     e.preventDefault();
-    setLoadingBar(true);
 
     for (var date in databaseData) {
       let dateItems = databaseData[date];
@@ -82,7 +86,7 @@ const EditRecipe = () => {
         for (var index in meal) {
           let item = meal[index as unknown as number];
           if (item?.id === currentRecipe.id) {
-            update(
+            await update(
               ref(
                 database,
                 `users/${activeUser.uid}/meals/${date}/${type}/${index}`
@@ -109,7 +113,7 @@ const EditRecipe = () => {
     for (var fav in userFavorites) {
       let items = userFavorites[fav as keyof IRecipeState] as IRecipeState;
       if (items?.id === editedRecipe.id) {
-        update(
+        await update(
           ref(database, `users/${activeUser.uid}/favorites/${editedRecipe.id}`),
           {
             ...editedRecipe,
@@ -130,7 +134,6 @@ const EditRecipe = () => {
     setCurrentRecipe(editedState);
     setTrigger(!trigger);
     setEdit(false);
-    setLoadingBar(false);
     setShowAlert({
       show: true,
       severity: "success",

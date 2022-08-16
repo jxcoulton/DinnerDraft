@@ -27,7 +27,7 @@ const Banner: React.FC = () => {
   const hideMenu = useMediaQuery(theme.breakpoints.up("sm"));
   const navigate = useNavigate();
 
-  const logout = () => {
+  function logout() {
     //sign user out and return to login page
     signOut(auth)
       .then(() => {
@@ -36,7 +36,7 @@ const Banner: React.FC = () => {
       .catch((error) => {
         console.error(error);
       });
-  };
+  }
 
   return (
     <AppBar position="static">
@@ -62,11 +62,7 @@ const Banner: React.FC = () => {
             >
               Favorites
             </Button>
-            <Button
-              startIcon={<LogoutIcon />}
-              onClick={() => logout()}
-              color="inherit"
-            >
+            <Button startIcon={<LogoutIcon />} onClick={logout} color="inherit">
               Logout
             </Button>
           </>
@@ -98,7 +94,7 @@ const Banner: React.FC = () => {
                   </ListItemIcon>
                   <ListItemText primary="Favorites"></ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => logout()}>
+                <ListItemButton onClick={logout}>
                   <ListItemIcon>
                     <LogoutIcon />
                   </ListItemIcon>

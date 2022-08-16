@@ -1,17 +1,40 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserDataContext } from "../../context/userData";
-import { format, eachDayOfInterval, startOfWeek, endOfWeek } from "date-fns";
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import {
+  format,
+  eachDayOfInterval,
+  startOfWeek,
+  endOfWeek,
+  add,
+} from "date-fns";
+import {
+  Box,
+  Button,
+  Typography,
+  useTheme,
+  IconButton,
+  lighten,
+} from "@mui/material";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+
+//list of current weeks dates
+const thisWeek = eachDayOfInterval({
+  start: startOfWeek(new Date()),
+  end: endOfWeek(new Date()),
+});
+
+const nextWeek = eachDayOfInterval({
+  start: startOfWeek(add(new Date(), { days: 7 })),
+  end: endOfWeek(add(new Date(), { days: 7 })),
+});
 
 const DateButtons: React.FC = () => {
   const { startDate, setStartDate } = useContext(UserDataContext);
   const theme = useTheme();
+  const [week, setWeek] = useState(thisWeek);
 
-  //list of current weeks dates
-  const dateList = eachDayOfInterval({
-    start: startOfWeek(new Date()),
-    end: endOfWeek(new Date()),
-  });
+  // thisWeek.some(new Date(new Date().setHours(0, 0, 0, 0)));
 
   return (
     <Box
@@ -20,7 +43,14 @@ const DateButtons: React.FC = () => {
         justifyContent: "space-around",
       }}
     >
-      {dateList.map((day: Date) => {
+      <IconButton
+        color={"secondary"}
+        onClick={() => setWeek(thisWeek)}
+        disabled={week === thisWeek}
+      >
+        <NavigateBeforeIcon />
+      </IconButton>
+      {week.map((day: Date) => {
         return (
           <Button
             variant="contained"
@@ -49,7 +79,10 @@ const DateButtons: React.FC = () => {
                 border:
                   day.setHours(0, 0, 0, 0) === startDate.setHours(0, 0, 0, 0)
                     ? `${theme.palette.primary.main} solid`
-                    : `${theme.palette.grey[100]} solid`,
+                    : day.setHours(0, 0, 0, 0) ===
+                      new Date().setHours(0, 0, 0, 0)
+                    ? `${lighten(`${theme.palette.primary.main}`, 0.8)} solid`
+                    : `${theme.palette.background.default} solid`,
                 backgroundColor: theme.palette.grey[50],
                 width: "100%",
                 minHeight: "2.5rem",
@@ -64,6 +97,13 @@ const DateButtons: React.FC = () => {
           </Button>
         );
       })}
+      <IconButton
+        color={"secondary"}
+        onClick={() => setWeek(nextWeek)}
+        disabled={week === nextWeek}
+      >
+        <NavigateNextIcon />
+      </IconButton>
     </Box>
   );
 };

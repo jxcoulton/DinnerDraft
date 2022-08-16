@@ -20,7 +20,23 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/reset" element={<ForgotPassword />} />
             <Route path="/register" element={<Register />} />
-
+            <Route
+              path="/favorite"
+              element={
+                <AuthChecker>
+                  <Box
+                    sx={{
+                      backgroundColor: theme.palette.grey[300],
+                      height: "100px",
+                      minHeight: "100vh",
+                      paddingBottom: "3rem",
+                    }}
+                  >
+                    <FavoritesPage />
+                  </Box>
+                </AuthChecker>
+              }
+            />
             <Route
               path="/"
               element={
@@ -35,25 +51,6 @@ const App = () => {
                   >
                     <Home />
                   </Box>
-                </AuthChecker>
-              }
-            />
-            <Route
-              path="/favorite"
-              element={
-                <AuthChecker>
-                  <UserDataProvider>
-                    <Box
-                      sx={{
-                        backgroundColor: theme.palette.grey[300],
-                        height: "100px",
-                        minHeight: "100vh",
-                        paddingBottom: "3rem",
-                      }}
-                    >
-                      <FavoritesPage />
-                    </Box>
-                  </UserDataProvider>
                 </AuthChecker>
               }
             />

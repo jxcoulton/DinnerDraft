@@ -141,6 +141,9 @@ export const UserDataProvider: React.FC = ({ children }) => {
       setAddMealItemOpen(defaultOpenState);
       getData();
       getFavorites();
+      setDatabaseData((state) => {
+        return state;
+      });
     }
   }, [
     activeUser.uid,
