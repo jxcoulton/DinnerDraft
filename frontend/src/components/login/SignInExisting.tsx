@@ -47,35 +47,38 @@ const SignInExisting = () => {
         alignItems: "center",
       }}
     >
-      <TextField
-        label="Email"
-        onChange={handleChangeEmail}
-        name="Email"
-        value={email}
-        disabled={loading}
-        fullWidth
-        sx={{ marginBottom: "1rem" }}
-      />
-      <TextField
-        label="Password"
-        onChange={handleChangePassword}
-        name="Password"
-        value={password}
-        type="password"
-        disabled={loading}
-        fullWidth
-        sx={{ marginBottom: "1rem" }}
-      />
-      <LoadingButton
-        size="large"
-        variant="contained"
-        onClick={signInExistingUser}
-        fullWidth
-        disabled={!email || !password}
-        loading={loading}
-      >
-        Login
-      </LoadingButton>
+      <form>
+        <TextField
+          label="Email"
+          onChange={handleChangeEmail}
+          name="email"
+          value={email}
+          disabled={loading}
+          fullWidth
+          sx={{ marginBottom: "1rem" }}
+        />
+        <TextField
+          label="Password"
+          onChange={handleChangePassword}
+          name="password"
+          value={password}
+          type="password"
+          disabled={loading}
+          fullWidth
+          sx={{ marginBottom: "1rem" }}
+        />
+        <LoadingButton
+          size="large"
+          variant="contained"
+          type="submit"
+          onClick={signInExistingUser}
+          fullWidth
+          disabled={!email || !password}
+          loading={loading}
+        >
+          Login
+        </LoadingButton>
+      </form>
     </Box>
   );
 };

@@ -49,23 +49,26 @@ const PasswordReset = () => {
         alignItems: "center",
       }}
     >
-      <TextField
-        label="Email"
-        onChange={handleChange}
-        value={email}
-        disabled={loading}
-        fullWidth
-        sx={{ marginBottom: "1rem" }}
-      />
-      <Button
-        size="large"
-        fullWidth
-        variant="contained"
-        disabled={!email || loading}
-        onClick={requestPasswordReset}
-      >
-        Reset password
-      </Button>
+      <form>
+        <TextField
+          label="email"
+          onChange={handleChange}
+          value={email}
+          disabled={loading}
+          fullWidth
+          sx={{ marginBottom: "1rem" }}
+        />
+        <Button
+          size="large"
+          fullWidth
+          type="submit"
+          variant="contained"
+          disabled={!email || loading}
+          onClick={requestPasswordReset}
+        >
+          Reset password
+        </Button>
+      </form>
     </Box>
   );
 };

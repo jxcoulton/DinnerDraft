@@ -28,7 +28,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "cypress run",
     "eject": "react-scripts eject",
     "serve": "serve -s build",
     "build-and-serve": "npm run build && npm run serve",
@@ -52,6 +52,9 @@
     ]
   },
   "devDependencies": {
+    "cypress": "^10.7.0",
+    "cypress-firebase": "^2.2.2",
+    "firebase-admin": "^11.0.1",
     "gh-pages": "^3.2.3"
   }
 }

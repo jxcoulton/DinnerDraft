@@ -47,35 +47,38 @@ const SignUpNewUser = () => {
         alignItems: "center",
       }}
     >
-      <TextField
-        label="Email"
-        onChange={handleChangeEmail}
-        name="Email"
-        value={email}
-        disabled={loading}
-        fullWidth
-        sx={{ marginBottom: "1rem" }}
-      />
-      <TextField
-        label="Password"
-        onChange={handleChangePassword}
-        name="Password"
-        value={password}
-        type="password"
-        disabled={loading}
-        fullWidth
-        sx={{ marginBottom: "1rem" }}
-      />
-      <LoadingButton
-        size="large"
-        fullWidth
-        variant="contained"
-        onClick={signUpNewUserFunc}
-        disabled={!email || !password}
-        loading={loading}
-      >
-        Sign up
-      </LoadingButton>
+      <form>
+        <TextField
+          label="Email"
+          onChange={handleChangeEmail}
+          name="email"
+          value={email}
+          disabled={loading}
+          fullWidth
+          sx={{ marginBottom: "1rem" }}
+        />
+        <TextField
+          label="Password"
+          onChange={handleChangePassword}
+          name="password"
+          value={password}
+          type="password"
+          disabled={loading}
+          fullWidth
+          sx={{ marginBottom: "1rem" }}
+        />
+        <LoadingButton
+          size="large"
+          fullWidth
+          type="submit"
+          variant="contained"
+          onClick={signUpNewUserFunc}
+          disabled={!email || !password}
+          loading={loading}
+        >
+          Sign up
+        </LoadingButton>
+      </form>
     </Box>
   );
 };
