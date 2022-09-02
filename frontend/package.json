@@ -52,7 +52,8 @@
     ]
   },
   "devDependencies": {
-    "cypress": "^10.7.0",
+    "@cypress/react": "^6.2.0",
+    "@testing-library/cypress": "^8.0.3",
     "cypress-firebase": "^2.2.2",
     "firebase-admin": "^11.0.1",
     "gh-pages": "^3.2.3"

@@ -11,6 +11,13 @@ const cypressConfig = defineConfig({
       // e2e testing node events setup code
     },
   },
+
+  component: {
+    devServer: {
+      framework: "create-react-app",
+      bundler: "webpack",
+    },
+  },
 });
 
 export default cypressConfig;
