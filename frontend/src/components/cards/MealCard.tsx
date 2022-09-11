@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { UserDataContext } from "../../context/userData";
 import EditMealButton from "../buttons/EditMealButton";
 import DeleteMealButton from "../buttons/DeleteMealButton";

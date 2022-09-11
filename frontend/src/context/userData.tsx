@@ -5,7 +5,7 @@ import IUserContextState from "../interface/IUserContextState";
 import IOpenState from "../interface/IOpenState";
 import { auth } from "../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { ref, get, child } from "firebase/database";
+import { ref, get, child, remove } from "firebase/database";
 import { database } from "../config/firebase";
 import IRecipeState from "../interface/IRecipeState";
 import IDatabaseState from "../interface/IDatabaseState";
@@ -153,6 +153,30 @@ export const UserDataProvider: React.FC = ({ children }) => {
     setDatabaseData,
     setAddMealItemOpen,
   ]);
+
+  function convertDate(date: string) {
+    let converted = date.split(" ");
+    let mapped = converted
+      .map((s, i) => {
+        if (i === 1) {
+          return s.slice(0, -3);
+        }
+        return s;
+      })
+      .join(" ");
+
+    return mapped;
+  }
+
+  // console.log(Date.parse(convertDate("september 11th, 2022")) - 2629746000); //a month before date
+
+  useEffect(() => {
+    for (var date in databaseData) {
+      if (Date.parse(convertDate(date)) < Date.now() - 1814400000) {
+        remove(ref(database, `users/${activeUser.uid}/meals/${date}`));
+      }
+    }
+  }, [activeUser, databaseData]);
 
   return (
     <UserDataContext.Provider

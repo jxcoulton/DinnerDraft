@@ -17,9 +17,7 @@ const EditRecipe = () => {
     setCurrentRecipe,
     setEdit,
     userFavorites,
-    setLoadingBar,
     setShowAlert,
-    showAlert,
   } = useContext(UserDataContext);
   const theme = useTheme();
 
